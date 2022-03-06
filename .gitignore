@@ -1,0 +1,19 @@
+##### VisualStudioCode
+.vscode/
+.vscode/*
+*.code-workspace
+
+#compiled
+minishell
+*.o
+*.dll
+*.dylib
+*.lib
+*.a
+
+##### MacOS
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
