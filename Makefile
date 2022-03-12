@@ -6,18 +6,19 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/03/05 19:20:16 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/03/11 02:19:45 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -I./includes
 
 #source
 SRCS_DIR = sources/
-SRCS = main.c
+SRCS = main.c parser/parser.c parser/parser_utils.c parser/tokenizer.c \
+		parser/token.c parser/token_utils.c
 
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 
@@ -26,7 +27,7 @@ OBJS = $(SRCS_PREFIXED:.c=.o)
 
 all : $(NAME)
 
-%.o: %.c ./includes/minishell.h
+%.o: %.c ./includes/minishell.h ./includes/parser.h ./includes/tokenizer.h
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(NAME): $(OBJS)
