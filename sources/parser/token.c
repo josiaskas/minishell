@@ -6,77 +6,35 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/12 14:08:07 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/13 19:19:50 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-// check if we have a closed quote or no
-static bool close_quote(char *str, size_t cursor, size_t len, char q)
-{
-	cursor++;
-	while (cursor < len)
-	{
-		if (str[cursor] == q)
-			return (true);
-		cursor++;
-	}
-	return (false);
-}
-
-static void	ft_quote(t_token *tok, char *str, size_t cur, size_t len)
-{
-	char quote;
-	char *word;
-
-	tok->type = e_token_text;
-	tok->start_pos = cur;
-	word = NULL;
-	quote = str[cur];
-	if (!close_quote(str, cur, len, quote))
-	{
-		build_error_token(tok, cur, 1);
-		return;
-	}
-	cur++;
-	while (cur < len)
-	{
-		if (str[cur] == quote)
-		{
-			cur++;
-			break;
-		}
-		else
-			word = ft_concat_char(word, str[cur]);
-		cur++;
-	}
-	tok->value = word;
-	tok->end_pos = cur;
-}
-
-// build the string token
+// build the string token and escape char
 void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
 {
 	char	*word;
+	char	next_c;
 
 	tok->type = e_token_text;
 	tok->start_pos = cursor;
 	word = NULL;
-	if (ft_is_a_quote_char(str[cursor]))
-	{
-		ft_quote(tok, str, cursor, len);
-		return ;
-	}
 	while (cursor < len)
+	{
+		next_c = str[cursor + 1];
+		if (ft_isspace(str[cursor]) || ft_is_special_shell_char(str[cursor]))
+			break ;
+		else if ((str[cursor] == 92)
+			&& (ft_is_special_shell_char(next_c) || (next_c == 92)))
 		{
-			if (ft_isspace(str[cursor]) || ft_is_special_shell_char(str[cursor]))
-				break;
-			else if (ft_is_a_quote_char(str[cursor]))
-				break;
-			else
-				word = ft_concat_char(word, str[cursor]);
+			word = ft_concat_char(word, next_c);
 			cursor++;
+		}
+		else
+			word = ft_concat_char(word, str[cursor]);
+		cursor++;
 	}
 	tok->value = word;
 	tok->end_pos = cursor;

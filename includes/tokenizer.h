@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:55:54 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/12 13:40:46 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/13 19:09:33 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ typedef enum e_token_type
 	e_token_and,
 	e_token_and_and,
 	e_token_wildcard,
-	e_token_env_variable,
+	e_token_dollar,
+	e_token_quote,
+	e_token_dquote,
 	e_token_eof,
 	e_token_left_paren,
 	e_token_right_paren,
 	e_token_text,
+	e_token_esc_text,
 	e_token_error,
 	e_token_logic_op,
 }	t_token_type;
@@ -59,9 +62,9 @@ t_token		*get_next_token(t_tokeniser *lexical);
 void		ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len);
 void		ft_op_tok(t_token *tok, char *str, size_t cursor);
 void		ft_sp_tok(t_token *tok, char *str, size_t cursor);
-void		build_error_token(t_token *token, size_t cursor, int error);
 bool		ft_is_special_shell_char(char value);
-bool		ft_is_a_quote_char(char value);
+bool		is_close_quote(char *sentence, size_t cursor, size_t len, char q);
+int			ft_is_a_quote_char(char value);
 char		*ft_concat_char(char *str, char c);
 
 #endif

@@ -6,12 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:52:57 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/12 14:10:11 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/13 20:04:29 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-#include <stdio.h>
 
 t_tokeniser	*init_tokenizer(char *sentence)
 {
@@ -33,23 +32,6 @@ t_tokeniser	*init_tokenizer(char *sentence)
 	return (lexical_int);
 }
 
-// free memory of the tokenizer build, token value also
-void	destroy_tokinizer(t_tokeniser *lexical)
-{
-	t_token	*content;
-
-	if (!lexical)
-		return ;
-	while (lexical->tokens->length)
-	{
-		content = pop(lexical->tokens);
-		free(content->value);
-		free(content);
-	}
-	free(lexical->tokens);
-	free(lexical);
-}
-
 // build token and poush them in the stack
 static t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 {
@@ -57,23 +39,43 @@ static t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 
 	token = (t_token *)ft_calloc(1, sizeof(t_token));
 	token->end_pos = cursor;
+	token->type = t;
 	if (t == e_token_text)
 		ft_str_tok(token, lex->sentence, cursor, lex->len);
 	else if (t == e_token_logic_op)
 		ft_op_tok(token, lex->sentence, cursor);
 	else
-	{
-		token->type = t;
 		ft_sp_tok(token, lex->sentence, cursor);
-	}
 	lex->cursor = token->end_pos;
 	push(lex->tokens, token);
 	return (token);
 }
 
+static t_token *spec_s(t_tokeniser *lex, size_t cursor, char c, char next_c)
+{
+	if (c == '<' && next_c == '<')
+		return (build_token(e_token_less_less, lex, cursor));
+	else if (c == '<')
+		return (build_token(e_token_less, lex, cursor));
+	else if (c == '>' && next_c == '>')
+		return (build_token(e_token_greater_greater, lex, cursor));
+	else if (c == '>')
+		return (build_token(e_token_greater, lex, cursor));
+	else if (c == '*')
+		return (build_token(e_token_wildcard, lex, cursor));
+	else
+		return (build_token(e_token_text, lex, cursor));
+}
+
 // check special char of the shell and build token or else a simple txt token
 static t_token	*spec_t(t_tokeniser *lex, size_t cursor, char c, char next_c)
 {
+	if (c == 39)
+		return (build_token(e_token_quote, lex, cursor));
+	else if (c == 34)
+		return (build_token(e_token_dquote, lex, cursor));
+	else if (c == '$')
+		return (build_token(e_token_dollar, lex, cursor));
 	if (c == '|' && next_c != '|')
 		return (build_token(e_token_pipe, lex, cursor));
 	if (c == '&' && next_c != '&')
@@ -86,18 +88,8 @@ static t_token	*spec_t(t_tokeniser *lex, size_t cursor, char c, char next_c)
 		return (build_token(e_token_left_paren, lex, cursor));
 	else if (c == ')')
 		return (build_token(e_token_left_paren, lex, cursor));
-	else if (c == '<' && next_c == '<')
-		return (build_token(e_token_less_less, lex, cursor));
-	else if (c == '<')
-		return (build_token(e_token_less, lex, cursor));
-	else if (c == '>' && next_c == '>')
-		return (build_token(e_token_greater_greater, lex, cursor));
-	else if (c == '>')
-		return (build_token(e_token_greater, lex, cursor));
-	else if (c == '*')
-		return (build_token(e_token_wildcard, lex, cursor));
 	else
-		return (build_token(e_token_text, lex, cursor));
+		return (spec_s(lex, cursor, c, next_c));
 }
 
 // build and return the next token on demand
