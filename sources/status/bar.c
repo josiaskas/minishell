@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:12:33 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/13 23:58:47 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/14 00:00:12 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*make_prompt(int code, bool with_bar, char *path, char *git)
 	bar = NULL;
 	if (with_bar)
 		bar = make_shell_status_bar(path, git);
-	if (code > 0)
+	if (code >= 0)
 		prompt = ft_strjoin(bar, "\033[32m\n>\033[0;39m");
 	else
 		prompt = ft_strjoin(bar, "\033[31m\n>\033[0;39m");
