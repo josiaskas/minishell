@@ -6,7 +6,7 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/03/13 23:43:22 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/03/18 18:08:52 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INCLUDES_DIR = includes/
 #source
 SRCS_DIR = sources/
 SRCS = main.c prompt.c parser/parser.c parser/parser_utils.c parser/tokenizer.c \
-		parser/token.c parser/token_utils.c status/bar.c
+		parser/token.c status/bar.c
 
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 

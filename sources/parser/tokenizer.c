@@ -6,11 +6,27 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:52:57 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/13 20:04:29 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/18 18:10:33 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
+
+// check if we potentially have a shell special char
+bool	ft_is_special_shell_char(char value)
+{
+	if (value == '|' || value == ';' || value == '&'
+		|| value == '>' || value == '<' || value == '*'
+		|| value == '(' || value == ')' || value == '$'
+		|| value == 34 || value == 39 || value == 92
+		|| value == '{' || value == '}' || value == '~'
+		|| value == '#')
+	{
+		return (true);
+	}
+	return (false);
+}
+
 
 t_tokeniser	*init_tokenizer(char *sentence)
 {
@@ -32,64 +48,21 @@ t_tokeniser	*init_tokenizer(char *sentence)
 	return (lexical_int);
 }
 
-// build token and poush them in the stack
-static t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
+// free memory of the tokenizer build, token value also
+void	destroy_tokinizer(t_tokeniser *lexical)
 {
-	t_token	*token;
+	t_token	*content;
 
-	token = (t_token *)ft_calloc(1, sizeof(t_token));
-	token->end_pos = cursor;
-	token->type = t;
-	if (t == e_token_text)
-		ft_str_tok(token, lex->sentence, cursor, lex->len);
-	else if (t == e_token_logic_op)
-		ft_op_tok(token, lex->sentence, cursor);
-	else
-		ft_sp_tok(token, lex->sentence, cursor);
-	lex->cursor = token->end_pos;
-	push(lex->tokens, token);
-	return (token);
-}
-
-static t_token *spec_s(t_tokeniser *lex, size_t cursor, char c, char next_c)
-{
-	if (c == '<' && next_c == '<')
-		return (build_token(e_token_less_less, lex, cursor));
-	else if (c == '<')
-		return (build_token(e_token_less, lex, cursor));
-	else if (c == '>' && next_c == '>')
-		return (build_token(e_token_greater_greater, lex, cursor));
-	else if (c == '>')
-		return (build_token(e_token_greater, lex, cursor));
-	else if (c == '*')
-		return (build_token(e_token_wildcard, lex, cursor));
-	else
-		return (build_token(e_token_text, lex, cursor));
-}
-
-// check special char of the shell and build token or else a simple txt token
-static t_token	*spec_t(t_tokeniser *lex, size_t cursor, char c, char next_c)
-{
-	if (c == 39)
-		return (build_token(e_token_quote, lex, cursor));
-	else if (c == 34)
-		return (build_token(e_token_dquote, lex, cursor));
-	else if (c == '$')
-		return (build_token(e_token_dollar, lex, cursor));
-	if (c == '|' && next_c != '|')
-		return (build_token(e_token_pipe, lex, cursor));
-	if (c == '&' && next_c != '&')
-		return (build_token(e_token_and, lex, cursor));
-	if ((c == '&' && next_c == '&') || (c == '|' && next_c == '|'))
-		return (build_token(e_token_logic_op, lex, cursor));
-	else if (c == ';')
-		return (build_token(e_token_semicolon, lex, cursor));
-	else if (c == '(')
-		return (build_token(e_token_left_paren, lex, cursor));
-	else if (c == ')')
-		return (build_token(e_token_left_paren, lex, cursor));
-	else
-		return (spec_s(lex, cursor, c, next_c));
+	if (!lexical)
+		return;
+	while (lexical->tokens->length)
+	{
+		content = pop(lexical->tokens);
+		free(content->value);
+		free(content);
+	}
+	free(lexical->tokens);
+	free(lexical);
 }
 
 // build and return the next token on demand
@@ -97,20 +70,43 @@ t_token	*get_next_token(t_tokeniser *lexical)
 {
 	size_t	cursor;
 	char	current;
-	char	next_c;
 
 	cursor = lexical->cursor;
 	current = lexical->sentence[cursor];
 	if (lexical->cursor >= lexical->len)
 		return (build_token(e_token_eof, lexical, cursor));
-	while (ft_isspace(current) && (current != 0))
-	{
-		cursor++;
-		current = lexical->sentence[cursor];
-	}
-	next_c = lexical->sentence[cursor + 1];
+	else if (ft_isspace(current) && (current != 0))
+		return (build_token(e_token_space, lexical, cursor));
 	if (ft_is_special_shell_char(current))
-		return (spec_t(lexical, cursor, current, next_c));
+		return (build_spec_t(lexical, cursor, current));
 	else
 		return (build_token(e_token_text, lexical, cursor));
+}
+
+// build a string by adding a char c
+char	*ft_concat_char(char *str, char c)
+{
+	size_t	len;
+	char	*heap_p;
+
+	if ((str == NULL) && (c == 0))
+		return (ft_strdup(""));
+	len = ft_strlen(str);
+	if ((len == 0) && (c != 0))
+	{
+		heap_p = (char *)malloc(2);
+		heap_p[0] = c;
+		heap_p[1] = 0;
+	}
+	else
+	{
+		heap_p = (char *)malloc(len + 2);
+		if (!heap_p)
+			return (0);
+		ft_memmove(heap_p, str, len);
+		heap_p[len] = c;
+		heap_p[len + 1] = 0;
+	}
+	free(str);
+	return (heap_p);
 }

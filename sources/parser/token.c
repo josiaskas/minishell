@@ -6,32 +6,24 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/13 19:19:50 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/18 18:04:33 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
 // build the string token and escape char
-void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
+static void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
 {
 	char	*word;
-	char	next_c;
 
 	tok->type = e_token_text;
 	tok->start_pos = cursor;
 	word = NULL;
 	while (cursor < len)
 	{
-		next_c = str[cursor + 1];
 		if (ft_isspace(str[cursor]) || ft_is_special_shell_char(str[cursor]))
 			break ;
-		else if ((str[cursor] == 92)
-			&& (ft_is_special_shell_char(next_c) || (next_c == 92)))
-		{
-			word = ft_concat_char(word, next_c);
-			cursor++;
-		}
 		else
 			word = ft_concat_char(word, str[cursor]);
 		cursor++;
@@ -40,27 +32,8 @@ void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
 	tok->end_pos = cursor;
 }
 
-// build logic operator token
-void	ft_op_tok(t_token *token, char *sentence, size_t cursor)
-{
-	token->start_pos = cursor;
-	token->end_pos = cursor + 1;
-	if (sentence[cursor] == '&')
-	{
-		token->type = e_token_and_and;
-		token->value = ft_strdup("&&");
-		token->end_pos = cursor + 2;
-	}
-	if (sentence[cursor] == '|')
-	{
-		token->type = e_token_or;
-		token->value = ft_strdup("||");
-		token->end_pos = cursor + 2;
-	}
-}
-
 // build shell special token and EOF token
-void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
+static void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 {
 	int	t;
 
@@ -72,17 +45,71 @@ void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 		token->value = NULL;
 		return ;
 	}
-	if (t == e_token_greater_greater)
-	{
-		token->value = ft_strdup(">>");
-		cursor++;
-	}
-	else if (t == e_token_less_less)
-	{
-		token->value = ft_strdup("<<");
-		cursor++;
-	}
 	else
 		token->value = ft_concat_char(NULL, sentence[cursor]);
 	token->end_pos = cursor + 1;
+}
+
+// build token and push them in the stack
+t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
+{
+	t_token *token;
+
+	token = (t_token *)ft_calloc(1, sizeof(t_token));
+	token->end_pos = cursor;
+	token->type = t;
+	if (t == e_token_text)
+		ft_str_tok(token, lex->sentence, cursor, lex->len);
+	else
+		ft_sp_tok(token, lex->sentence, cursor);
+	lex->cursor = token->end_pos;
+	push(lex->tokens, token);
+	return (token);
+}
+
+static t_token	*spec_suite(t_tokeniser *lex, size_t cursor, char c)
+{
+	if (c == '<')
+		return (build_token(e_token_less, lex, cursor));
+	else if (c == '>')
+		return (build_token(e_token_greater, lex, cursor));
+	else if (c == '*')
+		return (build_token(e_token_wildcard, lex, cursor));
+	else if (c == '~')
+		return (build_token(e_token_tilde, lex, cursor));
+	else if (c == '=')
+		return (build_token(e_token_equal, lex, cursor));
+	else if (c == '#')
+		return (build_token(e_token_hashtag, lex, cursor));
+	else if (c == '{')
+		return (build_token(e_token_left_curl, lex, cursor));
+	else if (c == '}')
+		return (build_token(e_token_right_curl, lex, cursor));
+	else
+		return (build_token(e_token_text, lex, cursor));
+}
+
+// check special char of the shell and build token or else a simple txt token
+t_token	*build_spec_t(t_tokeniser *lex, size_t cursor, char c)
+{
+	if (c == 39)
+		return (build_token(e_token_quote, lex, cursor));
+	else if (c == 92)
+		return (build_token(e_token_escape, lex, cursor));
+	else if (c == 34)
+		return (build_token(e_token_dquote, lex, cursor));
+	else if (c == '$')
+		return (build_token(e_token_dollar, lex, cursor));
+	else if (c == '|')
+		return (build_token(e_token_pipe, lex, cursor));
+	else if (c == '&')
+		return (build_token(e_token_and, lex, cursor));
+	else if (c == ';')
+		return (build_token(e_token_semicolon, lex, cursor));
+	else if (c == '(')
+		return (build_token(e_token_left_paren, lex, cursor));
+	else if (c == ')')
+		return (build_token(e_token_right_paren, lex, cursor));
+	else
+		return (spec_suite(lex, cursor, c));
 }
