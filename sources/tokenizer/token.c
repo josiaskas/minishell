@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/18 18:04:33 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/19 02:16:43 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,34 @@ static void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 	token->end_pos = cursor + 1;
 }
 
-// build token and push them in the stack
+/*
+* Build s token by receiving the type and the lexical anylizer (tokenizer)
+* Return a t_token*
+* Push inside the stack the token created or pop and push a complex token eg: '||'
+*/
 t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 {
-	t_token *token;
+	t_token			*token;
+	t_token			*last_tok;
+	t_token_type	new_type;
 
-	token = (t_token *)ft_calloc(1, sizeof(t_token));
+		token = (t_token *)ft_calloc(1, sizeof(t_token));
 	token->end_pos = cursor;
 	token->type = t;
 	if (t == e_token_text)
 		ft_str_tok(token, lex->sentence, cursor, lex->len);
 	else
-		ft_sp_tok(token, lex->sentence, cursor);
+	{
+		new_type = ft_check_double_t(t, lex, cursor);
+		if (new_type != 0)
+		{
+			last_tok = (t_token *)pop(lex->tokens);
+			token->type = new_type;
+			custom_tok(token, last_tok, cursor, lex->sentence);
+		}
+		else
+			ft_sp_tok(token, lex->sentence, cursor);
+	}
 	lex->cursor = token->end_pos;
 	push(lex->tokens, token);
 	return (token);

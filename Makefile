@@ -6,7 +6,7 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/03/18 18:08:52 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/03/19 00:13:20 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,14 @@ INCLUDES_DIR = includes/
 
 #source
 SRCS_DIR = sources/
-SRCS = main.c prompt.c parser/parser.c parser/parser_utils.c parser/tokenizer.c \
-		parser/token.c status/bar.c
+PARSER_SRC = parser.c parser_utils.c
+PARSER_PREFIXED = $(addprefix parser/, $(PARSER_SRC))
+TOKENIZER_SRC = tokenizer.c token.c token_special.c
+TOKENIZER_PREFIXED = $(addprefix tokenizer/, $(TOKENIZER_SRC))
+STATUS_SRC = bar.c
+STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
+SRCS = main.c prompt.c $(PARSER_PREFIXED) $(TOKENIZER_PREFIXED) $(STATUS_PREFIXED)
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 
 #includes
@@ -48,6 +53,7 @@ $(NAME): $(OBJS_DIR) $(OBJS_PREFIXED)
 $(OBJS_DIR):
 	@mkdir $(OBJS_DIR)
 	@mkdir $(OBJS_DIR)/parser
+	@mkdir $(OBJS_DIR)/tokenizer
 	@mkdir $(OBJS_DIR)/status
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(INCLUDES_PREFIXED)

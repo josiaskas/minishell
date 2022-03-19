@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:55:54 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/18 18:12:07 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/19 01:23:26 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ typedef enum e_token_type
 	e_token_number,
 	e_token_space,
 	e_token_hashtag,
+	e_token_double_and,
+	e_token_or,
+	e_token_subst,
+	e_token_heredoc_left,
+	e_token_heredoc_right,
+	e_token_herestr,
 	e_token_eof,
 } t_token_type;
 
@@ -64,5 +70,6 @@ t_token		*build_token(t_token_type t, t_tokeniser *lex, size_t cursor);
 
 bool		ft_is_special_shell_char(char value);
 char		*ft_concat_char(char *str, char c);
-
+int			ft_check_double_t(int t, t_tokeniser *lex, size_t cursor);
+void		custom_tok(t_token *curr, t_token *last, int cursor, char *str);
 #endif
