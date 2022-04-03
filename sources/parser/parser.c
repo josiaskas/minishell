@@ -6,16 +6,19 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 00:24:38 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/19 02:26:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:04:16 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
 // print the lexical analyzer result
-void	ft_print_token(t_token *token, int index)
+void	ft_print_token(void *data, int index)
 {
+	t_token	*token;
+
 	(void) index;
+	token = (t_token *)data;
 	if (token->type == e_token_text)
 		ft_printf("{{ %s }}", token->value);
 	else if (token->type == e_token_eof)
@@ -40,20 +43,14 @@ int	parse_line(char *sentence)
 {
 	t_tokeniser		*lexical_anyliser;
 	t_token			*token;
-	int				i;
+	size_t			i;
 
 	lexical_anyliser = init_tokenizer(sentence);
 	token = get_next_token(lexical_anyliser);
 	while (token->type != e_token_eof)
 		token = get_next_token(lexical_anyliser);
 	i = 0;
-	while (i < lexical_anyliser->tokens->length)
-	{
-		reverse_rotate(lexical_anyliser->tokens);
-		token = (t_token *)peak(lexical_anyliser->tokens);
-		ft_print_token(token, i);
-		i++;
-	}
+	ft_for_each(lexical_anyliser->tokens, ft_print_token);
 	destroy_tokinizer(lexical_anyliser);
 	return (0);
 }

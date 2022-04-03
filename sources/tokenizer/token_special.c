@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 00:02:11 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/19 02:24:59 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/25 19:57:54 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_check_double_t(int t, t_tokeniser *lex, size_t cursor)
 	t_token	*last_token;
 
 	last_token = NULL;
-	last_token = (t_token *)peak(lex->tokens);
+	last_token = (t_token *)ft_get_elem(lex->tokens, (lex->tokens->length -1));
 	if (!last_token && cursor < 1)
 		return (0);
 	if ((t == e_token_and) && (last_token->type == e_token_and))

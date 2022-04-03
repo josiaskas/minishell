@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:52:57 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/18 18:10:33 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/03/25 19:53:01 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	ft_is_special_shell_char(char value)
 t_tokeniser	*init_tokenizer(char *sentence)
 {
 	t_tokeniser	*lexical_int;
-	t_stack		*tokens;
+	t_array		*tokens;
 
 	lexical_int = NULL;
 	tokens = NULL;
@@ -41,7 +41,7 @@ t_tokeniser	*init_tokenizer(char *sentence)
 	lexical_int->cursor = 0;
 	lexical_int->sentence = sentence;
 	lexical_int->len = ft_strlen(sentence);
-	tokens = create_stack();
+	tokens = ft_new_array();
 	if (!tokens)
 		return (NULL);
 	lexical_int->tokens = tokens;
@@ -57,12 +57,13 @@ void	destroy_tokinizer(t_tokeniser *lexical)
 		return;
 	while (lexical->tokens->length)
 	{
-		content = pop(lexical->tokens);
+		content = (t_token *)pop(lexical->tokens);
 		free(content->value);
 		free(content);
 	}
 	free(lexical->tokens);
 	free(lexical);
+	return;
 }
 
 // build and return the next token on demand

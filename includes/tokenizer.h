@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:55:54 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/19 01:23:26 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/03 18:38:11 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_tokinzer
 	char	*sentence;
 	size_t	len;
 	size_t	cursor;
-	t_stack	*tokens;
+	t_array	*tokens;
 }	t_tokeniser;
 
 t_tokeniser	*init_tokenizer(char *sentence);

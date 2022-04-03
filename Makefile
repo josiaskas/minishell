@@ -6,7 +6,7 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/03/19 00:13:20 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/04/03 19:14:18 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ all : $(NAME)
 
 $(NAME): $(OBJS_DIR) $(OBJS_PREFIXED)
 	@$(MAKE) re -C ./libft
-	@$(CC) $(CFLAGS) $(OBJS_PREFIXED) -L./libft -lft -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS_PREFIXED) -lft -L./libft -lreadline -o $(NAME)
 	@echo $(NAME) est construit
 
 $(OBJS_DIR):
