@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/19 02:16:43 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/03 19:59:28 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 		new_type = ft_check_double_t(t, lex, cursor);
 		if (new_type != 0)
 		{
-			last_tok = (t_token *)pop(lex->tokens);
+			last_tok = (t_token *)ft_pop(lex->tokens);
 			token->type = new_type;
 			custom_tok(token, last_tok, cursor, lex->sentence);
 		}
@@ -79,7 +79,7 @@ t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 			ft_sp_tok(token, lex->sentence, cursor);
 	}
 	lex->cursor = token->end_pos;
-	push(lex->tokens, token);
+	ft_push(lex->tokens, token);
 	return (token);
 }
 
