@@ -6,7 +6,7 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/04/03 19:14:18 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/04/09 17:16:53 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ PARSER_SRC = parser.c parser_utils.c
 PARSER_PREFIXED = $(addprefix parser/, $(PARSER_SRC))
 TOKENIZER_SRC = tokenizer.c token.c token_special.c
 TOKENIZER_PREFIXED = $(addprefix tokenizer/, $(TOKENIZER_SRC))
-STATUS_SRC = bar.c
+STATUS_SRC = bar.c environement.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
 SRCS = main.c prompt.c $(PARSER_PREFIXED) $(TOKENIZER_PREFIXED) $(STATUS_PREFIXED)

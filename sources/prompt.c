@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 22:56:51 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/13 23:55:33 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/09 21:41:26 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,49 +15,52 @@
 #include <readline/history.h>
 #include "minishell.h"
 
-// read file iniside .git to know the current branch on head
-static char	*get_git_branch(char *path)
-{
-	char	*branch_name;
-
-	if (!path)
-		return (NULL);
-	branch_name = "master";
-	return branch_name;
-}
-
-static char	*get_prompt_line(int code, char *path)
+static char	*make_prompt_line(int code)
 {
 	char	*line;
 	char	*prompt;
 	char	*tmp;
 
 	line = NULL;
-	prompt = make_prompt(code, true, path, get_git_branch(path));
+	prompt = make_prompt(code, true);
 	line = readline(prompt);
 	free(prompt);
 	if (!line)
 		return (NULL);
-	tmp = ft_strtrim(line, "\t\r\n\v\f ");
+	tmp = ft_strtrim(line, "\n\t\v\f\r ");
 	free(line);
 	line = tmp;
-	if (ft_strlen(line))
+	if (ft_strlen(line) > 0)
 		add_history(line);
 	return(line);
 }
 
-int		minishell_loop(void)
+void	*print_env_var(void *c, char *key, size_t i)
 {
-	char	*line;
-	int		code;
+	char	*value;
+
+	value = (char *)c;
+	printf("%lu | \033[0;32m%s\033[0;39m = %s \n", i, key, value);
+	return 0;
+}
+
+int		minishell_loop(char *envp[])
+{
+	char		*line;
+	int			code;
 
 	code = 0;
 	line = NULL;
+	ft_create_environ(envp);
 	while (1)
 	{
-		line = get_prompt_line(0, "PATH");
+		line = make_prompt_line(code);
+		if (ft_strncmp(line, "exit", 5) == 0)
+			break ;
 		code = parse_line(line);
 		free(line);
 	}
-
+	free(line);
+	delete_environ();
+	return (0);
 }

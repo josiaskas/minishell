@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 18:42:56 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/03/13 23:39:48 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/09 18:54:09 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 # include "parser.h"
 # include "status.h"
 
-int		minishell_loop(void);
+typedef struct s_mshell
+{
+	t_array	*env;
+	t_array	*paths;
+}	t_mshell;
+
+extern t_mshell	g_shell;
+int	minishell_loop(char *envp[]);
 
 #endif

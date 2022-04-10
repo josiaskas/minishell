@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:28:14 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/03 18:38:17 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/09 20:37:59 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "minishell.h"
 
-char	*make_prompt(int code, bool with_bar, char *path, char *git);
+char	*make_prompt(int code, bool with_bar);
+void	ft_create_environ(char *envp[]);
+void	delete_environ();
 
 #endif
