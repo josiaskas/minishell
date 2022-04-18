@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:45:21 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/18 18:04:06 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/04/18 18:14:44 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	delete_environ()
 	env = g_shell.env;
 	paths = g_shell.paths;
 	ft_free_dic(env);
-	ft_free_array(paths);
+	ft_free_d_array(paths);
 	g_shell.env = 0;
 	g_shell.paths = 0;
 }
