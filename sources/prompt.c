@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 22:56:51 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/09 21:41:26 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/05/02 12:24:28 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static char	*make_prompt_line(int code)
 {
 	char	*line;
 	char	*prompt;
-	char	*tmp;
 
 	line = NULL;
 	prompt = make_prompt(code, true);
@@ -27,9 +26,6 @@ static char	*make_prompt_line(int code)
 	free(prompt);
 	if (!line)
 		return (NULL);
-	tmp = ft_strtrim(line, "\n\t\v\f\r ");
-	free(line);
-	line = tmp;
 	if (ft_strlen(line) > 0)
 		add_history(line);
 	return(line);

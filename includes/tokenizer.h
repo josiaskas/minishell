@@ -6,14 +6,14 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:55:54 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/03 18:38:11 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/05/10 19:14:24 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKENIZER_H
 # define TOKENIZER_H
 
-# include "parser.h"
+# include "../libft/libft.h"
 
 typedef enum e_token_type
 {
@@ -43,13 +43,15 @@ typedef enum e_token_type
 	e_token_heredoc_left,
 	e_token_heredoc_right,
 	e_token_herestr,
+	e_token_variable,
 	e_token_eof,
-} t_token_type;
+}	t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	char			*meta;
 	size_t			start_pos;
 	size_t			end_pos;
 }	t_token;
@@ -72,4 +74,8 @@ bool		ft_is_special_shell_char(char value);
 char		*ft_concat_char(char *str, char c);
 int			ft_check_double_t(int t, t_tokeniser *lex, size_t cursor);
 void		custom_tok(t_token *curr, t_token *last, int cursor, char *str);
+bool		ft_is_a_number(char *str);
+bool		is_redirection_token(t_token *token);
+bool		is_minishell_text(t_token *token);
+char		*get_word_in_sentence(size_t cursor, char *str, size_t len);
 #endif

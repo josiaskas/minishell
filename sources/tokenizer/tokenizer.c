@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:52:57 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/03 19:56:25 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/05/04 12:32:52 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	destroy_tokinizer(t_tokeniser *lexical)
 	{
 		content = (t_token *)ft_pop(lexical->tokens);
 		free(content->value);
+		free(content->meta);
 		free(content);
 	}
 	free(lexical->tokens);

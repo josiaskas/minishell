@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/03 19:59:28 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/05/04 20:26:51 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ static void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
 		cursor++;
 	}
 	tok->value = word;
+	if (ft_is_a_number(word))
+		tok->type = e_token_number;
 	tok->end_pos = cursor;
 }
 
@@ -45,8 +47,7 @@ static void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 		token->value = NULL;
 		return ;
 	}
-	else
-		token->value = ft_concat_char(NULL, sentence[cursor]);
+	token->value = ft_concat_char(NULL, sentence[cursor]);
 	token->end_pos = cursor + 1;
 }
 
@@ -61,23 +62,20 @@ t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 	t_token			*last_tok;
 	t_token_type	new_type;
 
-		token = (t_token *)ft_calloc(1, sizeof(t_token));
+	token = (t_token *)ft_calloc(1, sizeof(t_token));
 	token->end_pos = cursor;
 	token->type = t;
-	if (t == e_token_text)
+	new_type = ft_check_double_t(t, lex, cursor);
+	if (new_type != 0)
+	{
+		last_tok = (t_token *)ft_pop(lex->tokens);
+		token->type = new_type;
+		custom_tok(token, last_tok, cursor, lex->sentence);
+	}
+	else if (t == e_token_text)
 		ft_str_tok(token, lex->sentence, cursor, lex->len);
 	else
-	{
-		new_type = ft_check_double_t(t, lex, cursor);
-		if (new_type != 0)
-		{
-			last_tok = (t_token *)ft_pop(lex->tokens);
-			token->type = new_type;
-			custom_tok(token, last_tok, cursor, lex->sentence);
-		}
-		else
-			ft_sp_tok(token, lex->sentence, cursor);
-	}
+		ft_sp_tok(token, lex->sentence, cursor);
 	lex->cursor = token->end_pos;
 	ft_push(lex->tokens, token);
 	return (token);
