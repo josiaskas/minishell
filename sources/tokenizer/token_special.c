@@ -21,34 +21,32 @@
  */
 int	ft_check_double_t(int t, t_tokeniser *lex, size_t cursor)
 {
-	t_token	*last_token;
+	t_token	*last_t;
 
-	last_token = NULL;
-	last_token = (t_token *)ft_get_elem(lex->tokens, (lex->tokens->length -1));
-	if (!last_token && cursor < 1)
+	last_t = (t_token *)ft_get_elem(lex->tokens,(lex->tokens->length -1));
+	if (!last_t && cursor < 1)
 		return (0);
-	if ((t == e_token_and) && (last_token->type == e_token_and))
+	if ((t == e_token_and) && (last_t->type == e_token_and))
 		return (e_token_double_and);
-	else if (t == e_token_pipe && last_token->type == e_token_pipe)
+	else if (t == e_token_pipe && last_t->type == e_token_pipe)
 		return (e_token_or);
-	else if (t == e_token_left_paren && last_token->type == e_token_dollar)
+	else if (t == e_token_left_paren && last_t->type == e_token_dollar)
 		return (e_token_subst);
-	else if (t == e_token_less && last_token->type == e_token_number)
+	else if (t == e_token_less && last_t->type == e_token_number)
 		return (e_token_less);
-	else if (t == e_token_greater && last_token->type == e_token_number)
+	else if (t == e_token_greater && last_t->type == e_token_number)
 		return (e_token_greater);
-	else if (t == e_token_less && last_token->type == e_token_less)
+	else if (t == e_token_less && last_t->type == e_token_less)
 		return (e_token_heredoc_left);
-	else if (t == e_token_greater && last_token->type == e_token_greater)
+	else if (t == e_token_greater && last_t->type == e_token_greater)
 		return (e_token_heredoc_right);
-	else if (t == e_token_less && last_token->type == e_token_heredoc_left)
+	else if (t == e_token_less && last_t->type == e_token_heredoc_left)
 		return (e_token_herestr);
-	else if ((t == e_token_space) && (last_token->type == e_token_space))
+	else if ((t == e_token_space) && (last_t->type == e_token_space))
 		return (e_token_space);
-	else if ((t == e_token_text) && (last_token->type == e_token_dollar))
+	else if ((t == e_token_text) && (last_t->type == e_token_dollar))
 		return (e_token_variable);
-	else
-		return (0);
+	return (0);
 }
 
 /*

@@ -30,13 +30,14 @@ typedef enum e_cmd_state
 	e_cmd_executed,
 	e_cmd_paused,
 	e_cmd_running,
+    e_cmd_error,
 }	t_cmd_state;
 
 typedef struct s_redirection
 {
-	int		fd;
-	int		type;
-	char	*filename;
+	int                 fd;
+    t_redirection_type  type;
+	char                *filename;
 }	t_redirection;
 
 typedef struct s_word
@@ -57,9 +58,13 @@ typedef struct s_command
 	t_cmd_state			state;
 	struct s_command	*pipe;
 	struct s_command	*next;
+    size_t              cursor;
 }   t_command;
 
 int		parse_line(char *sentence);
 void	ft_print_token(void *data, int index);
 void	ft_print_lex(void *data, int index);
+void    ft_print_cmd(t_command *command);
+char    *get_red_filename(size_t cursor, t_array *lexer);
+
 #endif
