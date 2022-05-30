@@ -12,91 +12,63 @@
 
 #include "parser.h"
 
-void	ft_print_token(void *data, int index)
+/*
+ * Check if the command is an internal command
+ * set command->is_internal
+ * set command->internal_cmd value
+ */
+void    check_internal_cmd(t_command *command)
 {
-	t_token *token;
+   char *list;
+   char **internals;
+   int  i;
 
-	(void)index;
-	token = (t_token *)data;
-	if ((token->type == e_token_text) || (token->type == e_token_space))
-		ft_putstr_fd(token->value, STDOUT_FILENO);
-	else if (token->type == e_token_eof)
-		ft_putstr_fd("\033[0;31mEOF\033[0;39m", STDOUT_FILENO);
-	else if ((token->type == e_token_subst) || (token->type == e_token_or) || (token->type == e_token_double_and) || (token->type == e_token_semicolon))
-		ft_printf("\033[0;31m%s\033[0;39m", token->value);
-	else if ((token->type == e_token_quote) || (token->type == e_token_dquote))
-		ft_printf("\033[0;32m%s\033[0;39m", token->value);
-	else if ((token->type == e_token_dollar) || (token->type == e_token_wildcard) || (token->type == e_token_number) || (token->type == e_token_tilde))
-		ft_printf("\033[0;35m%s\033[0;39m", token->value);
-	else
-		ft_printf("\033[0;33m%s\033[0;39m", token->value);
+   if (!command)
+       return;
+   list = "echo cd pwd export unset env exit";
+   internals = ft_split(list, ' ');
+   i = 0;
+   while (internals[i] != NULL)
+   {
+       if (!ft_strncmp(command->cmd, internals[i], ft_strlen(command->cmd)))
+       {
+            command->is_internal = true;
+            command->internal_cmd = i;
+       }
+       i++;
+   }
 }
 
-void	ft_print_lex(void *data, int index)
+/*
+ * Check parse errors and print error
+ * print an error if exit on STDERR_FILENO
+ * return boolean (true) if no error (false) if found errors;
+ */
+bool    check_parse_errors(t_array  *lexer)
 {
+    size_t  i;
     t_lex_token *token;
 
-    (void)index;
-    token = (t_lex_token *)data;
-    if (token->type == e_lex_literal)
-        ft_printf("-( %s )-", token->value);
-    else if (token->type == e_lex_redirection)
+    if (!lexer)
+        return(false);
+    i = 0;
+    while (i < lexer->length)
     {
-        ft_putstr_fd("\033[0;31m - redirection -\033[0;39m", STDOUT_FILENO);
-    }
-    else if (token->type == e_lex_pipe)
-    {
-        ft_putstr_fd("\033[0;31m | \033[0;39m", STDOUT_FILENO);
-    }
-    else if (token->type == e_lex_quote_error)
-    {
-        ft_putstr_fd("\033[0;31m quote Error\033[0;39m", STDOUT_FILENO);
-    }
-}
-
-void    ft_print_cmd(t_command *command)
-{
-    size_t          cursor;
-    t_redirection   *redirection;
-    char            *argument;
-
-    if (!command)
-        return ;
-    if (command->state == e_cmd_error)
-    {
-        ft_putstr_fd("parse error\n", STDOUT_FILENO);
-        return;
-    }
-    ft_printf("Command: \033[0;35m%s\033[0;39m \n", command->cmd);
-    if (command->arguments)
-    {
-        cursor = 0;
-        ft_putstr_fd("Arguments: \n", STDOUT_FILENO);
-        while (cursor < command->arguments->length)
+        token = (t_lex_token *)ft_get_elem(lexer, i++);
+        if (token->type == e_lex_pipe_error)
         {
-            argument = (char *)ft_get_elem(command->arguments, cursor);
-            if (argument)
-                ft_printf("\t-%s\n", argument);
-            cursor++;
+            ft_putstr_fd(
+                    "syntax error || (OR token) are not currently treated\n",
+                    STDERR_FILENO);
+            return (false);
+        }
+        else if (token->type == e_lex_quote_error)
+        {
+            ft_putstr_fd("syntax error Quote error\n",STDERR_FILENO);
+            return (false);
         }
     }
-    if (command->redirections)
-    {
-        cursor = 0;
-        ft_putstr_fd("Redirections: ", STDOUT_FILENO);
-        while (cursor < command->redirections->length)
-        {
-            redirection = (t_redirection *)ft_get_elem(command->redirections, cursor);
-            if (redirection)
-                ft_printf("\n\t-fd:%d -- filename :%s\n", redirection->fd, redirection->filename);
-            cursor++;
-        }
-    }
-    if (command->next)
-    {
-        ft_putstr_fd("--- Pipe ---\n",STDOUT_FILENO);
-        ft_print_cmd(command->next);
-    }
+    return (true);
 }
 
 char    *get_red_filename(size_t cursor, t_array *lexer)
@@ -107,7 +79,10 @@ char    *get_red_filename(size_t cursor, t_array *lexer)
     filename  = NULL;
     next_token = (t_lex_token *)ft_get_elem(lexer, cursor + 1);
     if ((!next_token) || (next_token->type != e_lex_literal))
+    {
+        ft_putstr_fd("syntax error unexpected token\n",STDERR_FILENO);
         return (NULL);
+    }
     filename = ft_strdup(next_token->value);
     return (filename);
 }

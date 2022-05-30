@@ -25,7 +25,10 @@ void    build_cmd_args(t_lex_token *tok, t_command *cmd)
         return ;
     }
     if (!cmd->cmd)
+    {
         cmd->cmd = ft_strdup(tok->value);
+        check_internal_cmd(cmd);
+    }
     else
     {
         if (!cmd->arguments)
@@ -104,9 +107,11 @@ int	parse_line(char *sentence)
 	while (token->type != e_token_eof)
 		token = get_next_token(lexical_anyliser);
     lexer = run_simple_lexer(lexical_anyliser->tokens);
-    //ft_for_each(lexer, ft_print_lex);
-    commands = build_cmd(lexer, 0);
-    ft_print_cmd(commands);
+    if (check_parse_errors(lexer))
+    {
+        commands = build_cmd(lexer, 0);
+        ft_print_cmd(commands);
+    }
     destroy_lexer(lexer);
 	destroy_tokinizer(lexical_anyliser);
 	return (0);

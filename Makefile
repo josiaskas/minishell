@@ -15,19 +15,29 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES_DIR = includes/
 
+#style
+GREEN = \033[0;32m
+RED = \033[0;31m
+RESET_COLOR = \033[0m
+
 #source
 SRCS_DIR = sources/
-PARSER_SRC = parser.c parser_utils.c
+#parser source
+PARSER_SRC = parser.c parser_utils.c printer.c
 PARSER_PREFIXED = $(addprefix parser/, $(PARSER_SRC))
+#tokenizer source
 TOKENIZER_SRC = tokenizer.c token.c token_special.c token_utils.c
 TOKENIZER_PREFIXED = $(addprefix tokenizer/, $(TOKENIZER_SRC))
 
 #lexer normal
 LEXER_SRC = lexer.c lexer_utils.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
+
 #lexer bonus
 
 #lexer full shell
+
+#status
 STATUS_SRC = bar.c environement.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
@@ -43,10 +53,6 @@ OBJS_DIR = objs/
 OBJS = $(SRCS:.c=.o)
 OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
 OBJECTS_LIST = $(patsubst %.c, %.o, $(SRCS))
-#style
-GREEN = \033[0;32m
-RED = \033[0;31m
-RESET_COLOR = \033[0m
 
 .PHONY	: all clean fclean re help launch
 

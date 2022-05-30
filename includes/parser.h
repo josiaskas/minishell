@@ -33,6 +33,17 @@ typedef enum e_cmd_state
     e_cmd_error,
 }	t_cmd_state;
 
+typedef enum e_cmd_internal
+{
+    e_cmd_intern_echo,
+    e_cmd_intern_cd,
+    e_cmd_intern_pwd,
+    e_cmd_intern_export,
+    e_cmd_intern_unset,
+    e_cmd_intern_env,
+    e_cmd_intern_exit,
+}   t_cmd_internal;
+
 typedef struct s_redirection
 {
 	int                 fd;
@@ -58,13 +69,17 @@ typedef struct s_command
 	t_cmd_state			state;
 	struct s_command	*pipe;
 	struct s_command	*next;
+    bool                is_internal;
+    t_cmd_internal      internal_cmd;
     size_t              cursor;
 }   t_command;
 
 int		parse_line(char *sentence);
+void    check_internal_cmd(t_command *command);
+bool    check_parse_errors(t_array  *lexer);
+char    *get_red_filename(size_t cursor, t_array *lexer);
 void	ft_print_token(void *data, int index);
 void	ft_print_lex(void *data, int index);
 void    ft_print_cmd(t_command *command);
-char    *get_red_filename(size_t cursor, t_array *lexer);
 
 #endif
