@@ -12,22 +12,22 @@
 
 #include "tokenizer.h"
 
-/*
- * return true if token is a redirection token
- */
-bool	is_redirection_token(t_token *token)
-{
-	if(token)
-	{
-		if ((token->type == e_token_less)
-			|| (token->type == e_token_greater)
-			|| (token->type == e_token_heredoc_right)
-			|| (token->type == e_token_heredoc_left)
-			|| (token->type == e_token_herestr))
-			return (true);
-	}
-	return (false);
-}
+
+// * return true if token is a redirection token
+// */
+//bool	is_redirection_token(t_token *token)
+//{
+//	if(token)
+//	{
+//		if ((token->type == e_token_less)
+//			|| (token->type == e_token_greater)
+//			|| (token->type == e_token_heredoc_right)
+//			|| (token->type == e_token_heredoc_left)
+//			|| (token->type == e_token_herestr))
+//			return (true);
+//	}
+//	return (false);
+//}
 
 /*
  * return true if string is only numbers

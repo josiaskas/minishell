@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include "minishell.h"
 
 /*
  * Check if the command is an internal command
@@ -40,38 +41,40 @@ void    check_internal_cmd(t_command *command)
 }
 
 /*
- * Check parse errors and print error
- * print an error if exit on STDERR_FILENO
+ * Check parse errors and errors to parser
  * return boolean (true) if no error (false) if found errors;
  */
-bool    check_parse_errors(t_array  *lexer)
+bool    check_p_err(t_array  *lex, t_shell_parser *parser, size_t i)
 {
-    size_t  i;
     t_lex_token *token;
 
-    if (!lexer)
-        return(false);
-    i = 0;
-    while (i < lexer->length)
+    if (!lex || !parser)
+        return (false);
+    while (i < lex->length)
     {
-        token = (t_lex_token *)ft_get_elem(lexer, i++);
-        if (token->type == e_lex_pipe_error)
+        token = (t_lex_token *)ft_get_elem(lex, i++);
+        if ((token->type == e_lex_pipe_error)
+            || (token->type == e_lex_redirection_error)
+            || (token->type == e_lex_quote_error))
         {
-            ft_putstr_fd(
-                    "syntax error || (OR token) are not currently treated\n",
-                    STDERR_FILENO);
-            return (false);
-        }
-        else if (token->type == e_lex_quote_error)
-        {
-            ft_putstr_fd("syntax error Quote error\n",STDERR_FILENO);
+            parser->syntax_error = true;
+            if (token->type == e_lex_pipe_error)
+                parser->error_msg = "syntax error || (OR token are not currently treated)\n";
+            else if (token->type == e_lex_redirection_error)
+                parser->error_msg = "syntax error <<< (<<< herestr token are not currently treated)\n";
+            else if (token->type == e_lex_quote_error)
+                parser->error_msg = "syntax error Quote error\n";
             return (false);
         }
     }
     return (true);
 }
 
-char    *get_red_filename(size_t cursor, t_array *lexer)
+/*
+ * Get the filename for redirection
+ * if error set cmd->error_msg
+ */
+char    *get_red_filename(size_t cursor, t_array *lexer, t_command *cmd)
 {
     t_lex_token *next_token;
     char        *filename;
@@ -80,9 +83,44 @@ char    *get_red_filename(size_t cursor, t_array *lexer)
     next_token = (t_lex_token *)ft_get_elem(lexer, cursor + 1);
     if ((!next_token) || (next_token->type != e_lex_literal))
     {
-        ft_putstr_fd("syntax error unexpected token\n",STDERR_FILENO);
+        cmd->state = e_cmd_error;
+        cmd->error_msg = "syntax error unexpected token (probably filename)\n";
         return (NULL);
     }
-    filename = ft_strdup(next_token->value);
+    if (next_token->value)
+        filename = ft_strdup(next_token->value);
     return (filename);
+}
+
+/*
+ * Make the pipe and if error during pipe parsing error is pushed forward
+ * Check if token->type is e_lex_pipe
+ * Change cmd state to error if no redirection or cmd name found
+ * Return cursor
+ */
+size_t  build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
+{
+    t_lex_token *token;
+
+    if ((!cmd->cmd) && (!cmd->redirections))
+    {
+        cmd->state = e_cmd_error;
+        cmd->error_msg = "parse error near `|'";
+        cursor++;
+    }
+    else
+    {
+        token = (t_lex_token *)ft_get_elem(lexer, cursor);
+        if (token->type == e_lex_pipe)
+        {
+            cmd->pipe = build_parse_cmd(lexer, ++cursor);
+            cursor = cmd->pipe->cursor;
+            if ((cmd->pipe->state == e_cmd_error) || (!cmd->pipe->cmd))
+            {
+                cmd->state = e_cmd_error;
+                cmd->error_msg = cmd->pipe->error_msg;
+            }
+        }
+    }
+    return (cursor);
 }

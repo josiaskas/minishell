@@ -16,24 +16,22 @@
  * Add cmd name or arguments to array of args inside t_command cmd
  * Return void
  */
-void    build_cmd_args(t_lex_token *tok, t_command *cmd)
+static void    build_cmd_args(t_lex_token *tok, t_command *cmd)
 {
-
-    if (!tok)
-    {
-        cmd->state = e_cmd_error;
-        return ;
-    }
     if (!cmd->cmd)
     {
-        cmd->cmd = ft_strdup(tok->value);
-        check_internal_cmd(cmd);
+        if (tok->value)
+        {
+            cmd->cmd = ft_strdup(tok->value);
+            check_internal_cmd(cmd);
+        }
     }
     else
     {
         if (!cmd->arguments)
             cmd->arguments = ft_new_array();
-        ft_push(cmd->arguments, ft_strdup(tok->value));
+        if (tok->value)
+            ft_push(cmd->arguments, ft_strdup(tok->value));
     }
 }
 
@@ -43,7 +41,7 @@ void    build_cmd_args(t_lex_token *tok, t_command *cmd)
  * by catching next lexical literal as filename
  * Return void
  */
-size_t  build_red(t_lex_token *tok, t_command *cmd, size_t i, t_array *lex)
+static size_t   b_re(t_lex_token *tok, t_command *cmd, size_t i, t_array *lex)
 {
     t_redirection   *redirection;
 
@@ -57,36 +55,32 @@ size_t  build_red(t_lex_token *tok, t_command *cmd, size_t i, t_array *lex)
     redirection = (t_redirection *)ft_calloc(1, sizeof(t_redirection));
     redirection->type = tok->r_type;
     redirection->fd = tok->fd;
-    redirection->filename = get_red_filename(i, lex);
-    if (!redirection->filename)
-        cmd->state = e_cmd_error;
+    redirection->filename = get_red_filename(i, lex, cmd);
     ft_push(cmd->redirections, redirection);
     return (i + 1);
 }
 
 /*
  * Build a t_command from lexer array of tokens
+ * if error t_commands->state == e_cmd_error
  */
-t_command   *build_cmd(t_array *lexer, size_t cursor)
+t_command   *build_parse_cmd(t_array *lexer, size_t cursor)
 {
     t_command   *cmd;
     t_lex_token *token;
 
     cmd = (t_command *)ft_calloc(1, sizeof(t_command));
+    cmd->state = e_cmd_waiting;
+    cmd->error_msg = NULL;
     while (cursor < lexer->length)
     {
         token = (t_lex_token *)ft_get_elem(lexer, cursor);
         if (token->type == e_lex_literal)
             build_cmd_args(token, cmd);
         else if (token->type == e_lex_redirection)
-            cursor = build_red(token, cmd, cursor, lexer);
+            cursor = b_re(token, cmd, cursor, lexer);
         else if (token->type == e_lex_pipe)
-        {
-            cmd->next = build_cmd(lexer, ++cursor);
-            cursor = cmd->next->cursor;
-            if ((cmd->next->state == e_cmd_error) || (!cmd->next->cmd))
-                cmd->state = e_cmd_error;
-        }
+            cursor = build_pipe_cmd(cmd,lexer,cursor);
         if (cmd->state == e_cmd_error)
             break;
         cursor++;
@@ -95,24 +89,44 @@ t_command   *build_cmd(t_array *lexer, size_t cursor)
     return (cmd);
 }
 
-int	parse_line(char *sentence)
+/*
+ * Build the lexical analyzer, and return array of t_lex_token
+ */
+static t_array  *build_lexical_analyser(char *sentence)
 {
-	t_tokeniser *lexical_anyliser;
-	t_token     *token;
+    t_tokeniser *tokenizer;
+    t_token     *token;
     t_array     *lexer;
-    t_command   *commands;
 
-	lexical_anyliser = init_tokenizer(sentence);
-	token = get_next_token(lexical_anyliser);
-	while (token->type != e_token_eof)
-		token = get_next_token(lexical_anyliser);
-    lexer = run_simple_lexer(lexical_anyliser->tokens);
-    if (check_parse_errors(lexer))
+    tokenizer = init_tokenizer(sentence);
+    token = get_next_token(tokenizer);
+    while (token->type != e_token_eof)
+        token = get_next_token(tokenizer);
+    lexer = run_simple_lexer(tokenizer->tokens);
+    destroy_tokinizer(tokenizer);
+    return (lexer);
+}
+
+t_shell_parser  *parse_shell_line(char *sentence)
+{
+    t_array         *lexer;
+    t_shell_parser  *parser;
+
+    parser = ft_calloc(1, sizeof(t_shell_parser));
+    parser->commands_list = NULL;
+    parser->syntax_error = true;
+    lexer = build_lexical_analyser(sentence);
+    if (check_p_err(lexer, parser, 0))
     {
-        commands = build_cmd(lexer, 0);
-        ft_print_cmd(commands);
+        parser->commands_list = build_parse_cmd(lexer, 0);
+        if (parser->commands_list->state == e_cmd_error)
+            parser->error_msg = parser->commands_list->error_msg;
+        else
+        {
+            parser->syntax_error = false;
+            ft_print_cmd(parser->commands_list);
+        }
     }
     destroy_lexer(lexer);
-	destroy_tokinizer(lexical_anyliser);
-	return (0);
+	return (parser);
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 #include "lexer.h"
 
 
@@ -38,10 +38,16 @@ static char *get_variable_value_from_tok(t_token *tok)
 
     dic = NULL;
     value = NULL;
-    if (tok->value){
-        dic = ft_elem_dic(g_shell.env, tok->value);
-        if (dic)
-            value = ft_strdup((char*)dic->content);
+    if (tok->value)
+    {
+        if (ft_strncmp(tok->value, "?", ft_strlen(tok->value)) == 0)
+            value = ft_itoa(lex_get_status_value(2));
+        else
+        {
+            dic = ft_elem_dic(g_shell.env, tok->value);
+            if (dic)
+                value = ft_strdup((char*)dic->content);
+        }
     }
     return (value);
 }

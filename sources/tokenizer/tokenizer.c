@@ -64,7 +64,6 @@ void	destroy_tokinizer(t_tokeniser *lexical)
 	}
 	free(lexical->tokens);
 	free(lexical);
-	return;
 }
 
 // build and return the next token on demand

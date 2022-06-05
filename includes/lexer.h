@@ -23,6 +23,7 @@ typedef enum e_lex_type
 	e_lex_keyword,
 	e_lex_redirection,
 	e_lex_quote_error,
+    e_lex_redirection_error,
     e_lex_pipe_error,
 }	t_lex_type;
 
@@ -50,4 +51,7 @@ size_t	analyse_var(t_token *tok, size_t i, t_array *lex);
 size_t  analyse_redirection(t_token *token, size_t cursor, t_array *lex);
 t_array *run_simple_lexer(t_array *tokens);
 void    destroy_lexer(t_array *lexer);
+bool	is_minishell_redir(t_token *token);
+int     lex_get_status_value(int is_reset);
+size_t  make_redirection_error(t_token *token, size_t cursor, t_array *lex);
 #endif

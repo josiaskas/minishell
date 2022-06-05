@@ -65,7 +65,7 @@ static char *make_status_bar(char *path, char *git_branch)
 	return (temp);
 }
 
-char	*make_prompt(int code, bool with_bar)
+char	*make_prompt(bool with_bar)
 {
 	char		*prompt;
 	char		*bar;
@@ -81,7 +81,7 @@ char	*make_prompt(int code, bool with_bar)
 		path = "PATH";
 	if (with_bar)
 		bar = make_status_bar(get_home_pwd(path), get_git_branch(path));
-	if (code >= 0)
+	if (g_shell.status >= 0)
 		prompt = ft_strjoin(bar, "\033[32m\n>\033[0;39m ");
 	else
 		prompt = ft_strjoin(bar, "\033[31m\n>\033[0;39m ");

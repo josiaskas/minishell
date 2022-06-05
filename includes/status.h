@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-char	*make_prompt(int code, bool with_bar);
+char	*make_prompt(bool with_bar);
 void	ft_create_environ(char *envp[]);
 void	delete_environ();
 

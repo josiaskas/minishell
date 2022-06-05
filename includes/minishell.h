@@ -14,13 +14,14 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
-# include "parser.h"
 # include "status.h"
 
 typedef struct s_mshell
 {
 	t_array	*env;
 	t_array	*paths;
+    int     status;
+    char    *error_msg;
 }	t_mshell;
 
 extern t_mshell	g_shell;

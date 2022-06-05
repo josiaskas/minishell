@@ -63,10 +63,7 @@ void    ft_print_cmd(t_command *command)
     if (!command)
         return ;
     if (command->state == e_cmd_error)
-    {
-        ft_putstr_fd("parse error\n", STDOUT_FILENO);
         return;
-    }
     ft_printf("Command: \033[0;35m%s\033[0;39m \n", command->cmd);
     if (command->is_internal)
         ft_putstr_fd("\033[0;35mInternal Command\033[0;39m\n", STDOUT_FILENO);
@@ -94,9 +91,9 @@ void    ft_print_cmd(t_command *command)
             cursor++;
         }
     }
-    if (command->next)
+    if (command->pipe)
     {
         ft_putstr_fd("--- Pipe ---\n",STDOUT_FILENO);
-        ft_print_cmd(command->next);
+        ft_print_cmd(command->pipe);
     }
 }

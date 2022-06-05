@@ -75,7 +75,5 @@ char		*ft_concat_char(char *str, char c);
 int			ft_check_double_t(int t, t_tokeniser *lex, size_t cursor);
 void		custom_tok(t_token *curr, t_token *last, int cursor, char *str);
 bool		ft_is_a_number(char *str);
-bool		is_redirection_token(t_token *token);
-bool		is_minishell_text(t_token *token);
 char		*get_word_in_sentence(size_t cursor, char *str, size_t len);
 #endif

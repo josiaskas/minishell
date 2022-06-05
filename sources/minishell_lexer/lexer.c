@@ -23,7 +23,10 @@ size_t  analyze_separator(t_token *token, size_t cursor, t_array *lex)
         if (token->type == e_token_or)
             lex_tok->type = e_lex_pipe_error;
         else
+        {
             lex_tok->type = e_lex_pipe;
+            lex_get_status_value(128);
+        }
         ft_push(lex, lex_tok);
         cursor++;
     }
@@ -40,7 +43,7 @@ size_t  analyse_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
     lex_tok->type = e_lex_literal;
     lex_tok->value = NULL;
     while ((tok->type != e_token_space)
-           && (tok->type != is_redirection_token(tok))
+           && (!is_minishell_redir(tok))
            && (tok->type != e_token_quote)
            && (tok->type != e_token_dquote)
            && (tok->type != e_token_variable)
@@ -64,9 +67,7 @@ size_t  analyse_redirection(t_token *token, size_t cursor, t_array *lex)
 
     lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
     lex_tok->type = e_lex_redirection;
-    if (token->meta)
-        lex_tok->fd = ft_atoi(token->meta);
-    else if ((token->type == e_token_greater)
+    if ((token->type == e_token_greater)
         || (token->type == e_token_heredoc_right))
         lex_tok->fd = STDOUT_FILENO;
     if (token->type == e_token_less)
@@ -78,7 +79,7 @@ size_t  analyse_redirection(t_token *token, size_t cursor, t_array *lex)
     else if (token->type == e_token_heredoc_right)
         lex_tok->r_type = e_redirection_append_out;
     else if (token->type == e_token_herestr)
-        lex_tok->r_type = e_redirection_here_string;
+        lex_tok->type = e_lex_redirection_error;
     ft_push(lex, lex_tok);
     return (cursor + 1);
 }
@@ -90,7 +91,7 @@ size_t  get_analyser(t_array *tokens, t_token *tok, size_t i, t_array *lex)
     cursor = i;
     if (tok->type == e_token_space)
         cursor++;
-    else if (is_redirection_token(tok))
+    else if (is_minishell_redir(tok))
         cursor = analyse_redirection(tok, cursor, lex);
     else if ((tok->type == e_token_pipe) || (tok->type == e_token_or))
         cursor = analyze_separator(tok, cursor, lex);
@@ -115,26 +116,11 @@ t_array *run_simple_lexer(t_array *tokens)
 	lex = ft_new_array();
 	i = 0;
 	token = (t_token *)ft_get_elem(tokens, i);
+    lex_get_status_value(0);
 	while (token->type != e_token_eof)
 	{
         i = get_analyser(tokens, token, i, lex);
 		token = (t_token *)ft_get_elem(tokens, i);
 	}
 	return (lex);
-}
-
-void	destroy_lexer(t_array *lexer)
-{
-    t_lex_token *content;
-
-    if (!lexer)
-        return;
-    while (lexer->length)
-    {
-        content = (t_lex_token *)ft_pop(lexer);
-        free(content->value);
-        free(content);
-    }
-    free(lexer);
-    lexer = NULL;
 }
