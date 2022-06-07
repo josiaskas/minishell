@@ -59,11 +59,11 @@ bool    check_p_err(t_array  *lex, t_shell_parser *parser, size_t i)
         {
             parser->syntax_error = true;
             if (token->type == e_lex_pipe_error)
-                parser->error_msg = "syntax error || (OR token are not currently treated)\n";
+                parser->error_msg = "syntax error near unexpected token `|'";
             else if (token->type == e_lex_redirection_error)
-                parser->error_msg = "syntax error <<< (<<< herestr token are not currently treated)\n";
+                parser->error_msg = "syntax error near unexpected token `<'";
             else if (token->type == e_lex_quote_error)
-                parser->error_msg = "syntax error Quote error\n";
+                parser->error_msg = "syntax error Quote error";
             return (false);
         }
     }
@@ -84,7 +84,7 @@ char    *get_red_filename(size_t cursor, t_array *lexer, t_command *cmd)
     if ((!next_token) || (next_token->type != e_lex_literal))
     {
         cmd->state = e_cmd_error;
-        cmd->error_msg = "syntax error unexpected token (probably filename)\n";
+        cmd->error_msg = "syntax error unexpected token";
         return (NULL);
     }
     if (next_token->value)
@@ -105,7 +105,7 @@ size_t  build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
     if ((!cmd->cmd) && (!cmd->redirections))
     {
         cmd->state = e_cmd_error;
-        cmd->error_msg = "parse error near `|'";
+        cmd->error_msg = "syntax error near unexpected token `|'";
         cursor++;
     }
     else

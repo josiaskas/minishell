@@ -70,18 +70,12 @@ char	*make_prompt(bool with_bar)
 	char		*prompt;
 	char		*bar;
 	char		*path;
-	t_dic_node	*env_pwd;
 
-	prompt = NULL;
-	bar = NULL;
-	env_pwd = ft_elem_dic(g_shell.env, "PWD");
-	if (env_pwd)
-		path = (char *)env_pwd->content;
-	else
-		path = "PATH";
+	path = g_shell.pwd;
+    bar = NULL;
 	if (with_bar)
 		bar = make_status_bar(get_home_pwd(path), get_git_branch(path));
-	if (g_shell.status >= 0)
+	if (g_shell.status == 0)
 		prompt = ft_strjoin(bar, "\033[32m\n>\033[0;39m ");
 	else
 		prompt = ft_strjoin(bar, "\033[31m\n>\033[0;39m ");

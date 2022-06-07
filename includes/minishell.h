@@ -21,10 +21,11 @@ typedef struct s_mshell
 	t_array	*env;
 	t_array	*paths;
     int     status;
+    char    *pwd;
     char    *error_msg;
 }	t_mshell;
 
 extern t_mshell	g_shell;
-int	minishell_loop(char *envp[]);
+int	minishell_loop();
 
 #endif

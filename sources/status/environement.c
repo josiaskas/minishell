@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "status.h"
+#include <errno.h>
+#include <string.h>
 
 static void	make_paths(char *path_var)
 {
@@ -20,7 +22,7 @@ static void	make_paths(char *path_var)
 
 	paths = ft_new_array();
 	i = 0;
-	if (paths)
+	if (paths && path_var)
 	{
 		list = ft_split(path_var, ':');
 		while (list[i] != 0)
@@ -33,13 +35,33 @@ static void	make_paths(char *path_var)
 	g_shell.paths = paths;
 }
 
+static void set_env_pwd()
+{
+    char        *path;
+    char        *buffer;
+
+    buffer = NULL;
+    path = NULL;
+    buffer = (char *)malloc(1024);
+    if(buffer)
+    {
+        path = getcwd(buffer, 1024);
+        if (!path)
+            g_shell.error_msg = strerror(errno);
+    }
+    if (path)
+        g_shell.pwd = path;
+}
+
 void	ft_create_environ(char *envp[])
 {
-	t_array	*env;
+	t_array *env;
 	char	**data;
 	size_t	i;
 
 	env = ft_new_dic();
+    if (!envp)
+        return ;
 	i = 0;
 	while (envp[i] != 0)
 	{
@@ -47,12 +69,15 @@ void	ft_create_environ(char *envp[])
 		if (data[0] != 0)
 		{
 			ft_push_to_dic(env, data[0], data[1]);
-			if (ft_strncmp("PATH",data[0],5) == 0)
+			if (ft_strncmp("PATH", data[0], 5) == 0)
 				make_paths(data[1]);
 		}
 		free(data);
 		i++;
 	}
+    if (!g_shell.paths)
+        make_paths(NULL);
+    set_env_pwd();
 	g_shell.env = env;
 }
 
@@ -65,7 +90,6 @@ void	delete_environ()
 	paths = g_shell.paths;
 	ft_free_dic(env);
 	ft_free_d_array(paths);
-	g_shell.env = 0;
-	g_shell.paths = 0;
+    free(g_shell.pwd);
 }
 

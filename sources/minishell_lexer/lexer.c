@@ -116,7 +116,7 @@ t_array *run_simple_lexer(t_array *tokens)
 	lex = ft_new_array();
 	i = 0;
 	token = (t_token *)ft_get_elem(tokens, i);
-    lex_get_status_value(0);
+    lex_get_status_value(1);
 	while (token->type != e_token_eof)
 	{
         i = get_analyser(tokens, token, i, lex);

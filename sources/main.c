@@ -20,6 +20,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	g_shell.env = 0;
 	g_shell.paths = 0;
-	minishell_loop(envp);
+    ft_create_environ(envp);
+	minishell_loop();
 	return (0);
 }
