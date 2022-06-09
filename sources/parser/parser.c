@@ -126,7 +126,10 @@ t_shell_parser  *parse_shell_line(char *sentence)
                 parser->error_msg = parser->commands_list->error_msg;
         }
         else
-         parser->syntax_error = false;
+        {
+            parser->syntax_error = false;
+            ft_print_cmd(parser->commands_list);
+        }
     }
     destroy_lexer(lexer);
 	return (parser);
