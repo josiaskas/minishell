@@ -53,6 +53,7 @@ typedef struct s_redirection
 
 typedef struct s_command
 {
+    pid_t               id;
 	char				*cmd;
 	t_array				*arguments;
 	t_array				*env;

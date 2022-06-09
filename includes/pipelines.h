@@ -16,5 +16,5 @@
 # include "minishell.h"
 
 int run_pipeline(t_shell_parser *parser);
-
+void    destroy_redirections(t_array *redirections);
 #endif //PIPELINES_H
