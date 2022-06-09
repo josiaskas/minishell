@@ -115,7 +115,7 @@ t_shell_parser  *parse_shell_line(char *sentence)
     parser = ft_calloc(1, sizeof(t_shell_parser));
     parser->commands_list = NULL;
     parser->syntax_error = true;
-    parser->error_msg = "syntax error near unexpected token `newline'";
+    parser->error_msg = ft_strdup("syntax error near unexpected token `newline'");
     lexer = build_lexical_analyser(sentence);
     if (check_p_err(lexer, parser, 0))
     {

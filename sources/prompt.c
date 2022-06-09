@@ -57,11 +57,15 @@ int minishell_loop()
 	{
 		line = make_prompt_line();
 		if (ft_strncmp(line, "exit", 5) == 0)
-			break ;
+        {
+            free(line);
+            break;
+        }
         code = run_pipeline(parse_shell_line(line));
 		free(line);
+        if (code > 0)
+            break;
 	}
-	free(line);
 	delete_environ();
 	return (code);
 }

@@ -31,7 +31,7 @@ void    check_internal_cmd(t_command *command)
    i = 0;
    while (internals[i] != NULL)
    {
-       if (!ft_strncmp(command->cmd, internals[i], ft_strlen(command->cmd)))
+       if (!ft_strncmp(command->cmd, internals[i], ft_strlen(internals[i])))
        {
             command->is_internal = true;
             command->internal_cmd = i;
@@ -47,6 +47,7 @@ void    check_internal_cmd(t_command *command)
 bool    check_p_err(t_array  *lex, t_shell_parser *parser, size_t i)
 {
     t_lex_token *token;
+    char    *error_msg;
 
     if (!lex || !parser)
         return (false);
@@ -58,12 +59,14 @@ bool    check_p_err(t_array  *lex, t_shell_parser *parser, size_t i)
             || (token->type == e_lex_quote_error))
         {
             parser->syntax_error = true;
+            error_msg = "syntax error near unexpected token";
             if (token->type == e_lex_pipe_error)
-                parser->error_msg = "syntax error near unexpected token `|'";
+                error_msg = "syntax error near unexpected token `|'";
             else if (token->type == e_lex_redirection_error)
-                parser->error_msg = "syntax error near unexpected token `<'";
+                error_msg = "syntax error near unexpected token `<'";
             else if (token->type == e_lex_quote_error)
-                parser->error_msg = "syntax error Quote error";
+                error_msg = "syntax error Quote error";
+            parser->error_msg = ft_strdup(error_msg);
             return (false);
         }
     }
@@ -84,7 +87,7 @@ char    *get_red_filename(size_t cursor, t_array *lexer, t_command *cmd)
     if ((!next_token) || (next_token->type != e_lex_literal))
     {
         cmd->state = e_cmd_error;
-        cmd->error_msg = "syntax error unexpected token";
+        cmd->error_msg = ft_strdup("syntax error unexpected token");
         return (NULL);
     }
     if (next_token->value)
@@ -105,7 +108,7 @@ size_t  build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
     if ((!cmd->cmd) && (!cmd->redirections))
     {
         cmd->state = e_cmd_error;
-        cmd->error_msg = "syntax error near unexpected token `|'";
+        cmd->error_msg = ft_strdup("syntax error near unexpected token `|'");
         cursor++;
     }
     else
