@@ -124,11 +124,12 @@ t_shell_parser  *parse_shell_line(char *sentence)
         {
             if (parser->commands_list->error_msg)
                 parser->error_msg = parser->commands_list->error_msg;
+            parser->status = 258;
         }
         else
         {
             parser->syntax_error = false;
-            ft_print_cmd(parser->commands_list);
+            //ft_print_cmd(parser->commands_list);
         }
     }
     destroy_lexer(lexer);

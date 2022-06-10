@@ -33,7 +33,7 @@ LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
 
 #execution source
-EXECUTION_SRC = pipelines.c redirections.c heredoc.c
+EXECUTION_SRC = pipelines.c pipelines_utils.c redirections.c heredoc.c
 EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 
 #lexer bonus

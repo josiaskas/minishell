@@ -63,7 +63,7 @@ int minishell_loop()
         }
         code = run_pipeline(parse_shell_line(line));
 		free(line);
-        if (code > 0)
+        if (code != 0)
             break;
 	}
 	delete_environ();

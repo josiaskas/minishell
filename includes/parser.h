@@ -66,6 +66,7 @@ typedef struct s_command
 	struct s_command	*next;
     bool                is_internal;
     t_cmd_internal      internal_cmd;
+    int                 status;
     char                *error_msg;
     size_t              cursor;
 }   t_command;
@@ -74,6 +75,8 @@ typedef struct s_shell_parser{
     t_command   *commands_list;
     bool        syntax_error;
     char        *error_msg;
+    int         status;
+    int         pipes_len;
 }   t_shell_parser;
 
 t_shell_parser  *parse_shell_line(char *sentence);
