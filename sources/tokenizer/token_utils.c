@@ -6,12 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:46:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/05/04 12:12:32 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:47:20 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
-
+#include "../../includes/tokenizer.h"
 
 // * return true if token is a redirection token
 // */
@@ -34,8 +33,8 @@
  */
 bool	ft_is_a_number(char *str)
 {
-	size_t size;
-	size_t i;
+	size_t	size;
+	size_t	i;
 
 	size = ft_strlen(str);
 	if (size == 0)
@@ -61,7 +60,7 @@ char	*get_word_in_sentence(size_t cursor, char *str, size_t len)
 	while (cursor < len)
 	{
 		if (ft_isspace(str[cursor]) || ft_is_special_shell_char(str[cursor]))
-			break;
+			break ;
 		else
 			word = ft_concat_char(word, str[cursor]);
 		cursor++;

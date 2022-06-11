@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkasongo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 16:16:43 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/07 16:17:02 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 19:33:23 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipelines.h"
-#include <fcntl.h>
+#include "../../includes/pipelines.h"
 #include <errno.h>
+#include <string.h>
+#include <fcntl.h>
 
 //
 //bool    read_heredoc(int fd, char *delimiter)
@@ -55,15 +56,15 @@
 //    return (status);
 //}
 
-void    destroy_redirections(t_array *redirections)
+void	destroy_redirections(t_array *redirections)
 {
-    t_redirection   *redirection;
+	t_redirection	*redirection;
 
-    while (redirections->length)
-    {
-        redirection = (t_redirection *)ft_pop(redirections);
-        free(redirection->filename);
-        free(redirection);
-    }
-    free(redirections);
+	while (redirections->length)
+	{
+		redirection = (t_redirection *)ft_pop(redirections);
+		free(redirection->filename);
+		free(redirection);
+	}
+	free(redirections);
 }

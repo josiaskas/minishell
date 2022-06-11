@@ -6,25 +6,25 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:12:33 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/05/02 12:22:45 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 19:37:36 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "status.h"
+#include "../../includes/status.h"
 
 // read file iniside .git to know the current branch on head
 static char	*get_git_branch(char *path)
 {
-	char *branch_name;
+	char	*branch_name;
 
 
 	if (!path)
 		return (NULL);
 	branch_name = ft_strdup("master");
-	return branch_name;
+	return (branch_name);
 }
 
-static char *get_home_pwd(char *path)
+static char	*get_home_pwd(char *path)
 {
 	t_dic_node	*home_pwd;
 	char		*home;
@@ -39,7 +39,7 @@ static char *get_home_pwd(char *path)
 	return (ft_strdup(path));
 }
 
-static char *make_status_bar(char *path, char *git_branch)
+static char	*make_status_bar(char *path, char *git_branch)
 {
 	char	*temp;
 	char	*git_color;
@@ -67,12 +67,12 @@ static char *make_status_bar(char *path, char *git_branch)
 
 char	*make_prompt(bool with_bar)
 {
-	char		*prompt;
-	char		*bar;
-	char		*path;
+	char	*prompt;
+	char	*bar;
+	char	*path;
 
 	path = g_shell.pwd;
-    bar = NULL;
+	bar = NULL;
 	if (with_bar)
 		bar = make_status_bar(get_home_pwd(path), get_git_branch(path));
 	if (g_shell.status == 0)

@@ -6,11 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:52:57 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/05/04 12:32:52 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:46:05 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
+#include "../../includes/tokenizer.h"
 
 // check if we potentially have a shell special char
 bool	ft_is_special_shell_char(char value)
@@ -26,7 +26,6 @@ bool	ft_is_special_shell_char(char value)
 	}
 	return (false);
 }
-
 
 t_tokeniser	*init_tokenizer(char *sentence)
 {
@@ -54,7 +53,7 @@ void	destroy_tokinizer(t_tokeniser *lexical)
 	t_token	*content;
 
 	if (!lexical)
-		return;
+		return ;
 	while (lexical->tokens->length)
 	{
 		content = (t_token *)ft_pop(lexical->tokens);

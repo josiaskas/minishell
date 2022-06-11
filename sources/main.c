@@ -6,11 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 18:43:09 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/09 19:10:25 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:42:35 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_mshell	g_shell;
 
@@ -20,7 +20,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	g_shell.env = 0;
 	g_shell.paths = 0;
-    ft_create_environ(envp);
+	ft_create_environ(envp);
 	minishell_loop();
 	return (0);
 }

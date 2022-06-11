@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:28:14 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/04/09 20:37:59 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 19:20:14 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 
 char	*make_prompt(bool with_bar);
 void	ft_create_environ(char *envp[]);
-void	delete_environ();
+void	delete_environ(void);
 
 #endif

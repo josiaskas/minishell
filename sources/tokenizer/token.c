@@ -6,11 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 14:50:24 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/05/04 20:26:51 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/10 17:50:06 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
+#include "../../includes/tokenizer.h"
 
 // build the string token and escape char
 static void	ft_str_tok(t_token *tok, char *str, size_t cursor, size_t len)
@@ -52,9 +52,9 @@ static void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 }
 
 /*
-* Build s token by receiving the type and the lexical anylizer (tokenizer)
-* Return a t_token*
-* Push inside the stack the token created or pop and push a complex token eg: '||'
+/* Build s token by receiving the type and the lexical anylizer (tokenizer)
+* Return a t_token
+* Push inside the stack the token created or complex token eg: '||'
 */
 t_token	*build_token(t_token_type t, t_tokeniser *lex, size_t cursor)
 {
