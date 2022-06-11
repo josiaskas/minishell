@@ -52,7 +52,7 @@ static void	ft_sp_tok(t_token *token, char *sentence, size_t cursor)
 }
 
 /*
-/* Build s token by receiving the type and the lexical anylizer (tokenizer)
+* Build s token by receiving the type and the lexical analyzer (tokenizer)
 * Return a t_token
 * Push inside the stack the token created or complex token eg: '||'
 */

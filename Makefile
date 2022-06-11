@@ -15,6 +15,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES_DIR = includes/
 SRCS_DIR = sources/
+OBJS_DIR = objs/
 
 #style
 GREEN = \033[0;32m
@@ -24,6 +25,7 @@ RESET_COLOR = \033[0m
 #parser source
 PARSER_SRC = parser.c parser_utils.c printer.c
 PARSER_PREFIXED = $(addprefix parser/, $(PARSER_SRC))
+
 #tokenizer source
 TOKENIZER_SRC = tokenizer.c token.c token_special.c token_utils.c
 TOKENIZER_PREFIXED = $(addprefix tokenizer/, $(TOKENIZER_SRC))
@@ -53,24 +55,35 @@ INCLUDES_FILES = minishell.h tokenizer.h status.h parser.h lexer.h pipelines.h
 INCLUDES_PREFIXED = $(addprefix $(INCLUDES_DIR), $(INCLUDES_FILES))
 
 #objsm
-OBJS = $(SRCS_PREFIXED:.c=.o)
+OBJS_DIR = objs/
+OBJS = $(SRCS:.c=.o)
+OBJS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
+OBJECTS_LIST = $(patsubst %.c, %.o, $(SRCS))
 
 .PHONY	: all clean fclean re help launch
 
 all : $(NAME)
 
-$(NAME): $(OBJS)
-	@$(MAKE) re -C ./libft
-	@$(CC) $(CFLAGS) $(OBJS) -lft -L./libft -lreadline -o $(NAME)
-	@echo $(NAME) est construit
+$(OBJS_DIR):
+	@mkdir $(OBJS_DIR)
+	@mkdir $(OBJS_DIR)/status
+	@mkdir $(OBJS_DIR)/tokenizer
+	@mkdir $(OBJS_DIR)/minishell_lexer
+	@mkdir $(OBJS_DIR)/parser
+	@mkdir $(OBJS_DIR)/executions
 
-%.o : %.c $(INCLUDES_PREFIXED)
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(INCLUDES_PREFIXED)
 	$(CC) $(CFLAGS) -I./$(INCLUDES_DIR) -c $< -o $@
+
+$(NAME): $(OBJS_DIR) $(OBJS_PREFIXED)
+	@$(MAKE) re -C ./libft
+	@$(CC) $(CFLAGS) $(OBJS_PREFIXED)  -lreadline -L./libft -lft -o $(NAME)
+	@echo $(NAME) est construit
 
 clean :
 	@$(MAKE) clean -C ./libft
-	@rm -rf $(OBJS)
-	@echo "$(GREEN)clean$(RESET_COLOR)"
+	@rm -rf $(OBJS_DIR)
+	@echo "$(GREEN)cleaning objs$(RESET_COLOR)"
 
 fclean : clean
 	@$(MAKE) fclean -C ./libft
