@@ -11,3 +11,11 @@
 /* ************************************************************************** */
 
 #include "pipelines.h"
+
+
+bool	make_heredoc_red(t_redirection *redirection, t_shell *shell)
+{
+	(void)redirection;
+	(void)shell;
+	return (true);
+}

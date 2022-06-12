@@ -15,14 +15,24 @@
 
 int	exit_builtin_cmd(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
-	(void)cmd;
+	int		status;
+	char	*arg;
 
-	shell->status = 0;
-	g_shell.status = 0;
+	arg = NULL;
+	status = g_shell.status;
+	if (shell->error_msg)
+		free(shell->error_msg);
+	shell->error_msg = NULL;
+	if (cmd->arguments)
+	{
+		arg = (char *)ft_get_elem(cmd->arguments, 0);
+		status = ft_atoi(arg);
+	}
+	shell->status = status;
+	g_shell.status = status;
 	if(cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
 	if(cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
-	return (0);
+	return (status);
 }

@@ -32,7 +32,7 @@ static int	**build_pipes(t_shell *shell)
 		pipes[i] = (int *)ft_calloc(2, sizeof(int));
 		if (pipe(pipes[i]) == -1)
 		{
-			set_shell_error(shell, strerror(errno), 1);
+			set_shell_error(shell, ft_strdup(strerror(errno)), 1);
 			break;
 		}
 		i++;
@@ -88,7 +88,8 @@ static void	exec_subshell(t_shell *shell, t_command *command, int *pipes[])
 	command->state = e_cmd_running;
 	command->shell_level++;
 	shell->status = 0;
-	free(shell->error_msg);
+	if (shell->error_msg)
+		free(shell->error_msg);
 	shell->error_msg = NULL;
 	shell->is_parent = false;
 	execute_cmd(shell, command);
@@ -108,7 +109,7 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 	pid = fork();
 	if (pid == -1)
 	{
-		set_shell_error(shell, strerror(errno), 1);
+		set_shell_error(shell, ft_strdup(strerror(errno)), 1);
 		return (1);
 	}
 	if (pid == 0)

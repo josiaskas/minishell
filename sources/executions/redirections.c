@@ -16,16 +16,20 @@
 #include <fcntl.h>
 
 
-static bool	make_heredoc_red(t_redirection *redirection, t_shell *shell)
+static void set_redirection_error(t_shell *shell, char *filename, char *msg)
 {
-	(void)redirection;
-	(void)shell;
-	return (true);
+	char	*tmp;
+	char	*error_msg;
+
+	tmp  = ft_strjoin(filename, ": ");
+	error_msg  = ft_strjoin(tmp, msg);
+	free(tmp);
+	set_shell_error(shell, error_msg, 1);
 }
 
 static bool	make_output_redirection(t_redirection *redirection, t_shell *shell)
 {
-	int fd;
+	int		fd;
 
 	if (redirection->type == e_redirection_append_out)
 		fd = open(redirection->filename, O_CREAT | O_RDWR | O_APPEND, 0644);
@@ -33,7 +37,7 @@ static bool	make_output_redirection(t_redirection *redirection, t_shell *shell)
 		fd = open(redirection->filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		set_shell_error(shell, strerror(errno), 1);
+		set_redirection_error(shell, redirection->filename, strerror(errno));
 		return (false);
 	}
 	if (shell->is_parent)
@@ -52,12 +56,12 @@ static bool	make_output_redirection(t_redirection *redirection, t_shell *shell)
 
 static bool	make_input_redirection(t_redirection *redirection, t_shell *shell)
 {
-	int fd;
+	int		fd;
 
 	fd = open(redirection->filename, O_RDONLY);
 	if (fd == -1)
 	{
-		set_shell_error(shell, strerror(errno), 1);
+		set_redirection_error(shell, redirection->filename, strerror(errno));
 		return (false);
 	}
 	if (shell->is_parent)

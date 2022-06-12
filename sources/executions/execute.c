@@ -19,9 +19,9 @@
 static int	treat_parser_error(t_shell *shell)
 {
 	if (shell->error_msg)
-		ft_putstr_fd(shell->error_msg, STDERR_FILENO);
+		print_cmd_error("minishell", shell->error_msg);
 	else
-		ft_putstr_fd("syntax error", STDERR_FILENO);
+		print_cmd_error("minishell", "syntax error");
 	g_shell.status = 258;
 	destroy_shell_data(shell);
 	return (0);
@@ -43,13 +43,15 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
  */
 int	execute_cmd(t_shell *shell, t_command *cmd)
 {
-	int	status;
+	int		status;
 
 	status  = 0;
 	if (cmd->redirections)
 		status = build_cmd_redirections(shell, cmd);
 	if (status >0)
 		return (status);
+	if (cmd->is_internal)
+		return (execute_internal(shell, cmd));
 	if (cmd->cmd)
 		ft_putendl_fd(cmd->cmd, STDOUT_FILENO);
 	return (status);
@@ -66,14 +68,16 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	if (cmd->redirections)
 		status = build_cmd_redirections(shell, cmd);
 	if (status > 0)
+	{
+		g_shell.status = 1;
 		return (status);
+	}
 	if (cmd->internal_cmd == e_cmd_intern_exit)
 	{
 		exit_builtin_cmd(shell, cmd);
 		return (-1); // force stop
 	}
-	status = execute_internal(shell, cmd);
-	return (status);
+	return (execute_internal(shell, cmd));
 }
 
 /*
@@ -95,10 +99,7 @@ int	execute_pipeline(t_shell *shell, char *line)
 	else
 		code = make_pipeline(shell, shell->commands_list);
 	if (code > 0 && shell->error_msg)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putendl_fd(shell->error_msg, STDERR_FILENO);
-	}
+		print_cmd_error("minishell", shell->error_msg);
 	destroy_shell_data(shell);
 	return (code);
 }

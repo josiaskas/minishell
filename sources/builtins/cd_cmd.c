@@ -14,8 +14,8 @@
 
 int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 {
-	(void)shell;
 	ft_putendl_fd("hello i'm home made CD command\n", cmd->fd[1]);
+
 	shell->status = 0;
 	if(cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);

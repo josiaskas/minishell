@@ -16,8 +16,9 @@
 
 void	set_shell_error(t_shell *parser, char *msg, int code)
 {
-	free(parser->error_msg);
-	parser->error_msg = ft_strdup(msg);
+	if (parser->error_msg)
+		free(parser->error_msg);
+	parser->error_msg = msg;
 	parser->status = code;
 }
 
@@ -83,12 +84,10 @@ void	exit_subshell_cmd(t_shell *shell, t_command *command)
 {
 	if ((shell->error_msg) && (shell->status != 0))
 	{
-		if (command->cmd)
-		{
-			ft_putstr_fd(command->cmd, STDERR_FILENO);
-			ft_putstr_fd(" : ", STDERR_FILENO);
-		}
-		ft_putendl_fd(shell->error_msg, STDERR_FILENO);
+		if (command->is_internal)
+			print_cmd_error("minishell", shell->error_msg);
+		else
+			print_cmd_error(command->cmd, shell->error_msg);
 	}
 	g_shell.status = shell->status;
 	destroy_shell_data(shell);

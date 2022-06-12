@@ -22,6 +22,7 @@ void	check_internal_cmd(t_command *command)
 	char	*list;
 	char	**internals;
 	int		i;
+	size_t	len;
 
 	if (!command)
 		return ;
@@ -30,7 +31,9 @@ void	check_internal_cmd(t_command *command)
 	i = 0;
 	while (internals[i] != NULL)
 	{
-		if (!ft_strncmp(command->cmd, internals[i], ft_strlen(command->cmd)))
+		len = ft_strlen(command->cmd);
+		if ((len == ft_strlen(internals[i]))
+			&& (ft_strncmp(command->cmd, internals[i], len) == 0))
 		{
 			command->is_internal = true;
 			command->internal_cmd = i;

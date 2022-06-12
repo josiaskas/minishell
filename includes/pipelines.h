@@ -27,8 +27,11 @@ void	close_all_pipes(int *pipes[], int len);
 
 
 int		build_cmd_redirections(t_shell *shell, t_command *command);
+bool	make_heredoc_red(t_redirection *redirection, t_shell *shell);
 void	destroy_redirections(t_array *redirections);
 
 void	destroy_shell_data(t_shell *shell);
-
+void	print_cmd_error(char *cmd_name, char *error_msg);
+void	*map_ret_content(void *content, int index);
+void	*map_join_key_content(void *content, char *key, size_t index);
 #endif //PIPELINES_H

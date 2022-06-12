@@ -37,12 +37,12 @@ static void	make_paths(char *path_var)
 
 static void	set_env_pwd(void)
 {
-	char	*path;
-	char	*buffer;
+	char		*path;
+	char		*buffer;
+	t_dic_node	*dic;
 
-	buffer = NULL;
 	path = NULL;
-	buffer = (char *)malloc(1024);
+	buffer = (char *)ft_calloc(1, 1024);
 	if (buffer)
 	{
 		path = getcwd(buffer, 1024);
@@ -51,6 +51,14 @@ static void	set_env_pwd(void)
 	}
 	if (path)
 		g_shell.pwd = path;
+	dic = ft_elem_dic(g_shell.env, "PWD");
+	if (dic)
+	{
+		free (dic->content);
+		dic->content = ft_strdup(g_shell.pwd);
+	}
+	else
+		ft_push_to_dic(g_shell.env,"PWD", ft_strdup(g_shell.pwd));
 }
 
 void	ft_create_environ(char *envp[])

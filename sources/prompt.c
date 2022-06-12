@@ -53,7 +53,6 @@ int	minishell_loop(void)
 	line = NULL;
 	g_shell.status = 0;
 	g_shell.error_msg = NULL;
-	code = 0;
 	while (1)
 	{
 		line = make_prompt_line();
