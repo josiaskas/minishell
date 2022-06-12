@@ -119,7 +119,7 @@ t_shell	*parse_shell_line(char *sentence)
 		if (shell->commands_list->state == e_cmd_error)
 		{
 			if (shell->commands_list->error_msg)
-				shell->error_msg = shell->commands_list->error_msg;
+				shell->error_msg = ft_strdup(shell->commands_list->error_msg);
 			shell->status = 258;
 		}
 		else

@@ -65,6 +65,7 @@ bool	check_p_err(t_array *lex, t_shell *parser, size_t i)
 				error_msg = "syntax error near unexpected token `<'";
 			else if (token->type == e_lex_quote_error)
 				error_msg = "syntax error Quote error";
+			free(parser->error_msg);
 			parser->error_msg = ft_strdup(error_msg);
 			return (false);
 		}
@@ -120,7 +121,7 @@ size_t	build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
 			if ((cmd->pipe->state == e_cmd_error) || (!cmd->pipe->cmd))
 			{
 				cmd->state = e_cmd_error;
-				cmd->error_msg = cmd->pipe->error_msg;
+				cmd->error_msg = ft_strdup(cmd->pipe->error_msg);
 			}
 		}
 	}
