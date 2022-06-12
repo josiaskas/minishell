@@ -105,26 +105,26 @@ static t_array	*build_lexical_analyser(char *sentence)
 t_shell	*parse_shell_line(char *sentence)
 {
 	t_array			*lexer;
-	t_shell			*parser;
+	t_shell			*shell;
 
-	parser = ft_calloc(1, sizeof(t_shell));
-	parser->commands_list = NULL;
-	parser->syntax_error = true;
-	parser->error_msg = ft_strdup(
+	shell = ft_calloc(1, sizeof(t_shell));
+	shell->commands_list = NULL;
+	shell->syntax_error = true;
+	shell->error_msg = ft_strdup(
 			"syntax error near unexpected token `newline'");
 	lexer = build_lexical_analyser(sentence);
-	if (check_p_err(lexer, parser, 0))
+	if (check_p_err(lexer, shell, 0))
 	{
-		parser->commands_list = build_parse_cmd(lexer, 0);
-		if (parser->commands_list->state == e_cmd_error)
+		shell->commands_list = build_parse_cmd(lexer, 0);
+		if (shell->commands_list->state == e_cmd_error)
 		{
-			if (parser->commands_list->error_msg)
-				parser->error_msg = parser->commands_list->error_msg;
-			parser->status = 258;
+			if (shell->commands_list->error_msg)
+				shell->error_msg = shell->commands_list->error_msg;
+			shell->status = 258;
 		}
 		else
-			parser->syntax_error = false;
+			shell->syntax_error = false;
 	}
 	destroy_lexer(lexer);
-	return (parser);
+	return (shell);
 }

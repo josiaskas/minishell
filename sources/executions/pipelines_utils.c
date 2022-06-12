@@ -35,45 +35,63 @@ void	close_all_pipes(int *pipes[], int len)
 	}
 }
 
-static void	destroy_shell_data(t_shell *parser)
+void	destroy_shell_data(t_shell *shell)
 {
 	t_command	*cmd;
 	t_command	*tmp;
 
-	cmd = parser->commands_list;
+	cmd = shell->commands_list;
 	while (cmd != NULL)
 	{
 		tmp = cmd;
 		cmd = cmd->pipe;
-		free(tmp->cmd);
-		free(tmp->error_msg);
+		if (tmp->cmd)
+			free(tmp->cmd);
+		if (tmp->error_msg)
+			free(tmp->error_msg);
 		if (tmp->redirections)
 			destroy_redirections(tmp->redirections);
 		if (tmp->arguments)
 			ft_free_d_array(tmp->arguments);
 		free(tmp);
 	}
-	free(parser->error_msg);
+	if (shell->error_msg)
+		free(shell->error_msg);
 }
 
-/*
- * take parser result and makes redirection, pipes and fork for execution
- * return a code and set g_shell.status
- */
-int	run_pipeline(t_shell *parser)
+// set the length of piped command
+void	set_len_of_piped_command(t_shell *shell)
 {
-	int	code;
+	int			len;
+	t_command	*command;
 
-	if (parser->syntax_error)
+	if (!shell)
+		return ;
+	len = 0;
+	command = shell->commands_list;
+	while (command)
 	{
-		ft_putstr_fd(parser->error_msg, STDERR_FILENO);
-		g_shell.status = 258;
-		destroy_shell_data(parser);
-		return (258);
+		command = command->pipe;
+		len++;
 	}
-	code = make_pipeline(parser);
-	if (parser->error_msg && (code != 0))
-		ft_putstr_fd(parser->error_msg, STDERR_FILENO);
-	destroy_shell_data(parser);
-	return (code);
+	shell->pipes_len = len;
+}
+/*
+ * Exit sub shell by cleaning memory and set exit code;
+ */
+void	exit_subshell_cmd(t_shell *shell, t_command *command)
+{
+	if ((shell->error_msg) && (shell->status != 0))
+	{
+		if (command->cmd)
+		{
+			ft_putstr_fd(command->cmd, STDERR_FILENO);
+			ft_putstr_fd(" : ", STDERR_FILENO);
+		}
+		ft_putendl_fd(shell->error_msg, STDERR_FILENO);
+	}
+	g_shell.status = shell->status;
+	destroy_shell_data(shell);
+	delete_environ();
+	exit(g_shell.status);
 }

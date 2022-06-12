@@ -15,10 +15,20 @@
 # include "parser.h"
 # include "minishell.h"
 
-int		run_pipeline(t_shell *parser);
-int		make_pipeline(t_shell *parser);
-void	destroy_redirections(t_array *redirections);
+int		execute_pipeline(t_shell *shell, char *line);
+
+int		make_pipeline(t_shell *shell, t_command *cmd);
+int		execute_cmd(t_shell *shell, t_command *cmd);
+void	exit_subshell_cmd(t_shell *shell, t_command *curr_command);
+
+void	set_len_of_piped_command(t_shell *shell);
 void	set_shell_error(t_shell *parser, char *msg, int code);
 void	close_all_pipes(int *pipes[], int len);
+
+
+int		build_cmd_redirections(t_shell *shell, t_command *command);
+void	destroy_redirections(t_array *redirections);
+
+void	destroy_shell_data(t_shell *shell);
 
 #endif //PIPELINES_H

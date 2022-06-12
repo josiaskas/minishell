@@ -35,7 +35,7 @@ LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
 
 #execution source
-EXECUTION_SRC = pipelines.c pipelines_utils.c redirections.c heredoc.c
+EXECUTION_SRC = execute.c pipelines.c pipelines_utils.c redirections.c heredoc.c
 EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 
 #lexer bonus
@@ -46,8 +46,12 @@ EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 STATUS_SRC = bar.c environement.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
+#builtins source
+BUILTINS_SRC = exit.c cd_cmd.c
+BUILTINS_PREFIXED = $(addprefix builtins/, $(BUILTINS_SRC))
+
 SRCS = main.c prompt.c  $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \
-						$(EXECUTION_PREFIXED)
+						$(EXECUTION_PREFIXED) $(BUILTINS_PREFIXED)
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 
 #includes
@@ -71,6 +75,7 @@ $(OBJS_DIR):
 	@mkdir $(OBJS_DIR)/minishell_lexer
 	@mkdir $(OBJS_DIR)/parser
 	@mkdir $(OBJS_DIR)/executions
+	@mkdir $(OBJS_DIR)/builtins
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(INCLUDES_PREFIXED)
 	$(CC) $(CFLAGS) -I./$(INCLUDES_DIR) -c $< -o $@

@@ -20,6 +20,7 @@ static char	*make_prompt_line(void)
 {
 	char	*line;
 	char	*prompt;
+	char	*tmp;
 
 	line = NULL;
 	prompt = make_prompt(true);
@@ -27,7 +28,10 @@ static char	*make_prompt_line(void)
 	free(prompt);
 	if (!line)
 		return (NULL);
-	if (ft_strlen(line) > 0)
+	tmp = ft_strtrim(line, "\t\r\n\v\f ");
+	free(line);
+	line = tmp;
+	if (ft_strlen(line))
 		add_history(line);
 	return (line);
 }
@@ -53,15 +57,15 @@ int	minishell_loop(void)
 	while (1)
 	{
 		line = make_prompt_line();
-		if (ft_strncmp(line, "exit", 5) == 0)
+		if (ft_strlen(line) > 0)
 		{
-			free(line);
-			break ;
+			code = execute_pipeline(parse_shell_line(line), line);
+			if (code == -1)
+			{
+				code = g_shell.status;
+				break;
+			}
 		}
-		code = run_pipeline(parse_shell_line(line));
-		free(line);
-		if (code != 0)
-			break ;
 	}
 	delete_environ();
 	return (code);

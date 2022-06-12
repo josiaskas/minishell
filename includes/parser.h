@@ -69,6 +69,7 @@ typedef struct s_command {
 typedef struct s_shell {
 	t_command	*commands_list;
 	bool		syntax_error;
+	bool		is_parent;
 	char		*error_msg;
 	int			status;
 	int			pipes_len;
