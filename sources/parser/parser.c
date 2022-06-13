@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include "../../includes/minishell.h"
 
 /*
  * Add cmd name or arguments to array of args inside t_command cmd
@@ -67,6 +68,7 @@ t_command	*build_parse_cmd(t_array *lexer, size_t cursor)
 	cmd = (t_command *)ft_calloc(1, sizeof(t_command));
 	cmd->state = e_cmd_waiting;
 	cmd->error_msg = NULL;
+	cmd->env = g_shell.env;
 	while (cursor < lexer->length)
 	{
 		token = (t_lex_token *)ft_get_elem(lexer, cursor);

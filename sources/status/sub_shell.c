@@ -33,8 +33,8 @@ void	add_stopped_job(t_command *command, int group)
 		job->cmd_name = ft_strdup(command->cmd);
 		if (command->arguments)
 		{
-			job->args = (char **)ft_map(command->arguments, map_ret_content);
-			job->len_arg = command->arguments->length;
+			job->args = get_args_array(command);
+			job->len_arg = command->arguments->length + 1;
 		}
 		job->pid = command->id;
 		job->group_id = group;

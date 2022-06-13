@@ -87,6 +87,7 @@ static void	exec_subshell(t_shell *shell, t_command *command, int *pipes[])
 	command->fd[1] = STDOUT_FILENO;
 	command->state = e_cmd_running;
 	command->shell_level++;
+	command->env = g_shell.env;
 	shell->status = 0;
 	if (shell->error_msg)
 		free(shell->error_msg);
@@ -119,7 +120,6 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 	command->id = pid;
 	shell->is_parent = true;
 	command->state = e_cmd_waiting;
-	waitpid(pid, &command->status, 0);
 	return (0);
 }
 
@@ -147,6 +147,7 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	}
 	close_all_pipes(pipes, shell->pipes_len);
 	free_array((void **)pipes, shell->pipes_len);
+	wait_all_child_process(shell);
 	g_shell.status = get_sub_shell_last_cmd_status(shell->commands_list);
 	return (0);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_cmd.c                                           :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,20 +13,29 @@
 #include "../../includes/builtins.h"
 #include "../../includes/pipelines.h"
 
-//to do
-int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
+// env command (not finished yest)
+// @to-do
+int	env_builtin_cmd(t_shell *shell, t_command *cmd)
 {
-	char	**args;
+	char	**envs;
+	size_t	i;
 
-	args = get_args_array(cmd);
-	if (args)
-		ft_free_splitted(args);
-	shell->status = 0;
+	i = 0;
+	envs = get_env_array(cmd);
+	if (envs)
+	{
+		while (envs[i])
+		{
+			ft_putendl_fd(envs[i], cmd->fd[1]);
+			i++;
+		}
+		ft_free_splitted(envs);
+	}
 	g_shell.status = 0;
+	shell->status = 0;
 	if(cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
 	if(cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
 	return (0);
 }
-

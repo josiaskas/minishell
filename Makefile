@@ -35,7 +35,7 @@ LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
 
 #execution source
-EXECUTION_SRC = execute.c execute_utils.c pipelines.c pipelines_utils.c redirections.c heredoc.c
+EXECUTION_SRC = execute.c execute_utils.c pipelines.c pipelines_utils.c ft_execve.c redirections.c heredoc.c
 EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 
 #lexer bonus
@@ -47,7 +47,7 @@ STATUS_SRC = bar.c environement.c sub_shell.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
 #builtins source
-BUILTINS_SRC = exit.c cd_cmd.c jobs.c
+BUILTINS_SRC = exit.c cd_cmd.c pwd.c echo.c jobs.c env_cmd.c
 BUILTINS_PREFIXED = $(addprefix builtins/, $(BUILTINS_SRC))
 
 SRCS = main.c prompt.c  $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \

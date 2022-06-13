@@ -18,8 +18,9 @@
 int		execute_pipeline(t_shell *shell, char *line);
 
 int		make_pipeline(t_shell *shell, t_command *cmd);
+void	wait_all_child_process(t_shell *shell);
 int		execute_cmd(t_shell *shell, t_command *cmd);
-int		ft_exec_cmd(t_shell *shell, t_command *cmd);
+int		ft_execve(t_shell *shell, t_command *cmd);
 void	exit_subshell_cmd(t_shell *shell, t_command *curr_command);
 int		get_sub_shell_last_cmd_status(t_command *commands);
 
@@ -34,6 +35,6 @@ void	destroy_redirections(t_array *redirections);
 
 void	destroy_shell_data(t_shell *shell);
 void	print_cmd_error(char *cmd_name, char *error_msg);
-void	*map_ret_content(void *content, int index);
-void	*map_join_key_content(void *content, char *key, size_t index);
+char	**get_args_array(t_command *command);
+char	**get_env_array(t_command *command);
 #endif //PIPELINES_H

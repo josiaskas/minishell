@@ -47,7 +47,7 @@ static char	*make_status_bar(char *path, char *git_branch)
 
 	bar = NULL;
 	git_color = "\033[37m |  on \033[32m";
-	bar = ft_strjoin("\n\033[100;36m ", path);
+	bar = ft_strjoin("\033[100;36m ", path);
 	if (ft_strlen(git_branch) > 0)
 	{
 		temp = ft_strjoin(bar, "\033[37m |  on\033[32m ");
@@ -76,9 +76,9 @@ char	*make_prompt(bool with_bar)
 	if (with_bar)
 		bar = make_status_bar(get_home_pwd(path), get_git_branch(path));
 	if (g_shell.status == 0)
-		prompt = ft_strjoin(bar, "\033[32m\n>\033[0;39m ");
+		prompt = ft_strjoin(bar, "\033[32m>\033[0;39m ");
 	else
-		prompt = ft_strjoin(bar, "\033[31m\n>\033[0;39m ");
+		prompt = ft_strjoin(bar, "\033[31m>\033[0;39m ");
 	free(bar);
 	return (prompt);
 }

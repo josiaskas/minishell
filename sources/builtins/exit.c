@@ -27,6 +27,7 @@ int	exit_builtin_cmd(t_shell *shell, t_command *cmd)
 	{
 		arg = (char *)ft_get_elem(cmd->arguments, 0);
 		status = ft_atoi(arg);
+		status = status % 256;
 	}
 	shell->status = status;
 	g_shell.status = status;

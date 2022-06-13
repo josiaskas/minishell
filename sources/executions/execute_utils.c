@@ -14,23 +14,21 @@
 #include <errno.h>
 #include <string.h>
 
-void	print_cmd_error(char *cmd_name, char *error_msg)
+void	set_shell_error(t_shell *parser, char *msg, int code)
 {
-	if (cmd_name)
-	{
-		ft_putstr_fd(cmd_name, STDERR_FILENO);
-	}
-	write(STDERR_FILENO, ": ", 3);
-	ft_putendl_fd(error_msg, STDERR_FILENO);
+	if (parser->error_msg)
+		free(parser->error_msg);
+	parser->error_msg = msg;
+	parser->status = code;
 }
 
-void	*map_ret_content(void *content, int index)
+static void	*map_ret_content(void *content, int index)
 {
 	(void)index;
 	return content;
 }
 
-void	*map_join_key_content(void *content, char *key, size_t index)
+static void	*map_join_key_content(void *content, char *key, size_t index)
 {
 	char	*word;
 	char	*temp;
@@ -42,59 +40,63 @@ void	*map_join_key_content(void *content, char *key, size_t index)
 	return word;
 }
 
-// try to run the command
-static void	ft_execve(char *cmd_name, char **args, char **env)
+/*
+ * create a new (char **) from cmd->arguments and add cmd->name to it
+ * Add null at the end
+ * size of returned array is cmd->arguments->length + 1
+ * Need to all be free after usage
+ */
+char	**get_args_array(t_command *command)
 {
-	char	*full_path;
-	char	*dir;
-	char	*tmp;
+	char	**args;
+	char	**tmp_args;
 	size_t	i;
+	size_t	len;
 
-	full_path = ft_strrchr(cmd_name, '/');
-	if (full_path)
-		execve(cmd_name, args, env);
+	args = NULL;
 	i = 0;
-	while (i < g_shell.paths->length)
+	if (!command->arguments && command->cmd)
 	{
-		if (cmd_name[0] == '/')
-			break;
-		dir = (char *)ft_get_elem(g_shell.paths, i);
-		tmp = ft_strjoin(dir, "/");
-		full_path = ft_strjoin(tmp, cmd_name);
-		free (tmp);
-		execve(full_path, args, env);
-		free(full_path);
+		args = (char **)ft_calloc(1, (2 * sizeof(char *)));
+		args[0] = ft_strdup(command->cmd);
+		args[1] = NULL;
+		return (args);
+	}
+	tmp_args = (char **)ft_map(command->arguments, map_ret_content);
+	len = command->arguments->length;
+	args = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
+	while (i < len)
+	{
+		args[i] = ft_strdup(tmp_args[i]);
 		i++;
 	}
+	args[i] = NULL;
+	return (args);
 }
 
 /*
- * Build args and env and try to run the command if command name exist
- * Return 1 (most of the time, failed to open the program)
- * Return 0 if no command name (redirections only type)
+ * create a new (char **) from cmd->env
+ * Add NULL at the end
+ * Size is cmd->env->length + 1
+ * Need to all be free after usage
  */
-int	ft_exec_cmd(t_shell *shell, t_command *cmd)
+char	**get_env_array(t_command *command)
 {
-	char	*tmp;
-	char	*error_msg;
-	char	**args;
 	char	**env;
+	char	**tmp_env;
+	size_t	i;
+	size_t	len;
 
-	args = NULL;
-	env  = NULL;
-	if (cmd->cmd)
+	env = NULL;
+	i = 0;
+	tmp_env = (char **)ft_map_d(command->env, map_join_key_content);
+	len = command->env->length;
+	env = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
+	while (i < len)
 	{
-		args = (char **)ft_map(cmd->arguments, map_ret_content);
-		env = (char **)ft_map_d(cmd->env, map_join_key_content);
-		ft_execve(cmd->cmd, args, env);
-		free_array((void **)args, cmd->arguments->length);
-		free_array((void **)env, cmd->env->length);
-		tmp  = ft_strjoin(cmd->cmd, ": ");
-		error_msg  = ft_strjoin(tmp, strerror(errno));
-//		ft_putendl_fd(error_msg, STDOUT_FILENO);
-		free(tmp);
-		set_shell_error(shell, error_msg, 1);
-		return (1);
+		env[i] =  ft_strdup(tmp_env[i]);
+		i++;
 	}
-	return (0);
+	env[i] = NULL;
+	return (env);
 }

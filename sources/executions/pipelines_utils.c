@@ -11,15 +11,20 @@
 /* ************************************************************************** */
 
 #include "../../includes/pipelines.h"
-#include <errno.h>
-#include <string.h>
 
-void	set_shell_error(t_shell *parser, char *msg, int code)
+// force parent to wait for all the child
+void	wait_all_child_process(t_shell *shell)
 {
-	if (parser->error_msg)
-		free(parser->error_msg);
-	parser->error_msg = msg;
-	parser->status = code;
+	t_command	*command;
+
+	if (!shell)
+		return ;
+	command = shell->commands_list;
+	while (command)
+	{
+		waitpid(command->id, &command->status, WUNTRACED);
+		command = command->pipe;
+	}
 }
 
 //close all pipes (read , write) inside pipes
@@ -82,13 +87,9 @@ void	set_len_of_piped_command(t_shell *shell)
  */
 void	exit_subshell_cmd(t_shell *shell, t_command *command)
 {
+	(void)command;
 	if ((shell->error_msg) && (shell->status != 0))
-	{
-		if (command->is_internal)
-			print_cmd_error("minishell", shell->error_msg);
-		else
-			print_cmd_error(command->cmd, shell->error_msg);
-	}
+		print_cmd_error("minishell", shell->error_msg);
 	g_shell.status = shell->status;
 	destroy_shell_data(shell);
 	delete_environ();

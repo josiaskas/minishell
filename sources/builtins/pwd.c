@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_cmd.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -13,14 +13,14 @@
 #include "../../includes/builtins.h"
 #include "../../includes/pipelines.h"
 
-//to do
-int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
+int	pwd_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	char	**args;
 
 	args = get_args_array(cmd);
 	if (args)
 		ft_free_splitted(args);
+	ft_putendl_fd(g_shell.pwd, cmd->fd[1]);
 	shell->status = 0;
 	g_shell.status = 0;
 	if(cmd->fd[0] != STDIN_FILENO)
