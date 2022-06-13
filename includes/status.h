@@ -17,6 +17,7 @@
 
 char	*make_prompt(bool with_bar);
 void	ft_create_environ(char *envp[]);
+void	init_shell_jobs_capability();
 void	delete_environ(void);
 
 #endif

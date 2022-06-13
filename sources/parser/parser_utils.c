@@ -26,7 +26,7 @@ void	check_internal_cmd(t_command *command)
 
 	if (!command)
 		return ;
-	list = "echo cd pwd export unset env exit";
+	list = "echo cd pwd export unset env exit jobs";
 	internals = ft_split(list, ' ');
 	i = 0;
 	while (internals[i] != NULL)

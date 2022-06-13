@@ -43,11 +43,11 @@ EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 #lexer full shell
 
 #status
-STATUS_SRC = bar.c environement.c
+STATUS_SRC = bar.c environement.c sub_shell.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
 #builtins source
-BUILTINS_SRC = exit.c cd_cmd.c
+BUILTINS_SRC = exit.c cd_cmd.c jobs.c
 BUILTINS_PREFIXED = $(addprefix builtins/, $(BUILTINS_SRC))
 
 SRCS = main.c prompt.c  $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \

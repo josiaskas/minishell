@@ -33,6 +33,8 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
 		return (exit_builtin_cmd(shell, cmd));
 	if (cmd->internal_cmd == e_cmd_intern_cd)
 		return (cd_builtin_cmd(shell, cmd));
+	if (cmd->internal_cmd == e_cmd_intern_jobs)
+		return (jobs_builtin_cmd(shell, cmd));
 	shell->status = 0;
 	return (0);
 }
@@ -48,13 +50,11 @@ int	execute_cmd(t_shell *shell, t_command *cmd)
 	status  = 0;
 	if (cmd->redirections)
 		status = build_cmd_redirections(shell, cmd);
-	if (status >0)
+	if (status > 0)
 		return (status);
 	if (cmd->is_internal)
 		return (execute_internal(shell, cmd));
-	if (cmd->cmd)
-		ft_putendl_fd(cmd->cmd, STDOUT_FILENO);
-	return (status);
+	return (ft_exec_cmd(shell, cmd));
 }
 
 // execute internal directly inside parent if unique in pipeline

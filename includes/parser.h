@@ -39,6 +39,7 @@ typedef enum e_cmd_internal {
 	e_cmd_intern_unset,
 	e_cmd_intern_env,
 	e_cmd_intern_exit,
+	e_cmd_intern_jobs,
 }	t_cmd_internal;
 
 typedef struct s_redirection {

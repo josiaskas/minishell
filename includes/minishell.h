@@ -16,13 +16,29 @@
 # include "../libft/libft.h"
 # include "status.h"
 
+typedef struct s_shell_job
+{
+	int		group_id;
+	pid_t	pid;
+	char	*cmd_name;
+	char	**args;
+	size_t	len_arg;
+}	t_shell_job;
+
+typedef struct s_shell_jobs
+{
+	t_array	*jobs;
+	int		last_stopped;
+}	t_shell_jobs;
+
 typedef struct s_mshell
 {
-	t_array	*env;
-	t_array	*paths;
-	int		status;
-	char	*pwd;
-	char	*error_msg;
+	t_array			*env;
+	t_array			*paths;
+	int				status;
+	char			*pwd;
+	char			*error_msg;
+	t_shell_jobs	*jobs;
 }	t_mshell;
 
 extern t_mshell	g_shell;

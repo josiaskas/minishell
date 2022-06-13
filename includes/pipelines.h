@@ -19,7 +19,9 @@ int		execute_pipeline(t_shell *shell, char *line);
 
 int		make_pipeline(t_shell *shell, t_command *cmd);
 int		execute_cmd(t_shell *shell, t_command *cmd);
+int		ft_exec_cmd(t_shell *shell, t_command *cmd);
 void	exit_subshell_cmd(t_shell *shell, t_command *curr_command);
+int		get_sub_shell_last_cmd_status(t_command *commands);
 
 void	set_len_of_piped_command(t_shell *shell);
 void	set_shell_error(t_shell *parser, char *msg, int code);
