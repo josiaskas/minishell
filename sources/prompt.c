@@ -33,31 +33,26 @@ static char	*make_prompt_line(void)
 	return (line);
 }
 
-// void	*print_env_var(void *c, char *key, size_t i)
-//{
-//	char	*value;
-//
-//	value = (char *)c;
-//	printf("%lu | \033[0;32m%s\033[0;39m = %s \n", i, key, value);
-//	return 0;
-// }
 
 int	minishell_loop(void)
 {
 	char	*line;
 	int		code;
 
+	activate_signal_handling();
 	line = NULL;
-	g_shell.status = 0;
-	g_shell.error_msg = NULL;
 	while (1)
 	{
+		if (line)
+			free(line);
+		line = NULL;
 		line = make_prompt_line();
 		if (ft_strlen(line) > 0)
 		{
-			code = execute_pipeline(parse_shell_line(line), line);
+			code = execute_pipeline(parse_shell_line(line));
 			if (code == -1)
 			{
+				free(line);
 				code = g_shell.status;
 				break;
 			}

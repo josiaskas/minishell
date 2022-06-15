@@ -43,7 +43,7 @@ EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 #lexer full shell
 
 #status
-STATUS_SRC = bar.c environement.c sub_shell.c
+STATUS_SRC = bar.c environement.c sub_shell.c signals.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
 #builtins source

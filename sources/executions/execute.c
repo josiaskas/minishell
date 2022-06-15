@@ -91,14 +91,12 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
  * Return 0 in case of parser syntax error but set g_shell.status
  * Return 1 if exit command was called
  */
-int	execute_pipeline(t_shell *shell, char *line)
+int	execute_pipeline(t_shell *shell)
 {
 	int	code;
 
 	if (shell->syntax_error)
 		return (treat_parser_error(shell));
-	if (line)
-		free(line);
 	set_len_of_piped_command(shell);
 	if ((shell->pipes_len == 1) && (shell->commands_list->is_internal))
 		code = execute_spec_internal_cmd(shell, shell->commands_list);

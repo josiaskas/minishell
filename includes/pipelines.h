@@ -15,7 +15,7 @@
 # include "parser.h"
 # include "minishell.h"
 
-int		execute_pipeline(t_shell *shell, char *line);
+int		execute_pipeline(t_shell *shell);
 
 int		make_pipeline(t_shell *shell, t_command *cmd);
 void	wait_all_child_process(t_shell *shell);

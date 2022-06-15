@@ -36,6 +36,7 @@ typedef struct s_mshell
 	t_array			*env;
 	t_array			*paths;
 	int				status;
+	bool			is_interrupted;
 	char			*pwd;
 	char			*error_msg;
 	t_shell_jobs	*jobs;
