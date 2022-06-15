@@ -28,7 +28,11 @@ static int	setup_signal(int signal, void (*handler)(int))
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", STDERR_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	ft_putstr_fd(rl_prompt, STDOUT_FILENO);
+	if (rl_line_buffer)
+		free(rl_line_buffer);
+	rl_line_buffer = ft_strdup("");
 	rl_on_new_line();
 	rl_redisplay();
 }

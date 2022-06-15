@@ -19,15 +19,18 @@
 static char	*make_prompt_line(void)
 {
 	char	*line;
+	char	*tmp;
 	char	*prompt;
 
 	line = NULL;
 	prompt = make_prompt(true);
-	rl_on_new_line();
 	line = readline(prompt);
 	free(prompt);
 	if (!line)
 		return (NULL);
+	tmp = ft_strtrim(line, "\n\t\v\f\r ");
+	free(line);
+	line = tmp;
 	if (ft_strlen(line))
 		add_history(line);
 	return (line);

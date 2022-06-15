@@ -117,6 +117,7 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 		exec_subshell(shell, command, pipes);
 		return (1);
 	}
+	ignore_signal_handling();
 	command->id = pid;
 	shell->is_parent = true;
 	command->state = e_cmd_waiting;
@@ -138,6 +139,7 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	if (assign_pipes(pipes, cmd, shell->pipes_len) != 0)
 		return (1);
 	i = 0;
+	activate_signal_handling();
 	while (i < shell->pipes_len)
 	{
 		if (make_sub_shell(shell, cmd, pipes) > 0)

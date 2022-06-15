@@ -58,6 +58,7 @@ int	execute_cmd(t_shell *shell, t_command *cmd)
 		status = build_cmd_redirections(shell, cmd);
 	if (status > 0)
 		return (status);
+	set_default_signal_handling();
 	if (cmd->is_internal)
 		return (execute_internal(shell, cmd));
 	return (ft_execve(shell, cmd));
@@ -71,6 +72,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	status = 0;
 	shell->is_parent = true;
 	cmd->fd[1] = STDOUT_FILENO;
+	ignore_signal_handling();
 	if (cmd->redirections)
 		status = build_cmd_redirections(shell, cmd);
 	if (status > 0)
@@ -83,7 +85,9 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 		exit_builtin_cmd(shell, cmd);
 		return (-1); // force stop
 	}
-	return (execute_internal(shell, cmd));
+	status = execute_internal(shell, cmd);
+	activate_signal_handling();
+	return (status);
 }
 
 /*
