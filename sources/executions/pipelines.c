@@ -107,6 +107,7 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 	pid_t	pid;
 
 	pid = fork();
+	activate_signal_handling();
 	if (pid == -1)
 	{
 		set_shell_error(shell, ft_strdup(strerror(errno)), 1);
@@ -139,7 +140,6 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	if (assign_pipes(pipes, cmd, shell->pipes_len) != 0)
 		return (1);
 	i = 0;
-	activate_signal_handling();
 	while (i < shell->pipes_len)
 	{
 		if (make_sub_shell(shell, cmd, pipes) > 0)

@@ -24,6 +24,7 @@ static char	*make_prompt_line(void)
 
 	line = NULL;
 	prompt = make_prompt(true);
+	activate_signal_handling();
 	line = readline(prompt);
 	free(prompt);
 	if (!line)
@@ -41,7 +42,6 @@ int	minishell_loop(void)
 	char	*line;
 	int		code;
 
-	activate_signal_handling();
 	line = NULL;
 	while (1)
 	{
