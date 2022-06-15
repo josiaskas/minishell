@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 22:56:51 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:25:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:42:23 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static char	*make_prompt_line(void)
 	return (line);
 }
 
-
 int	minishell_loop(void)
 {
 	char	*line;
@@ -54,7 +53,7 @@ int	minishell_loop(void)
 			{
 				free(line);
 				code = g_shell.status;
-				break;
+				break ;
 			}
 		}
 	}

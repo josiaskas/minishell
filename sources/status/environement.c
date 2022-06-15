@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:45:21 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:38:37 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:41:34 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	set_env_pwd(void)
 		dic->content = ft_strdup(g_shell.pwd);
 	}
 	else
-		ft_push_to_dic(g_shell.env,"PWD", ft_strdup(g_shell.pwd));
+		ft_push_to_dic(g_shell.env, "PWD", ft_strdup(g_shell.pwd));
 }
 
 void	ft_create_environ(char *envp[])
@@ -102,7 +102,7 @@ void	delete_environ(void)
 	free(g_shell.pwd);
 	if (g_shell.jobs->jobs)
 	{
-		while(g_shell.jobs->jobs->length)
+		while (g_shell.jobs->jobs->length)
 		{
 			job = (t_shell_job *)ft_pop(g_shell.jobs->jobs);
 			if (job->cmd_name)
@@ -114,5 +114,3 @@ void	delete_environ(void)
 		ft_free_d_array(g_shell.jobs->jobs);
 	}
 }
-
-

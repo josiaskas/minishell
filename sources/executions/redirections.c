@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 16:16:43 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:33:23 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:46:34 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 #include <string.h>
 #include <fcntl.h>
 
-
-static void set_redirection_error(t_shell *shell, char *filename, char *msg)
+static void	set_redirection_error(t_shell *shell, char *filename, char *msg)
 {
 	char	*tmp;
 	char	*error_msg;
 
-	tmp  = ft_strjoin(filename, ": ");
-	error_msg  = ft_strjoin(tmp, msg);
+	tmp = ft_strjoin(filename, ": ");
+	error_msg = ft_strjoin(tmp, msg);
 	free(tmp);
 	set_shell_error(shell, error_msg, 1);
 }
@@ -81,16 +80,16 @@ static bool	make_input_redirection(t_redirection *redirection, t_shell *shell)
 int	build_cmd_redirections(t_shell *shell, t_command *command)
 {
 	bool			made;
-    size_t          i;
-    t_redirection   *redirection;
+	size_t			i;
+	t_redirection	*redirection;
 
 	made = false;
-    if (!command->redirections)
-        return (1);
-    i = 0;
-    while (i < command->redirections->length)
-    {
-        redirection = (t_redirection *)ft_get_elem(command->redirections, i);
+	if (!command->redirections)
+		return (1);
+	i = 0;
+	while (i < command->redirections->length)
+	{
+		redirection = (t_redirection *)ft_get_elem(command->redirections, i);
 		if (redirection->type == e_redirection_input)
 			made = make_input_redirection(redirection, shell);
 		else if (redirection->type == e_redirection_output)
@@ -100,9 +99,9 @@ int	build_cmd_redirections(t_shell *shell, t_command *command)
 		else if (redirection->type == e_redirection_heredoc)
 			made = make_heredoc_red(redirection, shell);
 		if (made == false)
-			break;
-        i++;
-    }
+			break ;
+		i++;
+	}
 	if (made == false)
 		return (1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:45:21 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:38:37 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:42:09 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../includes/pipelines.h"
 #include <sys/wait.h>
 
-void	init_shell_jobs_capability()
+void	init_shell_jobs_capability(void)
 {
 	t_shell_jobs	*jobs;
 
@@ -67,7 +67,7 @@ void	check_and_destroy_continued_jobs(t_command *command)
 	}
 }
 
-static int		get_max_job_group_number()
+static int	get_max_job_group_number(void)
 {
 	int			groups;
 	size_t		i;

@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 14:52:09 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:27:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:46:50 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
  */
 static int	**build_pipes(t_shell *shell)
 {
-	int **pipes;
-	int i;
-	int len;
+	int	**pipes;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = shell->pipes_len;
@@ -33,7 +33,7 @@ static int	**build_pipes(t_shell *shell)
 		if (pipe(pipes[i]) == -1)
 		{
 			set_shell_error(shell, ft_strdup(strerror(errno)), 1);
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -151,4 +151,3 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	g_shell.status = get_sub_shell_last_cmd_status(shell->commands_list);
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/11 17:53:38 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:43:42 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void	print_cmd_error(char *cmd_name, char *error_msg)
 	ft_putendl_fd(error_msg, STDERR_FILENO);
 }
 
-static void set_cmd_error(t_shell *shell, char *cmd_name, char *msg)
+static void	set_cmd_error(t_shell *shell, char *cmd_name, char *msg)
 {
 	char	*tmp;
 	char	*error_msg;
 
-	tmp  = ft_strjoin(cmd_name, ": ");
-	error_msg  = ft_strjoin(tmp, msg);
+	tmp = ft_strjoin(cmd_name, ": ");
+	error_msg = ft_strjoin(tmp, msg);
 	free(tmp);
 	set_shell_error(shell, error_msg, 1);
 }
@@ -50,7 +50,7 @@ static void	ft_try_exec_cmd(char *cmd_name, char **args, char **env)
 	while (i < g_shell.paths->length)
 	{
 		if (cmd_name[0] == '/')
-			break;
+			break ;
 		dir = (char *)ft_get_elem(g_shell.paths, i);
 		tmp = ft_strjoin(dir, "/");
 		full_path = ft_strjoin(tmp, cmd_name);
@@ -72,7 +72,7 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 	char	**env;
 
 	args = NULL;
-	env  = NULL;
+	env = NULL;
 	if (cmd->cmd)
 	{
 		ft_unshift(cmd->arguments, (void *)ft_strdup(cmd->cmd));

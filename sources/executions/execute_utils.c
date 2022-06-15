@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/11 17:53:38 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/15 11:43:18 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	set_shell_error(t_shell *parser, char *msg, int code)
 static void	*map_ret_content(void *content, int index)
 {
 	(void)index;
-	return content;
+	return (content);
 }
 
 static void	*map_join_key_content(void *content, char *key, size_t index)
@@ -37,7 +37,7 @@ static void	*map_join_key_content(void *content, char *key, size_t index)
 	temp = ft_strjoin(key, "=");
 	word = ft_strjoin(temp, (char *)content);
 	free(temp);
-	return word;
+	return (word);
 }
 
 /*
@@ -94,7 +94,7 @@ char	**get_env_array(t_command *command)
 	env = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
 	while (i < len)
 	{
-		env[i] =  ft_strdup(tmp_env[i]);
+		env[i] = ft_strdup(tmp_env[i]);
 		i++;
 	}
 	env[i] = NULL;
