@@ -12,7 +12,7 @@
 
 #include "../../includes/status.h"
 #include <signal.h>
-#include <readline/history.h>
+
 #include <readline/readline.h>
 
 static int	setup_signal(int signal, void (*handler)(int))
@@ -28,12 +28,18 @@ static int	setup_signal(int signal, void (*handler)(int))
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	//	ft_putstr_fd(rl_prompt, STDOUT_FILENO);
-	if (rl_line_buffer)
-		free(rl_line_buffer);
-	rl_line_buffer = ft_strdup("");
+	g_shell.status = 1;
+
+	write(STDOUT_FILENO,"\n", 1);
 	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+//	rl_set_prompt(make_prompt(true));
+//	rl_line_buffer = ft_strdup("test");
+//	rl_cleanup_after_signal();
+//	rl_free_line_state();
+//	rl_on_new_line();
+//	rl_redisplay();
 }
 
 void	activate_signal_handling(void)

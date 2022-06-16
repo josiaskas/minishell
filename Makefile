@@ -12,8 +12,9 @@
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror  -g
 INCLUDES_DIR = includes/
+READLINE_DIR = /usr/local/opt/readline
 SRCS_DIR = sources/
 OBJS_DIR = objs/
 
@@ -78,11 +79,11 @@ $(OBJS_DIR):
 	@mkdir $(OBJS_DIR)/builtins
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(INCLUDES_PREFIXED)
-	$(CC) $(CFLAGS) -I./$(INCLUDES_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I./$(INCLUDES_DIR) -I$(READLINE_DIR)/include/readline -c $< -o $@
 
 $(NAME): $(OBJS_DIR) $(OBJS_PREFIXED)
 	@$(MAKE) re -C ./libft
-	@$(CC) $(CFLAGS) $(OBJS_PREFIXED)  -lreadline -L./libft -lft -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS_PREFIXED) -I$(READLINE_DIR)/include/readline -L$(READLINE_DIR)/lib  -lreadline  -lcurses -L./libft -lft -o $(NAME)
 	@echo $(NAME) est construit
 
 clean :

@@ -14,6 +14,7 @@
 #include "../includes/parser.h"
 #include "../includes/pipelines.h"
 #include <unistd.h>
+#include <stdio.h>
 #include <readline/history.h>
 
 static char	*make_prompt_line(void)
@@ -24,9 +25,9 @@ static char	*make_prompt_line(void)
 
 	line = NULL;
 	prompt = make_prompt(true);
-	activate_signal_handling();
 	line = readline(prompt);
-	free(prompt);
+	if (prompt)
+		free(prompt);
 	if (!line)
 		return (NULL);
 	tmp = ft_strtrim(line, "\n\t\v\f\r ");
@@ -37,6 +38,19 @@ static char	*make_prompt_line(void)
 	return (line);
 }
 
+// return 0 or positive in case of an error (exit status)
+static int	shell_loop_logic(char *line)
+{
+	int	code;
+
+	code = 0;
+	if (ft_strlen(line) > 0)
+		code = execute_pipeline(parse_shell_line(line));
+	if (line)
+		free(line);
+	return (code);
+}
+
 int	minishell_loop(void)
 {
 	char	*line;
@@ -45,21 +59,19 @@ int	minishell_loop(void)
 	line = NULL;
 	while (1)
 	{
-		if (line)
-			free(line);
-		line = NULL;
+		activate_signal_handling();
 		line = make_prompt_line();
-		if (ft_strlen(line) > 0)
+		if (!line)
+			code = -1;
+		else
+			code = shell_loop_logic(line);
+		if (code == -1)
 		{
-			code = execute_pipeline(parse_shell_line(line));
-			if (code == -1)
-			{
-				free(line);
-				code = g_shell.status;
-				break ;
-			}
+			code = g_shell.status;
+			break ;
 		}
 	}
 	delete_environ();
+	ft_putendl_fd("exit",STDOUT_FILENO);
 	return (code);
 }

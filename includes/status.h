@@ -23,4 +23,5 @@ void	handle_sigint(int signum);
 void	activate_signal_handling(void);
 void	ignore_signal_handling(void);
 void	set_default_signal_handling(void);
+void	rl_replace_line (const char *text, int clear_undo);
 #endif
