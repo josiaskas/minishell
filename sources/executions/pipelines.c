@@ -106,6 +106,7 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 {
 	pid_t	pid;
 
+	ignore_signal_handling();
 	pid = fork();
 	if (pid == -1)
 	{
@@ -117,7 +118,6 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 		exec_subshell(shell, command, pipes);
 		return (1);
 	}
-	ignore_signal_handling();
 	command->id = pid;
 	shell->is_parent = true;
 	command->state = e_cmd_waiting;
@@ -150,5 +150,6 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	free_array((void **)pipes, shell->pipes_len);
 	wait_all_child_process(shell);
 	g_shell.status = get_sub_shell_last_cmd_status(shell->commands_list);
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

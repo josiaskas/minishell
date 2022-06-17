@@ -60,7 +60,7 @@ static int	print_in_file(char **args, int fd)
 		i++;
 	}
 	if (with_end)
-		write(STDOUT_FILENO, "\n", 1);
+		write(fd, "\n", 1);
 	return (0);
 }
 

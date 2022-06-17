@@ -39,14 +39,17 @@ void	handle_sigint(int signum)
 void	activate_signal_handling(void)
 {
 	setup_signal(SIGINT, handle_sigint);
+	setup_signal(SIGQUIT, SIG_IGN);
 }
 
 void	set_default_signal_handling(void)
 {
 	setup_signal(SIGINT, SIG_DFL);
+	setup_signal(SIGQUIT, SIG_DFL);
 }
 
 void	ignore_signal_handling(void)
 {
 	setup_signal(SIGINT, SIG_IGN);
+	setup_signal(SIGQUIT, SIG_IGN);
 }

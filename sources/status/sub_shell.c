@@ -14,6 +14,7 @@
 #include "../../includes/pipelines.h"
 #include <sys/wait.h>
 
+
 /*
  * Get the status of the command that was executed
  * use internal maccros to get the value
@@ -26,7 +27,14 @@ int	get_sub_shell_last_cmd_status(t_command *commands)
 	while (commands)
 	{
 		if (WIFSIGNALED(commands->status))
+		{
 			status = 128 + WTERMSIG(commands->status);
+			if (WTERMSIG(commands->status) == SIGQUIT)
+			{
+				ft_putstr_fd("Quit: ", STDOUT_FILENO);
+				ft_putnbr_fd(SIGQUIT, STDOUT_FILENO);
+			}
+		}
 		else if (WIFEXITED(commands->status))
 			status = WEXITSTATUS(commands->status);
 		else
