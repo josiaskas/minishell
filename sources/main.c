@@ -21,7 +21,6 @@ int	main(int argc, char *argv[], char *envp[])
 	g_shell.env = 0;
 	g_shell.paths = 0;
 	ft_create_environ(envp);
-	init_shell_jobs_capability();
 	minishell_loop();
 	return (g_shell.status);
 }

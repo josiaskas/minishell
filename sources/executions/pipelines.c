@@ -107,7 +107,6 @@ static int	make_sub_shell(t_shell *shell, t_command *command, int *pipes[])
 	pid_t	pid;
 
 	pid = fork();
-	activate_signal_handling();
 	if (pid == -1)
 	{
 		set_shell_error(shell, ft_strdup(strerror(errno)), 1);

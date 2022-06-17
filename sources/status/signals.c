@@ -34,12 +34,6 @@ void	handle_sigint(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-//	rl_set_prompt(make_prompt(true));
-//	rl_line_buffer = ft_strdup("test");
-//	rl_cleanup_after_signal();
-//	rl_free_line_state();
-//	rl_on_new_line();
-//	rl_redisplay();
 }
 
 void	activate_signal_handling(void)

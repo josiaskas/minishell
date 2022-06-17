@@ -102,7 +102,7 @@ void	ft_create_environ(char *envp[])
 		level = ft_atoi((char *)dic->content);
 		if (dic->content)
 			free (dic->content);
-		dic->content = ft_itoa((level+1));
+		dic->content = ft_itoa((level + 1));
 	}
 	else
 		ft_push_to_dic(g_shell.env, ft_strdup("SHLVL"), ft_itoa(1));
@@ -112,24 +112,10 @@ void	delete_environ(void)
 {
 	t_array			*env;
 	t_array			*paths;
-	t_shell_job		*job;
 
 	env = g_shell.env;
 	paths = g_shell.paths;
 	ft_free_dic(env);
 	ft_free_d_array(paths);
 	free(g_shell.pwd);
-	if (g_shell.jobs->jobs)
-	{
-		while (g_shell.jobs->jobs->length)
-		{
-			job = (t_shell_job *)ft_pop(g_shell.jobs->jobs);
-			if (job->cmd_name)
-				free(job->cmd_name);
-			if (job->args)
-				free_array((void **)job->args, job->len_arg);
-			free(job);
-		}
-		ft_free_d_array(g_shell.jobs->jobs);
-	}
 }

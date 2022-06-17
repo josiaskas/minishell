@@ -61,9 +61,9 @@ char	*make_prompt(bool with_bar)
 	if (with_bar)
 		bar = make_status_bar(get_home_pwd(path), NULL);
 	if (g_shell.status == 0)
-		prompt = ft_strjoin(bar, "\033[32m $>\033[0;39m ");
+		prompt = ft_strjoin(bar, "\033[32m$>\033[0;39m ");
 	else
-		prompt = ft_strjoin(bar, "\033[31m $>\033[0;39m ");
+		prompt = ft_strjoin(bar, "\033[31m$>\033[0;39m ");
 	free(bar);
 	return (prompt);
 }

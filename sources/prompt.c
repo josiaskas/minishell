@@ -44,6 +44,7 @@ static int	shell_loop_logic(char *line)
 	int	code;
 
 	code = 0;
+//	ignore_signal_handling();
 	if (ft_strlen(line) > 0)
 		code = execute_pipeline(parse_shell_line(line));
 	if (line)

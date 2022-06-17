@@ -37,8 +37,6 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
 		return (echo_builtin_cmd(shell, cmd));
 	else if (cmd->internal_cmd == e_cmd_intern_pwd)
 		return (pwd_builtin_cmd(shell, cmd));
-	else if (cmd->internal_cmd == e_cmd_intern_jobs)
-		return (jobs_builtin_cmd(shell, cmd));
 	else if (cmd->internal_cmd == e_cmd_intern_env)
 		return (env_builtin_cmd(shell, cmd));
 	shell->status = 0;
@@ -72,7 +70,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	status = 0;
 	shell->is_parent = true;
 	cmd->fd[1] = STDOUT_FILENO;
-	ignore_signal_handling();
+	//ignore_signal_handling();
 	if (cmd->redirections)
 		status = build_cmd_redirections(shell, cmd);
 	if (status > 0)
@@ -86,7 +84,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 		return (-1); // force stop
 	}
 	status = execute_internal(shell, cmd);
-	activate_signal_handling();
+	write(STDOUT_FILENO, "\n", 1);
 	return (status);
 }
 

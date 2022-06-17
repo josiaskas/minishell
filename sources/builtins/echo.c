@@ -17,32 +17,50 @@
 static int	print_in_tty(char **args, int fd)
 {
 	size_t	i;
+	bool	with_end;
 
+	with_end = true;
 	i = 0;
-	if (args)
+	if (!args)
+		return(0);
+	if ((ft_strncmp(args[0], "-e", 2) == 0) && (ft_strlen(args[0]) == 2))
+	{
+		with_end = false;
+		i = 1;
+	}
 	while (args[i])
 	{
-		if (i > 0)
-			ft_putstr_fd("\t", fd);
+		if ((i > 0 && with_end) || (i > 1 && !with_end))
+			ft_putstr_fd(" ", fd);
 		ft_putstr_fd(args[i], fd);
 		i++;
 	}
-	ft_putstr_fd("\n", fd);
 	return (0);
 }
 
 static int	print_in_file(char **args, int fd)
 {
 	size_t	i;
+	bool	with_end;
 
+	with_end = true;
 	i = 0;
 	if (!args)
 		return(0);
+	if ((ft_strncmp(args[0], "-e", 2) == 0) && (ft_strlen(args[0]) == 2))
+	{
+		with_end = false;
+		i = 1;
+	}
 	while (args[i])
 	{
-		ft_putendl_fd(args[i], fd);
+		if ((i > 0 && with_end) || (i > 1 && !with_end))
+			ft_putstr_fd(" ", fd);
+		ft_putstr_fd(args[i], fd);
 		i++;
 	}
+	if (with_end)
+		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
