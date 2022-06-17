@@ -35,17 +35,17 @@ static void	make_paths(char *path_var)
 	g_shell.paths = paths;
 }
 
-static void	set_env_pwd(void)
+void	set_env_pwd(void)
 {
 	char		*path;
 	char		*buffer;
 	t_dic_node	*dic;
 
 	path = NULL;
-	buffer = (char *)ft_calloc(1, 1024);
+	buffer = (char *)ft_calloc(1, 2048);
 	if (buffer)
 	{
-		path = getcwd(buffer, 1024);
+		path = getcwd(buffer, 2048);
 		if (!path)
 			g_shell.error_msg = strerror(errno);
 	}
@@ -58,17 +58,18 @@ static void	set_env_pwd(void)
 		dic->content = ft_strdup(g_shell.pwd);
 	}
 	else
-		ft_push_to_dic(g_shell.env, "PWD", ft_strdup(g_shell.pwd));
+		ft_push_to_dic(g_shell.env, ft_strdup("PWD"), ft_strdup(g_shell.pwd));
 }
 
-void	ft_create_environ(char *envp[])
+void	ft_make_env_table(char *envp[])
 {
 	t_array	*env;
-	char	**data;
+	char 	**data;
 	size_t	i;
 
 	env = ft_new_dic();
-	if (!envp)
+	g_shell.env = env;
+	if (!env || !envp)
 		return ;
 	i = 0;
 	while (envp[i] != 0)
@@ -83,10 +84,28 @@ void	ft_create_environ(char *envp[])
 		free(data);
 		i++;
 	}
+}
+
+void	ft_create_environ(char *envp[])
+{
+	t_dic_node	*dic;
+	int			level;
+
+	level = 1;
+	ft_make_env_table(envp);
 	if (!g_shell.paths)
 		make_paths(NULL);
 	set_env_pwd();
-	g_shell.env = env;
+	dic = ft_elem_dic(g_shell.env, "SHLVL");
+	if (dic)
+	{
+		level = ft_atoi((char *)dic->content);
+		if (dic->content)
+			free (dic->content);
+		dic->content = ft_itoa((level+1));
+	}
+	else
+		ft_push_to_dic(g_shell.env, ft_strdup("SHLVL"), ft_itoa(1));
 }
 
 void	delete_environ(void)

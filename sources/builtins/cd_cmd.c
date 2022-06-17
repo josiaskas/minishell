@@ -12,17 +12,40 @@
 
 #include "../../includes/builtins.h"
 #include "../../includes/pipelines.h"
+#include <errno.h>
+#include <string.h>
 
-//to do
+static void	set_cd_error(t_shell *shell, char *path, char *msg)
+{
+	char	*tmp;
+	char	*error_msg;
+
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	tmp = ft_strjoin(path, ": ");
+	error_msg = ft_strjoin(tmp, msg);
+	free(tmp);
+	ft_putendl_fd(error_msg, STDERR_FILENO);
+	set_shell_error(shell, error_msg, 1);
+}
+
 int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 {
-	char	**args;
+	char	*path;
 
-	args = get_args_array(cmd);
-	if (args)
-		ft_free_splitted(args);
 	shell->status = 0;
 	g_shell.status = 0;
+	if (cmd->arguments)
+	{
+		path = ft_get_elem(cmd->arguments, 0);
+		if (path)
+		{
+			if (chdir(path)	!= 0)
+				set_cd_error(shell, path, ft_strdup(strerror(errno)));
+			else
+				set_env_pwd();
+		}
+	}
+	g_shell.status = shell->status;
 	if(cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
 	if(cmd->fd[1] != STDOUT_FILENO)

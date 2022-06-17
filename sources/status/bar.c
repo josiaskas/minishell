@@ -12,17 +12,6 @@
 
 #include "../../includes/status.h"
 
-// read file iniside .git to know the current branch on head
-static char	*get_git_branch(char *path)
-{
-	char	*branch_name;
-
-	if (!path)
-		return (NULL);
-	branch_name = ft_strdup("master");
-	return (branch_name);
-}
-
 static char	*get_home_pwd(char *path)
 {
 	t_dic_node	*home_pwd;
@@ -70,7 +59,7 @@ char	*make_prompt(bool with_bar)
 	path = g_shell.pwd;
 	bar = NULL;
 	if (with_bar)
-		bar = make_status_bar(get_home_pwd(path), get_git_branch(path));
+		bar = make_status_bar(get_home_pwd(path), NULL);
 	if (g_shell.status == 0)
 		prompt = ft_strjoin(bar, "\033[32m $>\033[0;39m ");
 	else
