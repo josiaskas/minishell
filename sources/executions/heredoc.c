@@ -36,7 +36,7 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 	size_t	delim_len;
 	size_t	line_len;
 
-	ignore_signal_handling();
+	set_default_signal_handling();
 	close(pipe[0]);
 	delim_len = ft_strlen(redirection->filename);
 	line = get_new_line();
@@ -47,7 +47,6 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 			&& (delim_len == line_len))
 			break ;
 		print_heredoc_lex(line, pipe[1]);
-		//write(pipe[1], "\n", 1);
 		free(line);
 		line = get_new_line();
 	}
@@ -76,11 +75,21 @@ bool	make_heredoc_red(t_redirection *redirection, t_shell *shell)
 	else
 	{
 		waitpid(pid, &status, 0);
-		dup2(heredoc_fd[0], STDIN_FILENO);
+		if (shell->is_parent)
+		{
+			if (shell->commands_list->fd[0] != STDIN_FILENO)
+				close(shell->commands_list->fd[0]);
+			shell->commands_list->fd[0] = heredoc_fd[0];
+		}
+		else
+		{
+			dup2(heredoc_fd[0], STDIN_FILENO);
+			close(heredoc_fd[0]);
+		}
+		//dup2(heredoc_fd[0], STDIN_FILENO);
 		close(heredoc_fd[1]);
-		close(heredoc_fd[0]);
-		ft_putnbr_fd(status, STDOUT_FILENO);
-		ft_putendl_fd("pass th wait\n", STDOUT_FILENO);
+		if (WTERMSIG(status))
+			return (false);
 		if (WIFEXITED(status) && WEXITSTATUS(status) == SIGINT)
 			return (false);
 	}
