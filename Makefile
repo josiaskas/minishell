@@ -14,7 +14,7 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror  -g
 INCLUDES_DIR = includes/
- READLINE_DIR = ./readline
+READLINE_DIR = ./readline
 SRCS_DIR = sources/
 OBJS_DIR = objs/
 
@@ -32,7 +32,7 @@ TOKENIZER_SRC = tokenizer.c token.c token_special.c token_utils.c
 TOKENIZER_PREFIXED = $(addprefix tokenizer/, $(TOKENIZER_SRC))
 
 #lexer normal
-LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c
+LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c heredoc_lex.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
 
 #execution source

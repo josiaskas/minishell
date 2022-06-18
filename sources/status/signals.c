@@ -15,7 +15,7 @@
 
 #include <readline/readline.h>
 
-static int	setup_signal(int signal, void (*handler)(int))
+int	setup_signal(int signal, void (*handler)(int))
 {
 	struct sigaction	s;
 

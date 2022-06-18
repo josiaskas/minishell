@@ -35,6 +35,7 @@ static int	print_in_tty(char **args, int fd)
 		ft_putstr_fd(args[i], fd);
 		i++;
 	}
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 

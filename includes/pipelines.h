@@ -31,6 +31,7 @@ void	close_all_pipes(int *pipes[], int len);
 
 int		build_cmd_redirections(t_shell *shell, t_command *command);
 bool	make_heredoc_red(t_redirection *redirection, t_shell *shell);
+void	print_heredoc_lex(char *sentence, int write_pipe);
 void	destroy_redirections(t_array *redirections);
 
 void	destroy_shell_data(t_shell *shell);
