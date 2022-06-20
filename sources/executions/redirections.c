@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 16:16:43 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/15 11:46:34 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:43:37 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ int	build_cmd_redirections(t_shell *shell, t_command *command)
 	t_redirection	*redirection;
 
 	made = false;
-	if (!command->redirections)
-		return (1);
 	i = 0;
 	while (i < command->redirections->length)
 	{

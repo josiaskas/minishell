@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 00:24:38 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 18:37:23 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:36:13 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_shell	*parse_shell_line(char *sentence)
 	shell->error_msg = ft_strdup(
 			"syntax error near unexpected token `newline'");
 	lexer = build_lexical_analyser(sentence);
-	if (check_p_err(lexer, shell, 0))
+	if (check_p_err(lexer, shell, 0, NULL))
 	{
 		shell->commands_list = build_parse_cmd(lexer, 0);
 		if (shell->commands_list->state == e_cmd_error)

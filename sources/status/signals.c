@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:12:33 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/15 11:53:11 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:30:10 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_sigint(int signum)
 	(void)signum;
 	g_shell.status = 1;
 
-	write(STDOUT_FILENO,"\n", 1);
+	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

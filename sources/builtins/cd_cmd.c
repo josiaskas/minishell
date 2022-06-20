@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/11 21:53:38 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:46:58 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,16 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 		path = ft_get_elem(cmd->arguments, 0);
 		if (path)
 		{
-			if (chdir(path)	!= 0)
+			if (chdir(path) != 0)
 				set_cd_error(shell, path, ft_strdup(strerror(errno)));
 			else
 				set_env_pwd();
 		}
 	}
 	g_shell.status = shell->status;
-	if(cmd->fd[0] != STDIN_FILENO)
+	if (cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
-	if(cmd->fd[1] != STDOUT_FILENO)
+	if (cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
 	return (0);
 }

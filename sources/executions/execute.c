@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/11 17:53:38 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:45:11 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,6 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
  */
 int	execute_cmd(t_shell *shell, t_command *cmd)
 {
-//	int		status;
-//
-//	status  = 0;
-//	if (cmd->redirections)
-//		status = build_cmd_redirections(shell, cmd);
-//	if (status > 0)
-//		return (status);
 	set_default_signal_handling();
 	if (cmd->is_internal)
 		return (execute_internal(shell, cmd));

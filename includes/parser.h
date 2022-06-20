@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 00:21:55 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:44:56 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:36:46 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,10 @@ t_command	*build_parse_cmd(t_array *lexer, size_t cursor);
 
 void		check_internal_cmd(t_command *command);
 
-bool		check_p_err(t_array *lex, t_shell *parser, size_t i);
+bool		check_p_err(t_array *lex, t_shell *parser, size_t i, char *msg);
 
 char		*get_red_filename(size_t i, t_array *lexer, t_command *cmd);
 
 size_t		build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor);
-
-void		ft_print_token(void *data, int index);
-
-void		ft_print_lex(void *data, int index);
-
-void		ft_print_cmd(t_command *command);
 
 #endif

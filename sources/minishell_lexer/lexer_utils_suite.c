@@ -1,6 +1,6 @@
 
-#include "lexer.h"
-#include "minishell.h"
+#include "../../includes/lexer.h"
+#include "../../includes/minishell.h"
 
 /*
  * return true if token is a redirection token

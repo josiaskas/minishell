@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 22:56:51 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/15 11:42:23 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:28:40 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static int	shell_loop_logic(char *line)
 	int	code;
 
 	code = 0;
-//	ignore_signal_handling();
 	if (ft_strlen(line) > 0)
 		code = execute_pipeline(parse_shell_line(line));
 	if (line)
@@ -74,6 +73,6 @@ int	minishell_loop(void)
 		}
 	}
 	delete_environ();
-	ft_putendl_fd("exit",STDOUT_FILENO);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
 }

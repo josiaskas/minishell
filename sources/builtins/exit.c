@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/11 21:53:38 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:45:46 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	exit_builtin_cmd(t_shell *shell, t_command *cmd)
 	}
 	shell->status = status;
 	g_shell.status = status;
-	if(cmd->fd[0] != STDIN_FILENO)
+	if (cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
-	if(cmd->fd[1] != STDOUT_FILENO)
+	if (cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
 	return (status);
 }

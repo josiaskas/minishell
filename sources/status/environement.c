@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:45:21 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/15 11:41:34 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:29:44 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	set_env_pwd(void)
 void	ft_make_env_table(char *envp[])
 {
 	t_array	*env;
-	char 	**data;
+	char	**data;
 	size_t	i;
 
 	env = ft_new_dic();

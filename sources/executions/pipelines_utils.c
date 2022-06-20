@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 17:53:19 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:28:57 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:44:25 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	set_len_of_piped_command(t_shell *shell)
 	}
 	shell->pipes_len = len;
 }
+
 /*
  * Exit sub shell by cleaning memory and set exit code;
  */

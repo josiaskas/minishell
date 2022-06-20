@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 01:09:34 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 18:38:47 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:35:56 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,9 @@ void	check_internal_cmd(t_command *command)
  * Check parse errors and errors to parser
  * return boolean (true) if no error (false) if found errors;
  */
-bool	check_p_err(t_array *lex, t_shell *parser, size_t i)
+bool	check_p_err(t_array *lex, t_shell *parser, size_t i, char *msg)
 {
 	t_lex_token	*token;
-	char		*error_msg;
 
 	if (!lex || !parser)
 		return (false);
@@ -61,15 +60,15 @@ bool	check_p_err(t_array *lex, t_shell *parser, size_t i)
 			|| (token->type == e_lex_quote_error))
 		{
 			parser->syntax_error = true;
-			error_msg = "syntax error near unexpected token";
+			msg = "syntax error near unexpected token";
 			if (token->type == e_lex_pipe_error)
-				error_msg = "syntax error near unexpected token `|'";
+				msg = "syntax error near unexpected token `|'";
 			else if (token->type == e_lex_redirection_error)
-				error_msg = "syntax error near unexpected token `<'";
+				msg = "syntax error near unexpected token `<'";
 			else if (token->type == e_lex_quote_error)
-				error_msg = "syntax error Quote error";
+				msg = "syntax error Quote error";
 			free(parser->error_msg);
-			parser->error_msg = ft_strdup(error_msg);
+			parser->error_msg = ft_strdup(msg);
 			return (false);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/15 11:43:52 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:42:08 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*get_new_line(void)
 	return (line);
 }
 
-static void set_heredoc_process_signal(void)
+static void	set_heredoc_process_signal(void)
 {
 	setup_signal(SIGINT, SIG_DFL);
 	setup_signal(SIGQUIT, SIG_IGN);
@@ -105,7 +105,7 @@ int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
 		if (command->redirections)
 			status = build_cmd_redirections(shell, command);
 		if (status == 1)
-			break;
+			break ;
 		command = command->pipe;
 	}
 	if (status == 1 && pipes)
