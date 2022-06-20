@@ -14,7 +14,7 @@
 #include "../../includes/pipelines.h"
 #include <stdio.h>
 
-static int	print_in_tty(char **args, int fd)
+static int	print_in_tty(char **args, int fd, size_t len)
 {
 	size_t	i;
 	bool	with_end;
@@ -23,23 +23,24 @@ static int	print_in_tty(char **args, int fd)
 	i = 0;
 	if (!args)
 		return(0);
-	if ((ft_strncmp(args[0], "-e", 2) == 0) && (ft_strlen(args[0]) == 2))
+	if ((ft_strncmp(args[0], "-n", 2) == 0) && (ft_strlen(args[0]) == 2))
 	{
 		with_end = false;
 		i = 1;
 	}
-	while (args[i])
+	while (i < len)
 	{
 		if ((i > 0 && with_end) || (i > 1 && !with_end))
 			ft_putstr_fd(" ", fd);
 		ft_putstr_fd(args[i], fd);
+		free(args[i]);
 		i++;
 	}
-	write(STDOUT_FILENO, "\n", 1);
+	write(fd, "\n", 1);
 	return (0);
 }
 
-static int	print_in_file(char **args, int fd)
+static int	print_in_file(char **args, int fd, size_t len)
 {
 	size_t	i;
 	bool	with_end;
@@ -48,16 +49,17 @@ static int	print_in_file(char **args, int fd)
 	i = 0;
 	if (!args)
 		return(0);
-	if ((ft_strncmp(args[0], "-e", 2) == 0) && (ft_strlen(args[0]) == 2))
+	if ((ft_strncmp(args[0], "-n", 2) == 0) && (ft_strlen(args[0]) == 2))
 	{
 		with_end = false;
 		i = 1;
 	}
-	while (args[i])
+	while (i < len)
 	{
 		if ((i > 0 && with_end) || (i > 1 && !with_end))
 			ft_putstr_fd(" ", fd);
 		ft_putstr_fd(args[i], fd);
+		free(args[i]);
 		i++;
 	}
 	if (with_end)
@@ -65,20 +67,33 @@ static int	print_in_file(char **args, int fd)
 	return (0);
 }
 
-// cd command (not finished yest)
-// @to-do
+void	*get_simple_args(void	*data, int index)
+{
+	char	*text;
+
+	text = ft_strdup((char *)data);
+	(void)index;
+	return text;
+}
+
 int	echo_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	char	**args;
+	size_t	i;
 
-	args = get_args_array(cmd);
+	i = 0;
+	args = NULL;
+	if (cmd->arguments)
+	{
+		args = (char **)ft_map(cmd->arguments, get_simple_args);
+		i = cmd->arguments->length;
+	}
 	if (isatty(cmd->fd[1]))
-		print_in_tty(args, cmd->fd[1]);
+		print_in_tty(args, cmd->fd[1], i);
 	else
-		print_in_file(args, cmd->fd[1]);
+		print_in_file(args, cmd->fd[1], i);
 	if (args)
-		ft_free_splitted(args);
-
+		free(args);
 	g_shell.status = 0;
 	shell->status = 0;
 	if(cmd->fd[0] != STDIN_FILENO)
