@@ -25,6 +25,13 @@ static char	*get_new_line(void)
 	line = readline("> ");
 	return (line);
 }
+
+static void set_heredoc_process_signal(void)
+{
+	setup_signal(SIGINT, SIG_DFL);
+	setup_signal(SIGQUIT, SIG_IGN);
+}
+
 /*
  * Process created to execute the heredoc
  * handle Ctrl-c signal
@@ -36,7 +43,7 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 	size_t	delim_len;
 	size_t	line_len;
 
-	ignore_signal_handling();
+	set_heredoc_process_signal();
 	close(pipe[0]);
 	delim_len = ft_strlen(redirection->filename);
 	line = get_new_line();
@@ -47,7 +54,6 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 			&& (delim_len == line_len))
 			break ;
 		print_heredoc_lex(line, pipe[1]);
-		//write(pipe[1], "\n", 1);
 		free(line);
 		line = get_new_line();
 	}
@@ -80,24 +86,32 @@ bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 		if (cmd->fd[0] != STDIN_FILENO)
 			close(cmd->fd[0]);
 		cmd->fd[0] = heredoc_fd[0];
-		if (WIFEXITED(status) && WEXITSTATUS(status) == SIGINT)
+		if (WIFSIGNALED(status))
 			return (false);
 	}
 	return (true);
 }
 
-int	build_all_cmd_redirections(t_shell *shell, t_command *command)
+int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
 {
 	int	status;
 
 	status = 0;
+	if (shell->error_msg)
+		free(shell->error_msg);
+	shell->error_msg = NULL;
 	while (command)
 	{
 		if (command->redirections)
 			status = build_cmd_redirections(shell, command);
 		if (status == 1)
-			return (1);
+			break;
 		command = command->pipe;
+	}
+	if (status == 1 && pipes)
+	{
+		close_all_pipes(pipes, shell->pipes_len);
+		free_array((void **)pipes, shell->pipes_len);
 	}
 	return (status);
 }

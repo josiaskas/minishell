@@ -33,7 +33,7 @@ static char	*make_status_bar(char *path, char *git_branch)
 	char	*bar;
 
 	bar = NULL;
-	bar = ft_strjoin("\033[36m ", path);
+	bar = ft_strjoin("\033[36m", path);
 	if (ft_strlen(git_branch) > 0)
 	{
 		temp = ft_strjoin(bar, "\033[37m |  on\033[32m ");

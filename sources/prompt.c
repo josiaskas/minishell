@@ -25,6 +25,7 @@ static char	*make_prompt_line(void)
 
 	line = NULL;
 	prompt = make_prompt(true);
+	rl_on_new_line();
 	line = readline(prompt);
 	if (prompt)
 		free(prompt);

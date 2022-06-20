@@ -34,6 +34,7 @@ int	get_sub_shell_last_cmd_status(t_command *commands)
 				ft_putstr_fd("Quit: ", STDOUT_FILENO);
 				ft_putnbr_fd(SIGQUIT, STDOUT_FILENO);
 			}
+			write(STDOUT_FILENO, "\n", 1);
 		}
 		else if (WIFEXITED(commands->status))
 			status = WEXITSTATUS(commands->status);

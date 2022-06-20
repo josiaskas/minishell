@@ -138,7 +138,7 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 		return (1);
 	if (assign_pipes(pipes, cmd, shell->pipes_len) != 0)
 		return (1);
-	if (build_all_cmd_redirections(shell, cmd))
+	if (build_all_cmd_r(shell, cmd, pipes) == 1)
 		return (1);
 	i = 0;
 	while (i < shell->pipes_len)
@@ -152,6 +152,5 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 	free_array((void **)pipes, shell->pipes_len);
 	wait_all_child_process(shell);
 	g_shell.status = get_sub_shell_last_cmd_status(shell->commands_list);
-	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }

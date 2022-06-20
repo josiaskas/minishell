@@ -71,7 +71,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	shell->is_parent = true;
 	cmd->fd[1] = STDOUT_FILENO;
 	if (cmd->redirections)
-		status = build_all_cmd_redirections(shell, cmd);
+		status = build_all_cmd_r(shell, cmd, NULL);
 	if (status > 0)
 	{
 		g_shell.status = 1;
