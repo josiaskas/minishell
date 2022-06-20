@@ -26,7 +26,7 @@ static void	set_redirection_error(t_shell *shell, char *filename, char *msg)
 	set_shell_error(shell, error_msg, 1);
 }
 
-static bool	make_output_redirection(t_redirection *redirection, t_shell *shell)
+static bool	m_out_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 {
 	int		fd;
 
@@ -47,13 +47,14 @@ static bool	make_output_redirection(t_redirection *redirection, t_shell *shell)
 	}
 	else
 	{
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
+		if (cmd->fd[1] != STDOUT_FILENO)
+			close(cmd->fd[1]);
+		cmd->fd[1] = fd;
 	}
 	return (true);
 }
 
-static bool	make_input_redirection(t_redirection *redirection, t_shell *shell)
+static bool	m_in_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 {
 	int		fd;
 
@@ -71,8 +72,9 @@ static bool	make_input_redirection(t_redirection *redirection, t_shell *shell)
 	}
 	else
 	{
-		dup2(fd, STDIN_FILENO);
-		close(fd);
+		if (cmd->fd[0] != STDIN_FILENO)
+			close(cmd->fd[0]);
+		cmd->fd[0] = fd;
 	}
 	return (true);
 }
@@ -91,13 +93,13 @@ int	build_cmd_redirections(t_shell *shell, t_command *command)
 	{
 		redirection = (t_redirection *)ft_get_elem(command->redirections, i);
 		if (redirection->type == e_redirection_input)
-			made = make_input_redirection(redirection, shell);
+			made = m_in_r(redirection, shell, command);
 		else if (redirection->type == e_redirection_output)
-			made = make_output_redirection(redirection, shell);
+			made = m_out_r(redirection, shell, command);
 		else if (redirection->type == e_redirection_append_out)
-			made = make_output_redirection(redirection, shell);
+			made = m_out_r(redirection, shell, command);
 		else if (redirection->type == e_redirection_heredoc)
-			made = make_heredoc_red(redirection, shell);
+			made = m_heredoc_r(redirection, shell, command);
 		if (made == false)
 			break ;
 		i++;

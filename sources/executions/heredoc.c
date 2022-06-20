@@ -57,7 +57,7 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 	exit(0);
 }
 
-bool	make_heredoc_red(t_redirection *redirection, t_shell *shell)
+bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 {
 	pid_t	pid;
 	int		status;
@@ -75,14 +75,29 @@ bool	make_heredoc_red(t_redirection *redirection, t_shell *shell)
 		sub_heredoc(redirection, heredoc_fd);
 	else
 	{
-		waitpid(pid, &status, 0);
-		dup2(heredoc_fd[0], STDIN_FILENO);
 		close(heredoc_fd[1]);
-		close(heredoc_fd[0]);
-		ft_putnbr_fd(status, STDOUT_FILENO);
-		ft_putendl_fd("pass th wait\n", STDOUT_FILENO);
+		waitpid(pid, &status, 0);
+		if (cmd->fd[0] != STDIN_FILENO)
+			close(cmd->fd[0]);
+		cmd->fd[0] = heredoc_fd[0];
 		if (WIFEXITED(status) && WEXITSTATUS(status) == SIGINT)
 			return (false);
 	}
 	return (true);
+}
+
+int	build_all_cmd_redirections(t_shell *shell, t_command *command)
+{
+	int	status;
+
+	status = 0;
+	while (command)
+	{
+		if (command->redirections)
+			status = build_cmd_redirections(shell, command);
+		if (status == 1)
+			return (1);
+		command = command->pipe;
+	}
+	return (status);
 }

@@ -30,9 +30,11 @@ void	close_all_pipes(int *pipes[], int len);
 
 
 int		build_cmd_redirections(t_shell *shell, t_command *command);
-bool	make_heredoc_red(t_redirection *redirection, t_shell *shell);
+//bool	make_heredoc_red(t_redirection *redirection, t_shell *shell);
+bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd);
 void	print_heredoc_lex(char *sentence, int write_pipe);
 void	destroy_redirections(t_array *redirections);
+int		build_all_cmd_redirections(t_shell *shell, t_command *command);
 
 void	destroy_shell_data(t_shell *shell);
 void	print_cmd_error(char *cmd_name, char *error_msg);

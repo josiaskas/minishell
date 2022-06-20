@@ -49,13 +49,13 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
  */
 int	execute_cmd(t_shell *shell, t_command *cmd)
 {
-	int		status;
-
-	status  = 0;
-	if (cmd->redirections)
-		status = build_cmd_redirections(shell, cmd);
-	if (status > 0)
-		return (status);
+//	int		status;
+//
+//	status  = 0;
+//	if (cmd->redirections)
+//		status = build_cmd_redirections(shell, cmd);
+//	if (status > 0)
+//		return (status);
 	set_default_signal_handling();
 	if (cmd->is_internal)
 		return (execute_internal(shell, cmd));
@@ -71,7 +71,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	shell->is_parent = true;
 	cmd->fd[1] = STDOUT_FILENO;
 	if (cmd->redirections)
-		status = build_cmd_redirections(shell, cmd);
+		status = build_all_cmd_redirections(shell, cmd);
 	if (status > 0)
 	{
 		g_shell.status = 1;

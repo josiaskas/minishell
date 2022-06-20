@@ -89,5 +89,6 @@ void	print_heredoc_lex(char *sentence, int write_pipe)
 			ft_putstr_fd(lex_tok->value, write_pipe);
 		cursor++;
 	}
+	write(write_pipe, "\n", 1);
 	destroy_lexer(lexer);
 }
