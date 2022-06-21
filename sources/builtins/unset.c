@@ -13,17 +13,54 @@
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
 
+void	find_and_unset(char *var_name)
+{
+	t_dic_node	*dic;
+	char		*key;
+	size_t		i;
+	size_t		len;
+
+	i = 0;
+	while (i < g_shell.env->length)
+	{
+		dic = (t_dic_node *)ft_get_elem(g_shell.env, i);
+		if (dic == 0)
+			break ;
+		key = dic->key;
+		len = ft_strlen(key);
+		if ((ft_strncmp(key, var_name, len) == 0)
+			&& (len == ft_strlen(var_name)))
+		{
+			ft_del_elem(g_shell.env, i);
+			break;
+		}
+		i++;
+	}
+}
+
 int	unset_cmd_builtin(t_shell *shell, t_command *cmd)
 {
-	int	status;
+	char	*arg;
+	size_t	i;
 
-	status = 0;
-	shell->status = status;
-	g_shell.status = status;
+	i= 0;
+	shell->status = 0;
+	g_shell.status = 0;
+	if (cmd->arguments)
+	{
+		while (i < cmd->arguments->length)
+		{
+			arg = NULL;
+			arg = (char *)ft_get_elem(cmd->arguments, i);
+			find_and_unset(arg);
+			i++;
+		}
+	}
+	g_shell.status = shell->status;
 	if (cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);
 	if (cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
-	return (status);
+	return (0);
 }
 
