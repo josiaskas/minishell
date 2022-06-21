@@ -83,7 +83,7 @@ void	ft_make_env_table(char *envp[])
 			ft_strlcpy(var_name, envp[i], (value - envp[i]) + 1);
 			value = ft_strdup((value + 1));
 			ft_push_to_dic(env, var_name, value);
-			if (ft_strncmp("PATH", value, 5) == 0)
+			if (ft_strncmp("PATH", var_name, 5) == 0)
 				make_paths(value);
 		}
 		i++;

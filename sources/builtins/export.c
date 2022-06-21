@@ -39,6 +39,20 @@ static char	*get_varname(char *begin, char *end)
 	return (varname);
 }
 
+static void	add_element_to_env(char *var_name, char *value)
+{
+	t_dic_node	*dic;
+
+	dic = ft_elem_dic(g_shell.env, var_name);
+	if (dic)
+	{
+		free (dic->content);
+		dic->content = value;
+	}
+	else
+		ft_push_to_dic(g_shell.env, var_name, value);
+}
+
 static int	try_add_env(t_shell *shell, char *arg)
 {
 	char	*var_name;
@@ -57,7 +71,7 @@ static int	try_add_env(t_shell *shell, char *arg)
 	{
 		var_name = get_varname(arg, temp);
 		value = ft_strdup((temp + 1));
-		//ft_push_to_dic(g_shell.env, var_name, value);
+		add_element_to_env(var_name, value);
 		return (0);
 	}
 	return (0);
