@@ -39,6 +39,8 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
 		return (pwd_builtin_cmd(shell, cmd));
 	else if (cmd->internal_cmd == e_cmd_intern_env)
 		return (env_builtin_cmd(shell, cmd));
+	else if (cmd->internal_cmd == e_cmd_intern_export)
+		return (export_cmd_builtin(shell, cmd));
 	shell->status = 0;
 	return (0);
 }

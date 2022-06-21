@@ -48,7 +48,7 @@ STATUS_SRC = bar.c environement.c sub_shell.c signals.c
 STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 
 #builtins source
-BUILTINS_SRC = exit.c cd_cmd.c pwd.c echo.c env_cmd.c
+BUILTINS_SRC = exit.c cd_cmd.c pwd.c echo.c env_cmd.c export.c unset.c
 BUILTINS_PREFIXED = $(addprefix builtins/, $(BUILTINS_SRC))
 
 SRCS = main.c prompt.c  $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \
