@@ -20,35 +20,25 @@ size_t	all_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 	lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
 	lex_tok->type = e_lex_literal;
 	lex_tok->value = NULL;
-	while ((tok->type != e_token_quote)
-		&& (tok->type != e_token_dquote)
-		&& (tok->type != e_token_variable)
-		&& (tok->type != e_token_eof))
+	while (tok->type != e_token_eof)
 	{
-		temp = ft_strjoin(lex_tok->value, tok->value);
-		free(lex_tok->value);
-		lex_tok->value = temp;
-		i++;
+		if (tok->type == e_token_quote)
+			i = a_quote_t(tokens, tok, i, lex_tok);
+		else if (tok->type == e_token_dquote)
+			i = a_dquote_t(tokens, tok, i, lex_tok);
+		else if (tok->type == e_token_variable)
+			i = a_var_t(tok, i, lex_tok);
+		else
+		{
+			temp = ft_strjoin(lex_tok->value, tok->value);
+			free(lex_tok->value);
+			lex_tok->value = temp;
+			i++;
+		}
 		tok = (t_token *)ft_get_elem(tokens, i);
 	}
 	ft_push(lex, lex_tok);
 	return (i);
-}
-
-size_t	get_hd_a(t_array *tokens, t_token *tok, size_t i, t_array *lex)
-{
-	size_t	cursor;
-
-	cursor = i;
-	if (tok->type == e_token_quote)
-		cursor = a_quote(tokens, tok, cursor, lex);
-	else if (tok->type == e_token_dquote)
-		cursor = a_dquote(tokens, tok, cursor, lex);
-	else if (tok->type == e_token_variable)
-		cursor = analyse_var(tok, cursor, lex);
-	else
-		cursor = all_lit(tokens, tok, cursor, lex);
-	return (cursor);
 }
 
 static t_array	*heredoc_lexer(char *sentence)
@@ -67,7 +57,7 @@ static t_array	*heredoc_lexer(char *sentence)
 	token = (t_token *)ft_get_elem(tokenizer->tokens, i);
 	while (token->type != e_token_eof)
 	{
-		i = get_hd_a(tokenizer->tokens, token, i, lexer);
+		i = all_lit(tokenizer->tokens, token, i, lexer);
 		token = (t_token *)ft_get_elem(tokenizer->tokens, i);
 	}
 	destroy_tokinizer(tokenizer);

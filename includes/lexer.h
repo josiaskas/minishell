@@ -43,11 +43,11 @@ typedef struct s_lex_token {
 
 size_t	analyse_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex);
 
-size_t	a_quote(t_array *tokens, t_token *tok, size_t i, t_array *lex);
+size_t	a_quote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok);
 
-size_t	a_dquote(t_array *tokens, t_token *tok, size_t i, t_array *lex);
+size_t	a_dquote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok);
 
-size_t	analyse_var(t_token *tok, size_t i, t_array *lex);
+size_t	a_var_t(t_token *tok, size_t i, t_lex_token *lex_tok);
 
 size_t	analyse_redirection(t_token *token, size_t cursor, t_array *lex);
 
@@ -59,6 +59,6 @@ bool	is_minishell_redir(t_token *token);
 
 int		lex_get_status_value(int is_reset);
 
-size_t	make_redirection_error(t_token *token, size_t cursor, t_array *lex);
+bool	check_if_is_literal(t_token *tok);
 
 #endif

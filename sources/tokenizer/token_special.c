@@ -55,6 +55,7 @@ void	custom_tok(t_token *curr, t_token *last, int cursor, char *str)
 		curr->value = get_word_in_sentence(cursor, str, ft_strlen(str));
 		curr->meta = last->value;
 		curr->end_pos = cursor + ft_strlen(curr->value);
+		free(last);
 		return ;
 	}
 	else

@@ -13,7 +13,7 @@
 #include "../../includes/minishell.h"
 #include "../../includes/lexer.h"
 
-
+// concatenate by toking the value inside a tok (metas included)
 static char	*quick_concatenate(t_token *tok, char *old_value)
 {
 	char	*temp;
@@ -52,68 +52,78 @@ static char	*get_variable_value_from_tok(t_token *tok)
 	return (value);
 }
 
-// push the literal token build inside single quote, return the cursor
-size_t	a_quote(t_array *tokens, t_token *tok, size_t i, t_array *lex)
+/*
+ * Add to literal the value inside single quote
+ * concatenate inside lex_tok->value
+ * or set lex_tok->type to error
+ */
+size_t	a_quote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
 {
-	t_lex_token	*lex_tok;
-
-	lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
-	tok = (t_token *)ft_get_elem(tokens, ++i);
+	tok = (t_token *)ft_get_elem(toks, ++i);
 	while ((tok->type != e_token_quote) && (tok->type != e_token_eof))
 	{
 		lex_tok->value = quick_concatenate(tok, lex_tok->value);
-		tok = (t_token *)ft_get_elem(tokens, ++i);
+		tok = (t_token *)ft_get_elem(toks, ++i);
 	}
 	if (tok->type == e_token_eof)
 		lex_tok->type = e_lex_quote_error;
 	else
 		i++;
-	ft_push(lex, lex_tok);
 	return (i);
 }
 
-// push the literal token build inside double quote, return the cursor
-size_t	a_dquote(t_array *tokens, t_token *tok, size_t i, t_array *lex)
+/*
+ * Add to literal the value inside double quote
+ * concatenate inside lex_tok->value
+ * or set lex_tok->type to error
+ */
+size_t	a_dquote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
 {
-	t_lex_token	*lex_tok;
-	char		*temp;
+	char	*tmp;
+	char	*var;
 
-	lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
-	tok = (t_token *)ft_get_elem(tokens, ++i);
-	lex_tok->value = NULL;
+	tok = (t_token *)ft_get_elem(toks, ++i);
 	while ((tok->type != e_token_dquote) && (tok->type != e_token_eof))
 	{
 		if (tok->type == e_token_variable)
 		{
-			temp = ft_strjoin(lex_tok->value, get_variable_value_from_tok(tok));
+			tmp = NULL;
+			var = get_variable_value_from_tok(tok);
+			tmp = ft_strjoin(lex_tok->value, var);
 			free(lex_tok->value);
-			lex_tok->value = temp;
+			free(var);
+			lex_tok->value = tmp;
 		}
 		else
 			lex_tok->value = quick_concatenate(tok, lex_tok->value);
-		tok = (t_token *)ft_get_elem(tokens, ++i);
+		tok = (t_token *)ft_get_elem(toks, ++i);
 	}
 	if (tok->type == e_token_eof)
 		lex_tok->type = e_lex_quote_error;
 	else
 		i++;
-	ft_push(lex, lex_tok);
 	return (i);
 }
 
-// push inside t_array *lex the value of the variable (tok->value) return i++;
-size_t	analyse_var(t_token *tok, size_t i, t_array *lex)
+/*
+ * Add to literal the value inside var
+ * concatenate inside lex_tok->value
+ * or set lex_tok->type to error
+ */
+size_t	a_var_t(t_token *tok, size_t i, t_lex_token *lex_tok)
 {
-	t_lex_token	*lex_tok;
+	char	*tmp;
+	char	*var;
 
+	tmp = NULL;
 	if (tok->type == e_token_variable)
 	{
-		lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
-		lex_tok->type = e_lex_literal;
-		lex_tok->value = get_variable_value_from_tok(tok);
-		ft_push(lex, lex_tok);
+		var = get_variable_value_from_tok(tok);
+		tmp = ft_strjoin(lex_tok->value, var);
+		free(lex_tok->value);
+		free(var);
+		lex_tok->value = tmp;
 		i++;
 	}
 	return (i);
 }
-

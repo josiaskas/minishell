@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 19:02:47 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:20:10 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/22 19:58:37 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,21 @@ size_t	analyse_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 	lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
 	lex_tok->type = e_lex_literal;
 	lex_tok->value = NULL;
-	while ((tok->type != e_token_space)
-		&& (!is_minishell_redir(tok))
-		&& (tok->type != e_token_quote)
-		&& (tok->type != e_token_dquote)
-		&& (tok->type != e_token_variable)
-		&& (tok->type != e_token_pipe)
-		&& (tok->type != e_token_or)
-		&& (tok->type != e_token_eof))
+	while (check_if_is_literal(tok))
 	{
-		temp = ft_strjoin(lex_tok->value, tok->value);
-		free(lex_tok->value);
-		lex_tok->value = temp;
-		i++;
+		if (tok->type == e_token_quote)
+			i = a_quote_t(tokens, tok, i, lex_tok);
+		else if (tok->type == e_token_dquote)
+			i = a_dquote_t(tokens, tok, i, lex_tok);
+		else if (tok->type == e_token_variable)
+			i = a_var_t(tok, i, lex_tok);
+		else
+		{
+			temp = ft_strjoin(lex_tok->value, tok->value);
+			free(lex_tok->value);
+			lex_tok->value = temp;
+			i++;
+		}
 		tok = (t_token *)ft_get_elem(tokens, i);
 	}
 	ft_push(lex, lex_tok);
@@ -95,12 +97,6 @@ size_t	get_analyser(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 		cursor = analyse_redirection(tok, cursor, lex);
 	else if ((tok->type == e_token_pipe) || (tok->type == e_token_or))
 		cursor = analyze_separator(tok, cursor, lex);
-	else if (tok->type == e_token_quote)
-		cursor = a_quote(tokens, tok, cursor, lex);
-	else if (tok->type == e_token_dquote)
-		cursor = a_dquote(tokens, tok, cursor, lex);
-	else if (tok->type == e_token_variable)
-		cursor = analyse_var(tok, cursor, lex);
 	else
 		cursor = analyse_lit(tokens, tok, cursor, lex);
 	return (cursor);

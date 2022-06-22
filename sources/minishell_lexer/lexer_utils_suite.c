@@ -43,24 +43,6 @@ int	lex_get_status_value(int is_reset)
 	return (value);
 }
 
-/*
- * Push inside lex an error token if token->type is e_token_herestr
- */
-size_t	make_redirection_error(t_token *token, size_t cursor, t_array *lex)
-{
-	t_lex_token	*lex_tok;
-
-	if (token->type == e_token_herestr)
-	{
-		lex_tok = (t_lex_token *)ft_calloc(1, sizeof(t_lex_token));
-		lex_tok->type = e_lex_redirection_error;
-		lex_tok->value = NULL;
-		ft_push(lex, lex_tok);
-		cursor++;
-	}
-	return (cursor);
-}
-
 void	destroy_lexer(t_array *lexer)
 {
 	t_lex_token	*content;
@@ -75,4 +57,17 @@ void	destroy_lexer(t_array *lexer)
 	}
 	free(lexer);
 	lexer = NULL;
+}
+
+bool	check_if_is_literal(t_token *tok)
+{
+	if ((tok->type != e_token_space)
+		&& (!is_minishell_redir(tok))
+		&& (tok->type != e_token_pipe)
+		&& (tok->type != e_token_or)
+		&& (tok->type != e_token_eof))
+	{
+		return (true);
+	}
+	return (false);
 }
