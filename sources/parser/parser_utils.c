@@ -40,6 +40,7 @@ void	check_internal_cmd(t_command *command)
 		}
 		i++;
 	}
+	ft_free_splitted(internals);
 }
 
 /*
