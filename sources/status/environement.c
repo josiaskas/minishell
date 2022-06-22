@@ -97,6 +97,7 @@ void	ft_create_environ(char *envp[])
 
 	level = 1;
 	ft_make_env_table(envp);
+	g_shell.error_msg = NULL;
 	if (!g_shell.paths)
 		make_paths(NULL);
 	set_env_pwd();
@@ -122,4 +123,6 @@ void	delete_environ(void)
 	ft_free_dic(env);
 	ft_free_d_array(paths);
 	free(g_shell.pwd);
+	if (g_shell.error_msg)
+		free(g_shell.error_msg);
 }

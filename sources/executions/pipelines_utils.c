@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/pipelines.h"
+#include <readline/history.h>
 
 // force parent to wait for all the child
 void	wait_all_child_process(t_shell *shell)
@@ -33,6 +34,8 @@ void	close_all_pipes(int *pipes[], int len)
 	int	i;
 
 	i = 0;
+	if (!pipes)
+		return ;
 	while (i < len)
 	{
 		close(pipes[i][0]);
@@ -96,5 +99,6 @@ void	exit_subshell_cmd(t_shell *shell, t_command *command)
 	g_shell.status = shell->status;
 	destroy_shell_data(shell);
 	delete_environ();
+	clear_history();
 	exit(g_shell.status);
 }

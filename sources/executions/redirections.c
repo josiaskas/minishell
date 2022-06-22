@@ -79,7 +79,7 @@ static bool	m_in_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 	return (true);
 }
 
-int	build_cmd_redirections(t_shell *shell, t_command *command)
+int	build_cmd_reds(t_shell *shell, t_command *command, int *pipes[])
 {
 	bool			made;
 	size_t			i;
@@ -92,12 +92,11 @@ int	build_cmd_redirections(t_shell *shell, t_command *command)
 		redirection = (t_redirection *)ft_get_elem(command->redirections, i);
 		if (redirection->type == e_redirection_input)
 			made = m_in_r(redirection, shell, command);
-		else if (redirection->type == e_redirection_output)
-			made = m_out_r(redirection, shell, command);
-		else if (redirection->type == e_redirection_append_out)
+		else if ((redirection->type == e_redirection_output)
+			|| (redirection->type == e_redirection_append_out))
 			made = m_out_r(redirection, shell, command);
 		else if (redirection->type == e_redirection_heredoc)
-			made = m_heredoc_r(redirection, shell, command);
+			made = m_here_r(redirection, shell, command, pipes);
 		if (made == false)
 			break ;
 		i++;

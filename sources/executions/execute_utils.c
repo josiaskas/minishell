@@ -53,8 +53,6 @@ char	**get_args_array(t_command *command)
 	size_t	i;
 	size_t	len;
 
-	args = NULL;
-	i = 0;
 	if (!command->arguments && command->cmd)
 	{
 		args = (char **)ft_calloc(1, (2 * sizeof(char *)));
@@ -64,13 +62,16 @@ char	**get_args_array(t_command *command)
 	}
 	tmp_args = (char **)ft_map(command->arguments, map_ret_content);
 	len = command->arguments->length;
-	args = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
+	args = (char **)ft_calloc(1, ((len + 2) * sizeof(char *)));
+	args[0] = ft_strdup(command->cmd);
+	i = 0;
 	while (i < len)
 	{
-		args[i] = ft_strdup(tmp_args[i]);
+		args[i + 1] = ft_strdup(tmp_args[i]);
 		i++;
 	}
-	args[i] = NULL;
+	args[i + 1] = NULL;
+	free(tmp_args);
 	return (args);
 }
 
@@ -89,14 +90,15 @@ char	**get_env_array(t_command *command)
 
 	env = NULL;
 	i = 0;
-	tmp_env = (char **)ft_map_d(command->env, map_join_key_content);
 	len = command->env->length;
+	tmp_env = (char **)ft_map_d(command->env, map_join_key_content);
 	env = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
 	while (i < len)
 	{
-		env[i] = ft_strdup(tmp_env[i]);
+		env[i] = tmp_env[i];
 		i++;
 	}
 	env[i] = NULL;
+	free(tmp_env);
 	return (env);
 }

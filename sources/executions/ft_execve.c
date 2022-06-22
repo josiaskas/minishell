@@ -75,7 +75,6 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 	env = NULL;
 	if (cmd->cmd)
 	{
-		ft_unshift(cmd->arguments, (void *)ft_strdup(cmd->cmd));
 		args = get_args_array(cmd);
 		env = get_env_array(cmd);
 		ft_try_exec_cmd(cmd->cmd, args, env);

@@ -37,7 +37,7 @@ static void	set_heredoc_process_signal(void)
  * handle Ctrl-c signal
  * exit with 0
  */
-static int	sub_heredoc(t_redirection *redirection, int pipe[])
+static int	sub_h(t_shell *shell, t_redirection *red, int pipe[], int *pipes[])
 {
 	char	*line;
 	size_t	delim_len;
@@ -45,12 +45,12 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 
 	set_heredoc_process_signal();
 	close(pipe[0]);
-	delim_len = ft_strlen(redirection->filename);
+	delim_len = ft_strlen(red->filename);
 	line = get_new_line();
 	while (line != NULL)
 	{
 		line_len = ft_strlen(line);
-		if ((ft_strncmp(line, redirection->filename, line_len) == 0)
+		if ((ft_strncmp(line, red->filename, line_len) == 0)
 			&& (delim_len == line_len))
 			break ;
 		print_heredoc_lex(line, pipe[1]);
@@ -60,10 +60,14 @@ static int	sub_heredoc(t_redirection *redirection, int pipe[])
 	if (line)
 		free(line);
 	close(pipe[1]);
+	close_all_pipes(pipes, shell->pipes_len);
+	destroy_shell_data(shell);
+	delete_environ();
 	exit(0);
 }
 
-bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
+// redirection, shell, cmd, pipes
+bool	m_here_r(t_redirection *red, t_shell *shell, t_command *cmd, int *pi[])
 {
 	pid_t	pid;
 	int		status;
@@ -78,7 +82,7 @@ bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd)
 		return (false);
 	}
 	if (pid == 0)
-		sub_heredoc(redirection, heredoc_fd);
+		sub_h(shell, red, heredoc_fd, pi);
 	else
 	{
 		close(heredoc_fd[1]);
@@ -103,7 +107,7 @@ int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
 	while (command)
 	{
 		if (command->redirections)
-			status = build_cmd_redirections(shell, command);
+			status = build_cmd_reds(shell, command, pipes);
 		if (status == 1)
 			break ;
 		command = command->pipe;

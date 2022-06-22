@@ -72,6 +72,7 @@ int	minishell_loop(void)
 			break ;
 		}
 	}
+	clear_history();
 	delete_environ();
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
