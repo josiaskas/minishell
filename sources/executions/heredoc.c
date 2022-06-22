@@ -110,6 +110,8 @@ int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
 	}
 	if (status == 1 && pipes)
 	{
+		shell->status = 1;
+		g_shell.status = 1;
 		close_all_pipes(pipes, shell->pipes_len);
 		free_array((void **)pipes, shell->pipes_len);
 	}

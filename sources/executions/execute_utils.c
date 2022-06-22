@@ -14,12 +14,12 @@
 #include <errno.h>
 #include <string.h>
 
-void	set_shell_error(t_shell *parser, char *msg, int code)
+void	set_shell_error(t_shell *shell, char *msg, int code)
 {
-	if (parser->error_msg)
-		free(parser->error_msg);
-	parser->error_msg = msg;
-	parser->status = code;
+	if (shell->error_msg)
+		free(shell->error_msg);
+	shell->error_msg = msg;
+	shell->status = code;
 }
 
 static void	*map_ret_content(void *content, int index)
