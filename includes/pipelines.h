@@ -27,10 +27,7 @@ int		get_sub_shell_last_cmd_status(t_command *commands);
 void	set_len_of_piped_command(t_shell *shell);
 void	set_shell_error(t_shell *parser, char *msg, int code);
 void	close_all_pipes(int *pipes[], int len);
-
-
 int		build_cmd_redirections(t_shell *shell, t_command *command);
-//bool	make_heredoc_red(t_redirection *redirection, t_shell *shell);
 bool	m_heredoc_r(t_redirection *redirection, t_shell *shell, t_command *cmd);
 void	print_heredoc_lex(char *sentence, int write_pipe);
 void	destroy_redirections(t_array *redirections);
