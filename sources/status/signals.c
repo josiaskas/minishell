@@ -6,13 +6,12 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:12:33 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:30:10 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:20:41 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/status.h"
 #include <signal.h>
-
 #include <readline/readline.h>
 
 int	setup_signal(int signal, void (*handler)(int))

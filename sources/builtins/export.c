@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:46 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:19:08 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	*get_varname(char *begin, char *end)
 {
 	char	*varname;
 
-	varname = (char *)NULL;
+	varname = (char *) NULL;
 	while (begin != end)
 	{
 		varname = ft_concat_char(varname, begin[0]);

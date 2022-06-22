@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:46 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/22 18:19:22 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	find_and_unset(char *var_name)
 			&& (len == ft_strlen(var_name)))
 		{
 			ft_del_elem(g_shell.env, i);
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -43,7 +43,7 @@ int	unset_cmd_builtin(t_shell *shell, t_command *cmd)
 	char	*arg;
 	size_t	i;
 
-	i= 0;
+	i = 0;
 	shell->status = 0;
 	g_shell.status = 0;
 	if (cmd->arguments)
