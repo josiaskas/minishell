@@ -63,6 +63,8 @@ void	destroy_shell_data(t_shell *shell)
 	}
 	if (shell->error_msg)
 		free(shell->error_msg);
+	free(shell);
+	shell = NULL;
 }
 
 // set the length of piped command
