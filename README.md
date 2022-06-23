@@ -29,7 +29,7 @@ void	activate_signal_handling(void)
 	setup_signal(SIGQUIT, SIG_IGN);
 }
 ```
-<span style="color:blue">info (readline lib)</span>
+#### <span style="color:blue">info (readline lib)</span>
 
 Malheureusement `handle_sigint` fait appelle a la fonction `rl_replace_line`, fonction qui est une source de problème pour la librairie readline utiliser sur les Mac (Pour des raisons de licence).
 
