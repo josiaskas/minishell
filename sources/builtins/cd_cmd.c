@@ -28,6 +28,22 @@ static void	set_cd_error(t_shell *shell, char *path, char *msg)
 	set_shell_error(shell, error_msg, 1);
 }
 
+static void	set_to_home_dir(t_shell *shell)
+{
+	t_dic_node	*dic;
+	char		*path;
+
+	dic = ft_elem_dic(g_shell.env, "HOME");
+	if (dic)
+	{
+		path = (char *)dic->content;
+		if (chdir(path) != 0)
+			set_cd_error(shell, path, ft_strdup(strerror(errno)));
+		else
+			set_env_pwd();
+	}
+}
+
 int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	char	*path;
@@ -45,6 +61,8 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 				set_env_pwd();
 		}
 	}
+	else
+		set_to_home_dir(shell);
 	g_shell.status = shell->status;
 	if (cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);

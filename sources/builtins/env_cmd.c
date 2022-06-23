@@ -13,8 +13,6 @@
 #include "../../includes/builtins.h"
 #include "../../includes/pipelines.h"
 
-// env command (not finished yest)
-// @to-do
 int	env_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	char	**envs;
