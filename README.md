@@ -1,7 +1,14 @@
-# MINISHELL
+# MINISHELL (In construction)
 
 
-## 1. Loop (in interactive mode)
+L’objectif de ce projet est de créer un shell minimaliste.
+Un projet super interessant pour apprendre plus sur les processus, les descripteurs de fichier, les signaux et certains system call. (***version 6*** 42)
+
+ ```sh
+  git clone --recurse-submodules git@github.com:josiaskas/minishell
+ ```
+ 
+## 1. Loop (interactive mode)
 
 #### 1.1 signals
 ```C
@@ -22,7 +29,7 @@ void	activate_signal_handling(void)
 	setup_signal(SIGQUIT, SIG_IGN);
 }
 ```
-##### info (readline lib)
+#### <span style="color:blue">info (readline lib)</span>
 
 Malheureusement `handle_sigint` fait appelle a la fonction `rl_replace_line`, fonction qui est une source de problème pour la librairie readline utiliser sur les Mac (Pour des raisons de licence).
 
@@ -34,6 +41,8 @@ void	rl_replace_line(const char *text, int clear_undo);
 ```
 
 Si vous compilez sous linux il faudra changer les flags ***-L*** dans le Makefile
+
+ note : readline a des "still reachable" blocks.
 
 ## 2. Parsing
 
