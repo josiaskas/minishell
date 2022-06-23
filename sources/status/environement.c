@@ -50,7 +50,11 @@ void	set_env_pwd(void)
 			g_shell.error_msg = strerror(errno);
 	}
 	if (path)
+	{
+		if (g_shell.pwd)
+			free(g_shell.pwd);
 		g_shell.pwd = path;
+	}
 	dic = ft_elem_dic(g_shell.env, "PWD");
 	if (dic)
 	{

@@ -31,7 +31,10 @@ void	find_and_unset(char *var_name)
 		if ((ft_strncmp(key, var_name, len) == 0)
 			&& (len == ft_strlen(var_name)))
 		{
-			ft_del_elem(g_shell.env, i);
+			dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
+			free(dic->content);
+			free(dic->key);
+			free(dic);
 			break ;
 		}
 		i++;
