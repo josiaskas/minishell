@@ -85,6 +85,20 @@ Il permet la création des t_command, une structure, qui va par la suite aider �
 
 #### 3.1 Redirections
 
+On execute premièrement les redirections (Sauf en cas de pipeline).
+Le parseur permet d'avoir un tableau rempli de la structure t_redirection.
+
+```C
+typedef struct s_redirection {
+	int					fd;
+	t_redirection_type	type;
+	char				*filename;
+}	t_redirection;
+```
+
+On execute à la suite chacune d'entre elles. Ce qui permet de fermer puis ouvrir a souhait. Le tableau  ```C command->fd ``` est constament modifer.
+- note : Il n'y a pas de traitment pour certaines redirection ```shell 2>&1 ``` ou ```shell 2> filename ```. 
+
 #### 3.2 Heredoc
 
 #### 3.3 Pipeline
