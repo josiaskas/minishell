@@ -51,7 +51,20 @@ Si vous compilez sous linux il faudra changer les flags ***-L*** dans le Makefil
 Pour le parsing j'ai choisi de le faire en 3 étapes. Deux d'entre elles sont liées, tokenization et l’analyse lexicale. 
 Normalement sur le plan scientifique, c'est sensé designer la meme chose à peu près, [Analyse lexicale](https://fr.wikipedia.org/wiki/Analyse_lexicale). Ce qui est certain, c'est la première partie une partie de mon [Analyseur syntaxique](https://fr.wikipedia.org/wiki/Analyse_syntaxique).
 
-![parser part 1](https://github.com/josiaskas/minishell/blob/5875426d0ce06758f582b8f407b1d7ba1aea160e/github/Parser_part1.jpeg)
+<table style="padding:10px">
+  <tr>
+	<th>Tokenizer</th>
+	<th>Lexer</th>
+  </tr>
+  <tr>
+    <td> 
+        <img src="github/Tokenizer_board.jpeg"  alt="incomplete" width = 500px>
+    </td>
+    <td> 
+         <img src="github/real_v2_lexer.jpeg"  alt="incomplete" width = 500px>
+    </td>
+  </tr>
+</table>
 
 - Plus de details sur le tokenizer ici [Tokenizer wiki](https://github.com/josiaskas/minishell/wiki/Tokenizer)
 - Plus de details sur le lexer ici [Lexer wiki](https://github.com/josiaskas/minishell/wiki/Lexer)
