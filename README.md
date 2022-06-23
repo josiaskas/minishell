@@ -1,8 +1,13 @@
-# MINISHELL
+# MINISHELL (In construction)
+
 
 L’objectif de ce projet est de créer un shell minimaliste.
 Un projet super interessant pour apprendre plus sur les processus, les descripteurs de fichier, les signaux et certains system call. (***version 6*** 42)
 
+ ```sh
+  git clone --recurse-submodules git@github.com:josiaskas/minishell
+ ```
+ 
 ## 1. Loop (in interactive mode)
 
 #### 1.1 signals
