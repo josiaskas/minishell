@@ -36,7 +36,8 @@ static int	print_in_tty(char **args, int fd, size_t len)
 		free(args[i]);
 		i++;
 	}
-	write(fd, "\n", 1);
+	if (with_end)
+		write(fd, "\n", 1);
 	return (0);
 }
 
