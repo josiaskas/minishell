@@ -96,7 +96,7 @@ typedef struct s_redirection {
 }	t_redirection;
 ```
 
-On execute à la suite chacune d'entre elles. Ce qui permet de fermer puis ouvrir a souhait. Le tableau  ```C command->fd ``` est constament modifer.
+On execute à la suite chacune d'entre elles. Ce qui permet de fermer puis ouvrir a souhait. Le tableau  ``` command->fd ``` est constament modifer.
 - note : Il n'y a pas de traitment pour certaines redirection ```shell 2>&1 ``` ou ```shell 2> filename ```. 
 
 #### 3.2 Heredoc
