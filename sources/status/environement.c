@@ -46,8 +46,8 @@ void	set_env_pwd(void)
 	if (buffer)
 	{
 		path = getcwd(buffer, 2048);
-		if (!path)
-			g_shell.error_msg = strerror(errno);
+		if (!ft_strlen(path))
+			g_shell.error_msg = buffer;
 	}
 	if (path)
 	{
@@ -115,6 +115,8 @@ void	ft_create_environ(char *envp[])
 	}
 	else
 		ft_push_to_dic(g_shell.env, ft_strdup("SHLVL"), ft_itoa(1));
+	if (g_shell.error_msg)
+		ft_putendl_fd(g_shell.error_msg, STDERR_FILENO);
 }
 
 void	delete_environ(void)
