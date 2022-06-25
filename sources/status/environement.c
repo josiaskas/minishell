@@ -77,7 +77,6 @@ void	ft_create_environ(char *envp[])
 	t_dic_node	*dic;
 	int			level;
 
-	level = 1;
 	ft_make_env_table(envp);
 	g_shell.error_msg = NULL;
 	if (!g_shell.paths)

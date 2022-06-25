@@ -87,7 +87,6 @@ static void	exec_subshell(t_shell *shell, t_command *command, int *pipes[])
 	command->fd[1] = STDOUT_FILENO;
 	command->state = e_cmd_running;
 	command->shell_level++;
-	command->env = g_shell.env;
 	shell->status = 0;
 	if (shell->error_msg)
 		free(shell->error_msg);
