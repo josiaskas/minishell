@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "../includes/parser.h"
 #include "../includes/pipelines.h"
 #include <unistd.h>
 #include <stdio.h>
@@ -73,7 +72,6 @@ int	minishell_loop(void)
 		}
 	}
 	clear_history();
-	delete_environ();
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
 }

@@ -13,6 +13,20 @@
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
 
+static void unset_found_dic_entry(t_dic_node *dic, size_t i)
+{
+	dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
+	if (ft_strncmp("PATH", dic->key, 5) == 0)
+	{
+		if (g_shell.paths)
+			ft_free_d_array(g_shell.paths);
+		g_shell.paths = ft_new_array();
+	}
+	free(dic->content);
+	free(dic->key);
+	free(dic);
+}
+
 void	find_and_unset(char *var_name)
 {
 	t_dic_node	*dic;
@@ -31,10 +45,7 @@ void	find_and_unset(char *var_name)
 		if ((ft_strncmp(key, var_name, len) == 0)
 			&& (len == ft_strlen(var_name)))
 		{
-			dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
-			free(dic->content);
-			free(dic->key);
-			free(dic);
+			unset_found_dic_entry(dic, i);
 			break ;
 		}
 		i++;

@@ -14,6 +14,7 @@
 # define STATUS_H
 
 # include "minishell.h"
+# include "parser.h"
 
 char	*make_prompt(bool with_bar);
 void	ft_create_environ(char *envp[]);
@@ -24,5 +25,6 @@ void	activate_signal_handling(void);
 void	ignore_signal_handling(void);
 void	set_default_signal_handling(void);
 void	rl_replace_line(const char *text, int clear_undo);
-void	set_env_pwd(void);
+void	set_env_pwd(t_shell *shell);
+void	make_bin_search_paths(char *path_var);
 #endif

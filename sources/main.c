@@ -16,11 +16,17 @@ t_mshell	g_shell;
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	(void)argc;
-	(void)argv;
-	g_shell.env = 0;
-	g_shell.paths = 0;
+	ft_bzero(&g_shell, sizeof(t_mshell));
 	ft_create_environ(envp);
-	minishell_loop();
+	if (argc >= 2)
+	{
+		if (argv[1][0] == '-' && argv[2])
+			get_flag_command_and_exec(argv[1], argv[2]);
+		else
+			command_mode_script(argv[1]);
+	}
+	else
+		minishell_loop();
+	delete_environ();
 	return (g_shell.status);
 }

@@ -38,9 +38,9 @@ static void	set_to_home_dir(t_shell *shell)
 	{
 		path = (char *)dic->content;
 		if (chdir(path) != 0)
-			set_cd_error(shell, path, ft_strdup(strerror(errno)));
+			set_cd_error(shell, path, strerror(errno));
 		else
-			set_env_pwd();
+			set_env_pwd(shell);
 	}
 }
 
@@ -56,9 +56,9 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 		if (path)
 		{
 			if (chdir(path) != 0)
-				set_cd_error(shell, path, ft_strdup(strerror(errno)));
+				set_cd_error(shell, path, strerror(errno));
 			else
-				set_env_pwd();
+				set_env_pwd(shell);
 		}
 	}
 	else

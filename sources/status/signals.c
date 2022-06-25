@@ -33,6 +33,7 @@ void	handle_sigint(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	rl_cleanup_after_signal();
 }
 
 void	activate_signal_handling(void)

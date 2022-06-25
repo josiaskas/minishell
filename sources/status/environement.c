@@ -11,15 +11,25 @@
 /* ************************************************************************** */
 
 #include "../../includes/status.h"
-#include <errno.h>
-#include <string.h>
+#include "../../includes/builtins.h"
 
-static void	make_paths(char *path_var)
+static void print_shell_init_error(void)
+{
+	ft_putstr_fd("minishell-init: ", STDERR_FILENO);
+	ft_putendl_fd(g_shell.error_msg, STDERR_FILENO);
+	free(g_shell.error_msg);
+	g_shell.error_msg = NULL;
+}
+
+// create the array of bin path
+void	make_bin_search_paths(char *path_var)
 {
 	t_array	*paths;
 	char	**list;
 	size_t	i;
 
+	if (g_shell.paths)
+		ft_free_d_array(g_shell.paths);
 	paths = ft_new_array();
 	i = 0;
 	if (paths && path_var)
@@ -35,36 +45,6 @@ static void	make_paths(char *path_var)
 	g_shell.paths = paths;
 }
 
-void	set_env_pwd(void)
-{
-	char		*path;
-	char		*buffer;
-	t_dic_node	*dic;
-
-	path = NULL;
-	buffer = (char *)ft_calloc(1, 2048);
-	if (buffer)
-	{
-		path = getcwd(buffer, 2048);
-		if (!ft_strlen(path))
-			g_shell.error_msg = buffer;
-	}
-	if (path)
-	{
-		if (g_shell.pwd)
-			free(g_shell.pwd);
-		g_shell.pwd = path;
-	}
-	dic = ft_elem_dic(g_shell.env, "PWD");
-	if (dic)
-	{
-		free (dic->content);
-		dic->content = ft_strdup(g_shell.pwd);
-	}
-	else
-		ft_push_to_dic(g_shell.env, ft_strdup("PWD"), ft_strdup(g_shell.pwd));
-}
-
 void	ft_make_env_table(char *envp[])
 {
 	t_array	*env;
@@ -77,18 +57,16 @@ void	ft_make_env_table(char *envp[])
 	if (!env || !envp)
 		return ;
 	i = 0;
-	while (envp[i] != 0)
+	while (ft_strlen(envp[i]))
 	{
 		value = ft_strchr(envp[i], '=');
-		if (value && (value > envp[i]))
+		if ((value) && (value > envp[i]))
 		{
-
-			var_name = ft_calloc(1, (value - envp[i]) + 1);
-			ft_strlcpy(var_name, envp[i], (value - envp[i]) + 1);
+			var_name = ft_get_env_varname(envp[i], value);
 			value = ft_strdup((value + 1));
 			ft_push_to_dic(env, var_name, value);
 			if (ft_strncmp("PATH", var_name, 5) == 0)
-				make_paths(value);
+				make_bin_search_paths(value);
 		}
 		i++;
 	}
@@ -103,8 +81,8 @@ void	ft_create_environ(char *envp[])
 	ft_make_env_table(envp);
 	g_shell.error_msg = NULL;
 	if (!g_shell.paths)
-		make_paths(NULL);
-	set_env_pwd();
+		make_bin_search_paths(NULL);
+	set_env_pwd(NULL);
 	dic = ft_elem_dic(g_shell.env, "SHLVL");
 	if (dic)
 	{
@@ -116,19 +94,20 @@ void	ft_create_environ(char *envp[])
 	else
 		ft_push_to_dic(g_shell.env, ft_strdup("SHLVL"), ft_itoa(1));
 	if (g_shell.error_msg)
-		ft_putendl_fd(g_shell.error_msg, STDERR_FILENO);
+		print_shell_init_error();
 }
 
 void	delete_environ(void)
 {
-	t_array			*env;
-	t_array			*paths;
-
-	env = g_shell.env;
-	paths = g_shell.paths;
-	ft_free_dic(env);
-	ft_free_d_array(paths);
-	free(g_shell.pwd);
+	ft_free_dic(g_shell.env);
+	g_shell.env = NULL;
+	if (g_shell.paths)
+	{
+		ft_free_d_array(g_shell.paths);
+		g_shell.paths = NULL;
+	}
+	if (g_shell.pwd)
+		free(g_shell.pwd);
 	if (g_shell.error_msg)
 		free(g_shell.error_msg);
 }

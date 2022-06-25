@@ -26,11 +26,11 @@ static void	set_export_error(t_shell *shell, char *id)
 	set_shell_error(shell, error_msg, 1);
 }
 
-static char	*get_varname(char *begin, char *end)
+char	*ft_get_env_varname(char *begin, char *end)
 {
 	char	*varname;
 
-	varname = (char *) NULL;
+	varname = (char *)NULL;
 	while (begin != end)
 	{
 		varname = ft_concat_char(varname, begin[0]);
@@ -51,6 +51,8 @@ static void	add_element_to_env(char *var_name, char *value)
 	}
 	else
 		ft_push_to_dic(g_shell.env, var_name, value);
+	if (ft_strncmp("PATH", var_name, 5) == 0)
+		make_bin_search_paths(value);
 }
 
 static int	try_add_env(t_shell *shell, char *arg)
@@ -69,7 +71,7 @@ static int	try_add_env(t_shell *shell, char *arg)
 	}
 	else if (temp != arg)
 	{
-		var_name = get_varname(arg, temp);
+		var_name = ft_get_env_varname(arg, temp);
 		value = ft_strdup((temp + 1));
 		add_element_to_env(var_name, value);
 		return (0);

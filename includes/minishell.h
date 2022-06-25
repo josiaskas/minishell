@@ -26,6 +26,9 @@ typedef struct s_mshell
 }	t_mshell;
 
 extern t_mshell	g_shell;
-int	minishell_loop(void);
+
+void	command_mode_script(char *file_path);
+void	get_flag_command_and_exec(char *flags, char *line);
+int		minishell_loop(void);
 
 #endif
