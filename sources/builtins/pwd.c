@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:35 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:36:06 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,3 @@ int	pwd_builtin_cmd(t_shell *shell, t_command *cmd)
 		close (cmd->fd[1]);
 	return (0);
 }
-

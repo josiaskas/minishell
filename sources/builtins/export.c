@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:19:08 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:36:00 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_get_env_varname(char *begin, char *end)
 	char	*varname;
 	size_t	len;
 
-	varname = (char *)NULL;
+	varname = (char *) NULL;
 	len = end - begin;
 	if (len > 0)
 	{
@@ -98,7 +98,7 @@ int	export_cmd_builtin(t_shell *shell, t_command *cmd)
 			arg = (char *)ft_get_elem(cmd->arguments, i);
 			status = try_add_env(shell, arg);
 			if (status == 1)
-				break;
+				break ;
 			i++;
 		}
 	}

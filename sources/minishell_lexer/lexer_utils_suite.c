@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils_suite.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/25 16:34:24 by jkasongo          #+#    #+#             */
+/*   Updated: 2022/06/25 16:34:28 by jkasongo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/lexer.h"
 #include "../../includes/minishell.h"
@@ -35,7 +46,6 @@ int	lex_get_status_value(int is_reset)
 		is_to_zero = 1;
 	else if (is_reset == 1)
 		is_to_zero = 0;
-
 	if (is_to_zero == 1)
 		value = 0;
 	else

@@ -6,14 +6,14 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:19:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:36:17 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
 
-static void unset_found_dic_entry(t_dic_node *dic, size_t i)
+static void	unset_found_dic_entry(t_dic_node *dic, size_t i)
 {
 	dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
 	if (ft_strncmp("PATH", dic->key, 5) == 0)
@@ -77,4 +77,3 @@ int	unset_cmd_builtin(t_shell *shell, t_command *cmd)
 		close (cmd->fd[1]);
 	return (0);
 }
-

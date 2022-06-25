@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:42:08 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:35:24 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <readline/readline.h>
 #include <errno.h>
 #include <string.h>
-
 
 static char	*get_new_line(void)
 {

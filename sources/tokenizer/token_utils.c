@@ -6,27 +6,11 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:46:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:20:55 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:33:46 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/tokenizer.h"
-
-// * return true if token is a redirection token
-// */
-//bool	is_redirection_token(t_token *token)
-//{
-//	if(token)
-//	{
-//		if ((token->type == e_token_less)
-//			|| (token->type == e_token_greater)
-//			|| (token->type == e_token_heredoc_right)
-//			|| (token->type == e_token_heredoc_left)
-//			|| (token->type == e_token_herestr))
-//			return (true);
-//	}
-//	return (false);
-//}
 
 /*
  * return true if string is only numbers
