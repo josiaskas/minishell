@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/25 16:36:00 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:40:22 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	export_cmd_builtin(t_shell *shell, t_command *cmd)
 	size_t	i;
 	int		status;
 
-	i= 0;
+	i = 0;
 	shell->status = 0;
 	g_shell.status = 0;
 	if (cmd->arguments)

@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 21:12:33 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:20:41 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:39:56 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	set_env_pwd(t_shell *shell)
 			dic->content = ft_strdup(g_shell.pwd);
 		}
 		else
-			ft_push_to_dic(g_shell.env, ft_strdup("PWD"), ft_strdup(g_shell.pwd));
+			ft_push_to_dic(g_shell.env,
+				ft_strdup("PWD"), ft_strdup(g_shell.pwd));
 	}
 }

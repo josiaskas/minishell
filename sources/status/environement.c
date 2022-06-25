@@ -6,14 +6,14 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:45:21 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/22 18:20:33 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/25 16:38:31 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/status.h"
 #include "../../includes/builtins.h"
 
-static void print_shell_init_error(void)
+static void	print_shell_init_error(void)
 {
 	ft_putstr_fd("minishell-init: ", STDERR_FILENO);
 	ft_putendl_fd(g_shell.error_msg, STDERR_FILENO);
