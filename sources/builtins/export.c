@@ -29,12 +29,14 @@ static void	set_export_error(t_shell *shell, char *id)
 char	*ft_get_env_varname(char *begin, char *end)
 {
 	char	*varname;
+	size_t	len;
 
 	varname = (char *)NULL;
-	while (begin != end)
+	len = end - begin;
+	if (len > 0)
 	{
-		varname = ft_concat_char(varname, begin[0]);
-		begin++;
+		varname = (char *)ft_calloc(1, len + 1);
+		ft_strlcpy(varname, begin, len + 1);
 	}
 	return (varname);
 }
