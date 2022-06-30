@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   loop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,6 +15,16 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <readline/history.h>
+
+
+static	void loop_banner(void)
+{
+	ft_putstr_fd(" __  __ ___ _   _ ___ ____  _   _ _____ _     _\n", 1);
+	ft_putstr_fd("|  \\/  |_ _| \\ | |_ _/ ___|| | | | ____| |   | |\n", 1);
+	ft_putstr_fd("| |\\/| || ||  \\| || |\\___ \\| |_| |  _| | |   | |\n", 1);
+	ft_putstr_fd("| |  | || || |\\  || | ___) |  _  | |___| |___| |___\n", 1);
+	ft_putstr_fd("|_|  |_|___|_| \\_|___|____/|_| |_|_____|_____|_____|\n", 1);
+}
 
 static char	*make_prompt_line(void)
 {
@@ -57,6 +67,7 @@ int	minishell_loop(void)
 	int		code;
 
 	line = NULL;
+	loop_banner();
 	while (1)
 	{
 		activate_signal_handling();
@@ -72,5 +83,6 @@ int	minishell_loop(void)
 		}
 	}
 	clear_history();
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
 }

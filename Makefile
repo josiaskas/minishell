@@ -51,7 +51,7 @@ STATUS_PREFIXED = $(addprefix status/, $(STATUS_SRC))
 BUILTINS_SRC = exit.c cd_cmd.c pwd.c echo.c env_cmd.c export.c unset.c export_cmd_utils.c
 BUILTINS_PREFIXED = $(addprefix builtins/, $(BUILTINS_SRC))
 
-SRCS = main.c prompt.c command_mode.c $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \
+SRCS = main.c loop.c command_mode.c $(STATUS_PREFIXED) $(TOKENIZER_PREFIXED) $(LEXER_PREFIXED) $(PARSER_PREFIXED) \
 						$(EXECUTION_PREFIXED) $(BUILTINS_PREFIXED)
 SRCS_PREFIXED = $(addprefix $(SRCS_DIR), $(SRCS))
 
