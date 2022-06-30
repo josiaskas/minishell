@@ -36,30 +36,6 @@ static void	set_cmd_error(t_shell *shell, char *cmd_name, char *msg)
 }
 
 // try to run the command
-static void	ft_try_exec_cmd(char *cmd_name, char **args, char **env)
-{
-	char	*full_path;
-	char	*dir;
-	char	*tmp;
-	size_t	i;
-
-	full_path = ft_strrchr(cmd_name, '/');
-	if (full_path)
-		execve(cmd_name, args, env);
-	i = 0;
-	while (i < g_shell.paths->length)
-	{
-		if (cmd_name[0] == '/')
-			break ;
-		dir = (char *)ft_get_elem(g_shell.paths, i);
-		tmp = ft_strjoin(dir, "/");
-		full_path = ft_strjoin(tmp, cmd_name);
-		free (tmp);
-		execve(full_path, args, env);
-		free(full_path);
-		i++;
-	}
-}
 
 /*
  * Build args and env and try to run the command if command name exist
@@ -70,14 +46,18 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 {
 	char	**args;
 	char	**env;
+	char	*full_path;
 
 	args = NULL;
 	env = NULL;
+	full_path = get_correct_full_path_cmd(shell, cmd);
+	if (!full_path)
+		return (shell->status);
 	if (cmd->cmd)
 	{
 		args = get_args_array(cmd);
 		env = get_env_array(cmd);
-		ft_try_exec_cmd(cmd->cmd, args, env);
+		execve(full_path, args, env);
 		if (args)
 			ft_free_splitted(args);
 		if (env)

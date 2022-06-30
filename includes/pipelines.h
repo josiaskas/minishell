@@ -21,6 +21,7 @@ int		make_pipeline(t_shell *shell, t_command *cmd);
 void	wait_all_child_process(t_shell *shell);
 int		execute_cmd(t_shell *shell, t_command *cmd);
 int		ft_execve(t_shell *shell, t_command *cmd);
+char	*get_correct_full_path_cmd(t_shell *shell, t_command *cmd);
 void	exit_subshell_cmd(t_shell *shell, t_command *curr_command);
 int		get_sub_shell_last_cmd_status(t_command *commands);
 

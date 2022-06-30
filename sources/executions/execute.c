@@ -76,8 +76,12 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	}
 	if (cmd->internal_cmd == e_cmd_intern_exit)
 	{
-		exit_builtin_cmd(shell, cmd);
-		return (-1);
+		status = exit_builtin_cmd(shell, cmd);
+		if(shell->is_parent && (status == 1 && shell->error_msg))
+			return (1);
+		else if (shell->is_parent)
+			return (-1);
+		return (status);
 	}
 	status = execute_internal(shell, cmd);
 	return (status);
@@ -99,7 +103,7 @@ int	execute_pipeline(t_shell *shell)
 		code = execute_spec_internal_cmd(shell, shell->commands_list);
 	else
 		code = make_pipeline(shell, shell->commands_list);
-	if (code > 0 && shell->error_msg)
+	if (code != 0 && shell->error_msg)
 		print_cmd_error("minishell", shell->error_msg);
 	destroy_shell_data(shell);
 	return (code);

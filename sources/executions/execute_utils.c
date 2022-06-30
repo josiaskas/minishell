@@ -31,12 +31,28 @@ static void	*map_ret_content(void *content, int index)
 static void	*map_join_key_content(void *content, char *key, size_t index)
 {
 	char	*word;
-	char	*temp;
+	size_t	len_key;
+	size_t	len_content;
+	char	*data;
 
-	(void)index;
-	temp = ft_strjoin(key, "=");
-	word = ft_strjoin(temp, (char *)content);
-	free(temp);
+	data = (char *)content;
+	len_key = ft_strlen(key);
+	len_content = ft_strlen(data);
+	word =  (char *)ft_calloc(1, (len_key + len_content + 2));
+	index = 0;
+	while (index < len_key)
+	{
+		word[index] = key[index];
+		index++;
+	}
+	word[index] = '=';
+	index = 0;
+	while (index < len_content)
+	{
+		word[(len_key + 1 + index)] = data[index];
+		index++;
+	}
+	word[len_key + 1 + index] = 0;
 	return (word);
 }
 
@@ -92,13 +108,13 @@ char	**get_env_array(t_command *command)
 	i = 0;
 	len = command->env->length;
 	tmp_env = (char **)ft_map_d(command->env, map_join_key_content);
-	env = (char **)ft_calloc(1, ((len + 1) * sizeof(char *)));
+	env = (char **)ft_calloc((len + 1), sizeof(char *));
 	while (i < len)
 	{
-		env[i] = tmp_env[i];
+		env[i] = (char *)tmp_env[i];
 		i++;
 	}
-	env[i] = NULL;
+	env[i] = (char *)NULL;
 	free(tmp_env);
 	return (env);
 }
