@@ -11,21 +11,23 @@
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
-#include "../../includes/pipelines.h"
+#include "../../includes/minishell.h"
 #include <errno.h>
 #include <string.h>
 
 static void	set_cd_error(t_shell *shell, char *path, char *msg)
 {
 	char	*tmp;
-	char	*error_msg;
+	char	*tmp2;
 
-	ft_putstr_fd("cd: ", STDERR_FILENO);
-	tmp = ft_strjoin(path, ": ");
-	error_msg = ft_strjoin(tmp, msg);
+	tmp = ft_strjoin("cd: ", path);
+	tmp2 = ft_strjoin(": ", msg);
+	if (shell->error_msg)
+		free(shell->error_msg);
+	shell->error_msg = ft_strjoin(tmp, tmp2);
+	shell->status = 1;
 	free(tmp);
-	ft_putendl_fd(error_msg, STDERR_FILENO);
-	set_shell_error(shell, error_msg, 1);
+	free(tmp2);
 }
 
 static void	set_to_home_dir(t_shell *shell)
@@ -50,6 +52,9 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 
 	shell->status = 0;
 	g_shell.status = 0;
+	if (shell->error_msg)
+		free(shell->error_msg);
+	shell->error_msg = NULL;
 	if (cmd->arguments)
 	{
 		path = ft_get_elem(cmd->arguments, 0);
@@ -68,5 +73,5 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 		close (cmd->fd[0]);
 	if (cmd->fd[1] != STDOUT_FILENO)
 		close (cmd->fd[1]);
-	return (0);
+	return (shell->status);
 }

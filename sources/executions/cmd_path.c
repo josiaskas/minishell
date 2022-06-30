@@ -15,7 +15,7 @@
 #include <errno.h>
 #include <string.h>
 
-static void	set_cmd_error_p(t_shell *shell, char *cmd_name, char *msg)
+static void	set_cmd_error_p(t_shell *shell, char *cmd_name, char *msg, int code)
 {
 	char	*tmp;
 	char	*error_msg;
@@ -23,10 +23,11 @@ static void	set_cmd_error_p(t_shell *shell, char *cmd_name, char *msg)
 	tmp = ft_strjoin(cmd_name, ": ");
 	error_msg = ft_strjoin(tmp, msg);
 	free(tmp);
-	set_shell_error(shell, error_msg, 1);
+	set_shell_error(shell, error_msg, code);
 }
 
-static char	*find_working_path(t_shell *shell, t_command *cmd)
+// return malloced char of full working path or set cmd error
+static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 {
 	struct stat	buffer;
 	char		*tmp;
@@ -34,43 +35,65 @@ static char	*find_working_path(t_shell *shell, t_command *cmd)
 	size_t		i;
 
 	i = 0;
+	full_path = NULL;
 	while (i < g_shell.paths->length)
 	{
 		full_path = (char *)ft_get_elem(g_shell.paths, i);
 		tmp = ft_strjoin(full_path, "/");
-		free(full_path);
 		full_path = ft_strjoin(tmp, cmd->cmd);
 		free(tmp);
-		if (stat(full_path, &buffer) != 0)
-			set_cmd_error_p(shell, cmd->cmd, strerror(errno));
+		if (lstat(full_path, &buffer) != 0)
+			set_cmd_error_p(shell, cmd->cmd, "command not found", 127);
 		else if (S_ISDIR(buffer.st_mode))
 		{
-			errno = EISDIR;
-			set_cmd_error_p(shell, cmd->cmd, strerror(errno));
+			free(full_path);
+			set_cmd_error_p(shell, cmd->cmd, strerror(EISDIR), 126);
+			return (NULL);
 		}
 		else
 			return (full_path);
 		free(full_path);
+		full_path = NULL;
 		i++;
 	}
-	return (NULL);
+	return (full_path);
 }
 
-static bool	is_in_cwd(t_shell *shell, t_command *cmd)
+static bool	check_cmd_is_in_cwd(t_shell *shell, t_command *cmd)
 {
 	struct stat	buffer;
 	char		*path;
 
 	path = NULL;
-	path = ft_strrchr(cmd, '/');
-	if (path && stat(cmd, &buffer) == 0)
+	path = ft_strrchr(cmd->cmd, '/');
+	if (path && stat(cmd->cmd, &buffer) == 0)
 	{
 		if (S_ISDIR(buffer.st_mode))
 		{
-			set_cmd_error_p(shell, cmd->cmd, strerror(EISDIR));
+			set_cmd_error_p(shell, cmd->cmd, strerror(EISDIR), 126);
 			return (false);
 		}
 		return (true);
 	}
 	return (false);
+}
+
+char	*get_correct_full_path_cmd(t_shell *shell, t_command *cmd)
+{
+	char	*path;
+
+	path = NULL;
+	if (cmd->cmd)
+	{
+		if (check_cmd_is_in_cwd(shell, cmd))
+			return (ft_strdup(cmd->cmd));
+		else if (shell->status == 126)
+			return (NULL);
+		else
+		{
+			if (g_shell.paths)
+				path = find_cmd_working_path(shell, cmd);
+		}
+	}
+	return (path);
 }
