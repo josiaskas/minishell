@@ -31,7 +31,7 @@ char	*ft_get_env_varname(char *begin, char *end)
 	char	*varname;
 	size_t	len;
 
-	varname = (char *) NULL;
+	varname = (char *)NULL;
 	len = end - begin;
 	if (len > 0)
 	{
