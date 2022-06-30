@@ -72,6 +72,5 @@ int	minishell_loop(void)
 		}
 	}
 	clear_history();
-	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
 }
