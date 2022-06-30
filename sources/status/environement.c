@@ -49,7 +49,7 @@ void	ft_make_env_table(char *envp[])
 {
 	t_array	*env;
 	char	*value;
-	char	*var_name;
+	char	*var;
 	size_t	i;
 
 	env = ft_new_dic();
@@ -59,15 +59,11 @@ void	ft_make_env_table(char *envp[])
 	i = 0;
 	while (ft_strlen(envp[i]))
 	{
-		value = ft_strchr(envp[i], '=');
-		if ((value) && (value > envp[i]))
-		{
-			var_name = ft_get_env_varname(envp[i], value);
-			value = ft_strdup((value + 1));
-			ft_push_to_dic(env, var_name, value);
-			if (ft_strncmp("PATH", var_name, 5) == 0)
-				make_bin_search_paths(value);
-		}
+		var = ft_get_env_varname(envp[i]);
+		value = ft_get_env_value_in_line(envp[i]);
+		ft_push_to_dic(env, var, value);
+		if ((ft_strncmp("PATH", var, 5) == 0) && (ft_strlen(var) == 4))
+			make_bin_search_paths(value);
 		i++;
 	}
 }

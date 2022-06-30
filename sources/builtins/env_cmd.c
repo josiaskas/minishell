@@ -13,13 +13,14 @@
 #include "../../includes/builtins.h"
 #include "../../includes/pipelines.h"
 
-int	env_builtin_cmd(t_shell *shell, t_command *cmd)
+void	ft_print_env_variables(t_command *cmd)
 {
 	char	**envs;
 	size_t	i;
 
-	i = 0;
+	envs = NULL;
 	envs = get_env_array(cmd);
+	i = 0;
 	if (envs)
 	{
 		while (envs[i])
@@ -29,6 +30,11 @@ int	env_builtin_cmd(t_shell *shell, t_command *cmd)
 		}
 		ft_free_splitted(envs);
 	}
+}
+
+int	env_builtin_cmd(t_shell *shell, t_command *cmd)
+{
+	ft_print_env_variables(cmd);
 	g_shell.status = 0;
 	shell->status = 0;
 	if (cmd->fd[0] != STDIN_FILENO)
