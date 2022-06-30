@@ -17,7 +17,7 @@
 # include "parser.h"
 
 char	*make_prompt(bool with_bar);
-void	ft_create_environ(char *envp[]);
+void	ft_create_environ(const char *envp[]);
 void	delete_environ(void);
 void	handle_sigint(int signum);
 int		setup_signal(int signal, void (*handler)(int));

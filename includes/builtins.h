@@ -21,7 +21,6 @@ int		echo_builtin_cmd(t_shell *shell, t_command *cmd);
 int		env_builtin_cmd(t_shell *shell, t_command *cmd);
 int		export_cmd_builtin(t_shell *shell, t_command *cmd);
 int		unset_cmd_builtin(t_shell *shell, t_command *cmd);
-char	*ft_get_env_varname(char *env_line);
-char	*ft_get_env_value_in_line(char *env_line);
+char	*ft_get_env_varname(const char *env_line);
 void	ft_print_env_variables(t_command *cmd);
 #endif //BUILTINS_H

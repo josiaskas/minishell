@@ -45,7 +45,7 @@ void	make_bin_search_paths(char *path_var)
 	g_shell.paths = paths;
 }
 
-void	ft_make_env_table(char *envp[])
+void	ft_make_env_table(const char **envp)
 {
 	t_array	*env;
 	char	*value;
@@ -60,7 +60,7 @@ void	ft_make_env_table(char *envp[])
 	while (ft_strlen(envp[i]))
 	{
 		var = ft_get_env_varname(envp[i]);
-		value = ft_get_env_value_in_line(envp[i]);
+		value = ft_strdup(getenv(var));
 		ft_push_to_dic(env, var, value);
 		if ((ft_strncmp("PATH", var, 5) == 0) && (ft_strlen(var) == 4))
 			make_bin_search_paths(value);
@@ -68,7 +68,7 @@ void	ft_make_env_table(char *envp[])
 	}
 }
 
-void	ft_create_environ(char *envp[])
+void	ft_create_environ(const char *envp[])
 {
 	t_dic_node	*dic;
 	int			level;
@@ -94,7 +94,8 @@ void	ft_create_environ(char *envp[])
 
 void	delete_environ(void)
 {
-	ft_free_dic(g_shell.env);
+	if (g_shell.env)
+		ft_free_dic(g_shell.env);
 	g_shell.env = NULL;
 	if (g_shell.paths)
 	{

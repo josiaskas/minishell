@@ -12,7 +12,7 @@
 
 #include "../../includes/builtins.h"
 
-char	*ft_get_env_varname(char *env_line)
+char	*ft_get_env_varname(const char *env_line)
 {
 	char	*varname;
 	size_t	len;
@@ -22,35 +22,14 @@ char	*ft_get_env_varname(char *env_line)
 	len = ft_strlen(env_line);
 	if (len == 0)
 		return (NULL);
-	varname = (char *)ft_calloc(1, len + 1);
+	varname = NULL;
 	while (i < len)
 	{
 		if (env_line[i] == '=')
 			break;
-		varname[i] = env_line[i];
 		i++;
 	}
+	varname = (char *)ft_calloc(1, i + 1);
+	ft_strlcpy(varname, env_line, i + 1);
 	return (varname);
-}
-
-char	*ft_get_env_value_in_line(char *env_line)
-{
-	char	*value;
-	char	*word;
-	size_t	i;
-
-	i = 0;
-	value = NULL;
-	word = ft_strchr(env_line, '=');
-	if (word)
-	{
-		value = (char *)ft_calloc(1, ft_strlen(word) + 1);
-		while (word[i + 1] != 0)
-		{
-			value[i] = word[i + 1];
-			i++;
-		}
-		value[i] = 0;
-	}
-	return (value);
 }
