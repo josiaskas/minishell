@@ -27,8 +27,9 @@ int	setup_signal(int signal, void (*handler)(int))
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	g_shell.status = 1;
-	write(STDOUT_FILENO, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
+	write(STDERR_FILENO, "  \n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
