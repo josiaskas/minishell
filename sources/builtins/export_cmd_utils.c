@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/30 16:40:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:51:32 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_get_env_varname(const char *env_line)
 	while (i < len)
 	{
 		if (env_line[i] == '=')
-			break;
+			break ;
 		i++;
 	}
 	varname = (char *)ft_calloc(1, i + 1);

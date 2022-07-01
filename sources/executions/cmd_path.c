@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 12:38:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/30 12:39:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:59:21 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 	size_t		i;
 
 	i = 0;
-	full_path = NULL;
-	while (i < g_shell.paths->length)
+	while (i++ < g_shell.paths->length)
 	{
 		full_path = (char *)ft_get_elem(g_shell.paths, i);
 		tmp = ft_strjoin(full_path, "/");
@@ -53,10 +52,8 @@ static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 		else
 			return (full_path);
 		free(full_path);
-		full_path = NULL;
-		i++;
 	}
-	return (full_path);
+	return (NULL);
 }
 
 static bool	check_cmd_is_in_cwd(t_shell *shell, t_command *cmd)

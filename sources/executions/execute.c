@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:11 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:47:36 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	if (cmd->internal_cmd == e_cmd_intern_exit)
 	{
 		status = exit_builtin_cmd(shell, cmd);
-		if(shell->is_parent && (status == 1 && shell->error_msg))
+		if (shell->is_parent && (status == 1 && shell->error_msg))
 			return (1);
 		else if (shell->is_parent)
 			return (-1);

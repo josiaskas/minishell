@@ -6,13 +6,12 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:46 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:51:42 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
-
 
 static void	make_exit_error(char *arg, char *msg, t_shell *shell)
 {

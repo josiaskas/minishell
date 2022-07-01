@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/25 16:40:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:51:16 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	set_export_error(t_shell *shell, char *identifier)
 	free(tmp);
 }
 
-static	bool is_valid_varname_id(char *var_name)
+static	bool	is_valid_varname_id(char *var_name)
 {
 	size_t	size;
 	size_t	i;
@@ -95,7 +95,6 @@ int	export_cmd_builtin(t_shell *shell, t_command *cmd)
 	{
 		while (i < cmd->arguments->length)
 		{
-			arg = NULL;
 			arg = (char *)ft_get_elem(cmd->arguments, i);
 			status = try_add_env(shell, arg);
 			if (status == 1)

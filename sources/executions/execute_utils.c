@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 17:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/20 17:45:22 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 19:47:01 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	*map_join_key_content(void *content, char *key, size_t index)
 	data = (char *)content;
 	len_key = ft_strlen(key);
 	len_content = ft_strlen(data);
-	word =  (char *)ft_calloc(1, (len_key + len_content + 2));
+	word = (char *)ft_calloc(1, (len_key + len_content + 2));
 	index = 0;
 	while (index < len_key)
 	{
@@ -114,7 +114,7 @@ char	**get_env_array(t_command *command)
 		env[i] = (char *)tmp_env[i];
 		i++;
 	}
-	env[i] = (char *)NULL;
+	env[i] = (char *) NULL;
 	free(tmp_env);
 	return (env);
 }

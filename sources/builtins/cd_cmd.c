@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/25 16:35:43 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/06/30 20:03:28 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	cd_builtin_cmd(t_shell *shell, t_command *cmd)
 	char	*path;
 
 	shell->status = 0;
-	g_shell.status = 0;
 	if (shell->error_msg)
 		free(shell->error_msg);
 	shell->error_msg = NULL;
