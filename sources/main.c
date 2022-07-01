@@ -16,7 +16,7 @@ t_mshell	g_shell;
 
 int	main(int argc, char *argv[], char const *envp[])
 {
-	//ft_bzero(&g_shell, sizeof(t_mshell));
+	ft_bzero(&g_shell, sizeof(t_mshell));
 	ft_create_environ(envp);
 	if (argc >= 2)
 	{

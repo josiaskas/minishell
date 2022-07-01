@@ -16,8 +16,7 @@
 #include <stdio.h>
 #include <readline/history.h>
 
-
-static	void loop_banner(void)
+static void	loop_banner(void)
 {
 	ft_putstr_fd(" __  __ ___ _   _ ___ ____  _   _ _____ _     _\n", 1);
 	ft_putstr_fd("|  \\/  |_ _| \\ | |_ _/ ___|| | | | ____| |   | |\n", 1);
