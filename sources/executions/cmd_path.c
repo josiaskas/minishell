@@ -87,7 +87,7 @@ char	*get_correct_full_path_cmd(t_shell *shell, t_command *cmd)
 		else if (shell->status == 126)
 			return (NULL);
 		else if ((ft_strncmp(cmd->cmd, "./", 2) == 0)
-				|| (ft_strncmp(cmd->cmd, "../", 3) == 0))
+			|| (ft_strncmp(cmd->cmd, "../", 3) == 0))
 		{
 			set_cmd_error_p(shell, cmd->cmd, strerror(ENOENT), 127);
 			return (NULL);
