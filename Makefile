@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror  -g
+CFLAGS = -Wall -Wextra -Werror
 INCLUDES_DIR = includes/
 READLINE_DIR = ./readline
 SRCS_DIR = sources/
