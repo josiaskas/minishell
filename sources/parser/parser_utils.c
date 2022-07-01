@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/parser.h"
+#include "../../includes/minishell.h"
 
 /*
  * Check if the command is an internal command
@@ -129,4 +130,23 @@ size_t	build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
 		}
 	}
 	return (cursor);
+}
+
+/*
+ * This function update $_ to the last expended litteral
+ * it can be the cmd->name or an arg of a command
+ */
+void	parser_update_special_underscore_var(char *value)
+{
+	t_dic_node	*dic;
+
+	dic = NULL;
+	dic = ft_elem_dic(g_shell.env, "_");
+	if (dic)
+	{
+		free(dic->content);
+		dic->content = value;
+	}
+	else
+		ft_push_to_dic(g_shell.env, ft_strdup("_"), value);
 }

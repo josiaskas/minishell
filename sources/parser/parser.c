@@ -19,6 +19,7 @@
  */
 static void	build_cmd_args(t_lex_token *tok, t_command *cmd)
 {
+	parser_update_special_underscore_var(ft_strdup(tok->value));
 	if (!cmd->cmd)
 	{
 		if (tok->value)

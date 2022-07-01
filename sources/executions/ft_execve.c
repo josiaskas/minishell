@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/pipelines.h"
-#include <errno.h>
 #include <string.h>
 
 void	print_cmd_error(char *cmd_name, char *error_msg)

@@ -87,4 +87,6 @@ char		*get_red_filename(size_t i, t_array *lexer, t_command *cmd);
 
 size_t		build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor);
 
+void		parser_update_special_underscore_var(char *value);
+
 #endif
