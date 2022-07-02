@@ -25,7 +25,7 @@ static void	set_export_error(t_shell *shell, char *identifier)
 	free(tmp);
 }
 
-static	bool	is_valid_varname_id(char *var_name)
+bool	is_valid_varname_id(char *var_name)
 {
 	size_t	size;
 	size_t	i;

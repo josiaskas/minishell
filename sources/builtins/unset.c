@@ -13,6 +13,18 @@
 #include "../../includes/builtins.h"
 #include "../../includes/minishell.h"
 
+static void	print_unset_error(t_shell *shell, char *identifier)
+{
+	char	*tmp;
+	char	*error_msg;
+
+	tmp = ft_strjoin("minishell: unset: `", identifier);
+	error_msg = ft_strjoin(tmp, "': not a valid identifier");
+	free(tmp);
+	ft_putendl_fd(error_msg, STDERR_FILENO);
+	shell->status = 1;
+}
+
 static void	unset_found_dic_entry(t_dic_node *dic, size_t i)
 {
 	dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
@@ -78,7 +90,10 @@ int	unset_cmd_builtin(t_shell *shell, t_command *cmd)
 		{
 			arg = NULL;
 			arg = (char *)ft_get_elem(cmd->arguments, i);
-			find_and_unset(arg);
+			if (is_valid_varname_id(arg))
+				find_and_unset(arg);
+			else
+				print_unset_error(shell, arg);
 			i++;
 		}
 	}
