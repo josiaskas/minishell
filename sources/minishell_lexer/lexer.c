@@ -44,9 +44,9 @@ size_t	analyse_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 	lex_tok->value = NULL;
 	while (check_if_is_literal(tok))
 	{
-		if (tok->type == e_token_quote)
+		if ((tok->type == e_token_quote) && is_close_t_s(tokens, tok, i))
 			i = a_quote_t(tokens, tok, i, lex_tok);
-		else if (tok->type == e_token_dquote)
+		else if ((tok->type == e_token_dquote) && is_close_t_s(tokens, tok, i))
 			i = a_dquote_t(tokens, tok, i, lex_tok);
 		else if (tok->type == e_token_variable)
 			i = a_var_t(tok, i, lex_tok);

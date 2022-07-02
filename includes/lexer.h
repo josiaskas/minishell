@@ -61,4 +61,5 @@ int		lex_get_status_value(int is_reset);
 
 bool	check_if_is_literal(t_token *tok);
 
+bool	is_close_t_s(t_array *tokens, t_token *token, size_t i);
 #endif

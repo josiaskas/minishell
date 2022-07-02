@@ -81,3 +81,29 @@ bool	check_if_is_literal(t_token *tok)
 	}
 	return (false);
 }
+
+/*
+ * Check if a token is repeated, closed.
+ * go from cursor to eof if not return false
+ */
+bool	is_close_t_s(t_array *tokens, t_token *token, size_t i)
+{
+	t_token_type	closing_type;
+
+	if (token->type == e_token_left_paren)
+		closing_type = e_token_right_paren;
+	else
+		closing_type = token->type;
+	if (token->type == e_token_eof)
+		return (false);
+	if (token->type == e_token_right_paren)
+		return (false);
+	token = (t_token *)ft_get_elem(tokens, ++i);
+	while ((token->type != closing_type) && (token->type != e_token_eof))
+	{
+		token = (t_token *)ft_get_elem(tokens, ++i);
+	}
+	if (token->type == e_token_eof)
+		return (false);
+	return(true);
+}
