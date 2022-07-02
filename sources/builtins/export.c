@@ -52,12 +52,15 @@ static void	add_to_env_data(char *var_name, char *value)
 
 	dic = NULL;
 	len = ft_strlen(var_name);
+	dic = ft_elem_dic(g_shell.env, var_name);
 	if ((ft_strncmp(var_name, "_", len) == 0) && len == 1)
 	{
 		free(value);
-		value = ft_strdup("_");
+		free(var_name);
+		free(dic->content);
+		dic->content = ft_strdup("_");
+		return ;
 	}
-	dic = ft_elem_dic(g_shell.env, var_name);
 	if (dic)
 	{
 		free(dic->content);
