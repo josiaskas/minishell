@@ -22,11 +22,7 @@ size_t	all_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 	lex_tok->value = NULL;
 	while (tok->type != e_token_eof)
 	{
-		if (tok->type == e_token_quote)
-			i = a_quote_t(tokens, tok, i, lex_tok);
-		else if (tok->type == e_token_dquote)
-			i = a_dquote_t(tokens, tok, i, lex_tok);
-		else if (tok->type == e_token_variable)
+		if (tok->type == e_token_variable)
 			i = a_var_t(tok, i, lex_tok);
 		else
 		{
