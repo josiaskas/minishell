@@ -26,6 +26,18 @@ static void	set_cmd_error_p(t_shell *shell, char *cmd_name, char *msg, int code)
 	set_shell_error(shell, error_msg, code);
 }
 
+static void	set_cmd_path_env_expansion(char *full_path)
+{
+	t_dic_node	*dic;
+
+	dic = NULL;
+	dic = ft_elem_dic(g_shell.env, "_");
+	if (dic)
+	{
+		free(dic->content);
+		dic->content = ft_strdup(full_path);
+	}
+}
 // return malloced char of full working path or set cmd error
 static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 {
@@ -37,7 +49,7 @@ static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 	i = 0;
 	while (i++ < g_shell.paths->length)
 	{
-		full_path = (char *)ft_get_elem(g_shell.paths, i);
+		full_path = (char *)ft_get_elem(g_shell.paths, (i - 1));
 		tmp = ft_strjoin(full_path, "/");
 		full_path = ft_strjoin(tmp, cmd->cmd);
 		free(tmp);
@@ -56,7 +68,7 @@ static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 	return (NULL);
 }
 
-static bool	check_cmd_is_in_cwd(t_shell *shell, t_command *cmd)
+static bool	check_cmd_is_with_path(t_shell *shell, t_command *cmd)
 {
 	struct stat	buffer;
 	char		*path;
@@ -82,21 +94,22 @@ char	*get_correct_full_path_cmd(t_shell *shell, t_command *cmd)
 	path = NULL;
 	if (cmd->cmd)
 	{
-		if (check_cmd_is_in_cwd(shell, cmd))
-			return (ft_strdup(cmd->cmd));
+		if (check_cmd_is_with_path(shell, cmd))
+			path = ft_strdup(cmd->cmd);
 		else if (shell->status == 126)
-			return (NULL);
+			path = NULL;
 		else if ((ft_strncmp(cmd->cmd, "./", 2) == 0)
 			|| (ft_strncmp(cmd->cmd, "../", 3) == 0))
-		{
 			set_cmd_error_p(shell, cmd->cmd, strerror(ENOENT), 127);
-			return (NULL);
-		}
 		else
 		{
-			if (g_shell.paths)
+			if (g_shell.paths->length)
 				path = find_cmd_working_path(shell, cmd);
+			else
+				path = ft_strdup(cmd->cmd);
 		}
 	}
+	if (path)
+		set_cmd_path_env_expansion(path);
 	return (path);
 }
