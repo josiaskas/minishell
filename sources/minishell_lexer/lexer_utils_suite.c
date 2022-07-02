@@ -105,5 +105,5 @@ bool	is_close_t_s(t_array *tokens, t_token *token, size_t i)
 	}
 	if (token->type == e_token_eof)
 		return (false);
-	return(true);
+	return (true);
 }
