@@ -72,7 +72,10 @@ int	minishell_loop(void)
 		activate_signal_handling();
 		line = make_prompt_line();
 		if (!line)
+		{
+			ft_putendl_fd("exit", STDOUT_FILENO);
 			code = -1;
+		}
 		else
 			code = shell_loop_logic(line);
 		if (code == -1)
@@ -82,6 +85,5 @@ int	minishell_loop(void)
 		}
 	}
 	clear_history();
-	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (code);
 }

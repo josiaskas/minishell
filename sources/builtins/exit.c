@@ -61,6 +61,7 @@ int	exit_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	int		status;
 
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (shell->error_msg)
 		free(shell->error_msg);
 	shell->error_msg = NULL;
