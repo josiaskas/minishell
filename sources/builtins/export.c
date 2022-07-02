@@ -48,8 +48,15 @@ static	bool	is_valid_varname_id(char *var_name)
 static void	add_to_env_data(char *var_name, char *value)
 {
 	t_dic_node	*dic;
+	size_t		len;
 
 	dic = NULL;
+	len = ft_strlen(var_name);
+	if ((ft_strncmp(var_name, "_", len) == 0) && len == 1)
+	{
+		free(value);
+		value = ft_strdup("_");
+	}
 	dic = ft_elem_dic(g_shell.env, var_name);
 	if (dic)
 	{
@@ -103,7 +110,7 @@ int	export_cmd_builtin(t_shell *shell, t_command *cmd)
 		}
 	}
 	else
-		ft_print_env_variables(cmd);
+		ft_print_env_variables_with_declare(cmd);
 	g_shell.status = shell->status;
 	if (cmd->fd[0] != STDIN_FILENO)
 		close (cmd->fd[0]);

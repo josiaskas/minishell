@@ -32,6 +32,57 @@ void	ft_print_env_variables(t_command *cmd)
 	}
 }
 
+static void	ft_swap_order(size_t len, char *env[])
+{
+	size_t	i;
+	size_t	j;
+	char	*temp;
+
+	i = 0;
+	while (i < len)
+	{
+		j = 1;
+		while (j < (len - i - 1))
+		{
+			if (ft_strncmp(env[j], env[j + 1], ft_strlen(env[j])) > 0)
+			{
+				temp = env[j];
+				env[j] = env[j + 1];
+				env[j + 1] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+/*
+ * print envs with declare-x before and doesn't prin't _ value
+ */
+void	ft_print_env_variables_with_declare(t_command *cmd)
+{
+	char	**envs;
+	size_t	i;
+
+	envs = NULL;
+	envs = get_env_array(cmd);
+	i = 0;
+	if (envs)
+	{
+		ft_swap_order(cmd->env->length, envs);
+		while (envs[i])
+		{
+			if (ft_strncmp(envs[i], "_=", 2) != 0)
+			{
+				ft_putstr_fd("declare -x ", cmd->fd[1]);
+				ft_putendl_fd(envs[i], cmd->fd[1]);
+			}
+			i++;
+		}
+		ft_free_splitted(envs);
+	}
+}
+
 int	env_builtin_cmd(t_shell *shell, t_command *cmd)
 {
 	ft_print_env_variables(cmd);
