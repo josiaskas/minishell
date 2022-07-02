@@ -38,6 +38,7 @@ static void	set_cmd_path_env_expansion(char *full_path)
 		dic->content = ft_strdup(full_path);
 	}
 }
+
 // return malloced char of full working path or set cmd error
 static char	*find_cmd_working_path(t_shell *shell, t_command *cmd)
 {
