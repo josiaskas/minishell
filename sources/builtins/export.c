@@ -79,13 +79,15 @@ static int	try_add_env(t_shell *shell, char *arg)
 	char		*value;
 
 	value = ft_strchr(arg, '=');
-	if (!value)
-		return (0);
 	var = ft_get_env_varname(arg);
 	if (is_valid_varname_id(var))
 	{
-		if (value)
-			value = ft_strdup((value + 1));
+		if (!value)
+		{
+			free(var);
+			return (0);
+		}
+		value = ft_strdup((value + 1));
 		add_to_env_data(var, value);
 		return (0);
 	}
