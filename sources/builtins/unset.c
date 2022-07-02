@@ -27,6 +27,15 @@ static void	unset_found_dic_entry(t_dic_node *dic, size_t i)
 	free(dic);
 }
 
+static void	unset_special_underscore(t_dic_node *dic)
+{
+	if (dic)
+	{
+		free(dic->content);
+		dic->content = ft_strdup("_");
+	}
+}
+
 void	find_and_unset(char *var_name)
 {
 	t_dic_node	*dic;
@@ -45,7 +54,10 @@ void	find_and_unset(char *var_name)
 		if ((ft_strncmp(key, var_name, len) == 0)
 			&& (len == ft_strlen(var_name)))
 		{
-			unset_found_dic_entry(dic, i);
+			if (ft_strncmp(key, "_", len) == 0 && (len == 1))
+				unset_special_underscore(dic);
+			else
+				unset_found_dic_entry(dic, i);
 			break ;
 		}
 		i++;
