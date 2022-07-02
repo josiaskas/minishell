@@ -61,6 +61,8 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 			ft_free_splitted(args);
 		if (env)
 			ft_free_splitted(env);
+		if (full_path)
+			free(full_path);
 		set_cmd_error(shell, cmd->cmd, "command not found");
 		return (127);
 	}

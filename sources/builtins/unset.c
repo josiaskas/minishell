@@ -25,8 +25,10 @@ static void	print_unset_error(t_shell *shell, char *identifier)
 	shell->status = 1;
 }
 
-static void	unset_found_dic_entry(t_dic_node *dic, size_t i)
+static void	unset_found_dic_entry(size_t i)
 {
+	t_dic_node	*dic;
+
 	dic = (t_dic_node *)ft_del_elem(g_shell.env, i);
 	if (ft_strncmp("PATH", dic->key, 5) == 0)
 	{
@@ -39,38 +41,28 @@ static void	unset_found_dic_entry(t_dic_node *dic, size_t i)
 	free(dic);
 }
 
-static void	unset_special_underscore(t_dic_node *dic)
-{
-	if (dic)
-	{
-		free(dic->content);
-		dic->content = ft_strdup("_");
-	}
-}
-
 void	find_and_unset(char *var_name)
 {
 	t_dic_node	*dic;
-	char		*key;
 	size_t		i;
 	size_t		len;
+	char		*key;
 
 	i = 0;
-	while (i < g_shell.env->length)
+	len = ft_strlen(var_name);
+	while ((i < g_shell.env->length) && (len))
 	{
 		dic = (t_dic_node *)ft_get_elem(g_shell.env, i);
-		if (dic == 0)
-			break ;
 		key = dic->key;
-		len = ft_strlen(key);
-		if ((ft_strncmp(key, var_name, len) == 0)
-			&& (len == ft_strlen(var_name)))
+		if ((ft_strncmp(key, var_name, len) == 0) && (len == ft_strlen(key)))
 		{
-			if (ft_strncmp(key, "_", len) == 0 && (len == 1))
-				unset_special_underscore(dic);
+			if ((ft_strncmp(key, "_", len) == 0) && (len == 1))
+				break ;
 			else
-				unset_found_dic_entry(dic, i);
-			break ;
+			{
+				unset_found_dic_entry(i);
+				break ;
+			}
 		}
 		i++;
 	}
