@@ -65,7 +65,7 @@ void	ft_print_env_variables_with_declare(t_command *cmd)
 	size_t	i;
 
 	envs = NULL;
-	envs = get_env_array(cmd);
+	envs = get_env_array_with_eq(cmd);
 	i = 0;
 	if (envs)
 	{

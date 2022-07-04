@@ -25,4 +25,5 @@ char	*ft_get_env_varname(const char *env_line);
 void	ft_print_env_variables(t_command *cmd);
 void	ft_print_env_variables_with_declare(t_command *cmd);
 bool	is_valid_varname_id(char *var_name);
+char	**get_env_array_with_eq(t_command *command);
 #endif //BUILTINS_H
