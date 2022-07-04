@@ -6,7 +6,7 @@
 #    By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/05 18:37:04 by jkasongo          #+#    #+#              #
-#    Updated: 2022/05/30 16:20:42 by jkasongo         ###   ########.fr        #
+#    Updated: 2022/07/04 16:34:07 by jkasongo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ LEXER_SRC = lexer.c lexer_utils.c lexer_utils_suite.c heredoc_lex.c
 LEXER_PREFIXED = $(addprefix minishell_lexer/, $(LEXER_SRC))
 
 #execution source
-EXECUTION_SRC = execute.c execute_utils.c pipelines.c pipelines_utils.c ft_execve.c redirections.c heredoc.c cmd_path.c
+EXECUTION_SRC = execute.c execute_utils.c pipelines.c pipelines_utils.c ft_execve.c redirections.c heredoc.c heredoc_suite.c cmd_path.c
 EXECUTION_PREFIXED = $(addprefix executions/, $(EXECUTION_SRC))
 
 #lexer bonus

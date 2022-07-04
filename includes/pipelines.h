@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/07 15:56:42 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/10 19:19:35 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/07/04 16:27:06 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		build_cmd_reds(t_shell *shell, t_command *command);
 void	print_heredoc_lex(char *sentence, int write_pipe);
 void	destroy_redirections(t_array *redirections);
 //int		build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[]);
-int		build_all_heredoc_reds(t_shell *shell, t_command *command, int *pipes[]);
+int		build_all_heredoc_reds(t_shell *shell, t_command *command, int *pips[]);
 
 void	destroy_shell_data(t_shell *shell);
 void	print_cmd_error(char *cmd_name, char *error_msg);

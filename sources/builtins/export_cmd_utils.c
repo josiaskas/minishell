@@ -6,7 +6,7 @@
 /*   By: jkasongo <jkasongo@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 21:53:36 by jkasongo          #+#    #+#             */
-/*   Updated: 2022/06/30 19:51:32 by jkasongo         ###   ########.fr       */
+/*   Updated: 2022/07/04 16:42:08 by jkasongo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,34 +34,20 @@ char	*ft_get_env_varname(const char *env_line)
 	return (varname);
 }
 
-
 static void	*map_join_key_c_with_eq(void *content, char *key, size_t index)
 {
 	char	*word;
-	size_t	len_key;
-	size_t	len_content;
+	char	*part1;
+	char	*part2;
 	char	*data;
 
 	data = (char *)content;
-	len_key = ft_strlen(key);
-	len_content = ft_strlen(data);
-	word = (char *)ft_calloc(1, (len_key + len_content + 4));
-	index = 0;
-	while (index < len_key)
-	{
-		word[index] = key[index];
-		index++;
-	}
-	word[index] = '=';
-	word[index + 1] = '"';
-	index = 0;
-	while (index < len_content)
-	{
-		word[(len_key + 2 + index)] = data[index];
-		index++;
-	}
-	word[len_key + 2 + index] = '"';
-	word[len_key + 3 + index] = 0;
+	(void)index;
+	part1 = ft_strjoin(key, "=\"");
+	part2 = ft_strjoin(data, "\"");
+	word = ft_strjoin(part1, part2);
+	free(part1);
+	free(part2);
 	return (word);
 }
 
