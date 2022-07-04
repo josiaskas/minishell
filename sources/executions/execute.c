@@ -51,12 +51,23 @@ static int	execute_internal(t_shell *shell, t_command *cmd)
  * Execute sub_shell_cmd called by each made cmd inside the pipeline
  * Return 1 if failed normally except for builtins no return is made
  */
-int	execute_cmd(t_shell *shell, t_command *cmd)
+int	execute_cmd(t_shell *shell, t_command *command)
 {
+	int	status;
+
+	status = 0;
 	set_default_signal_handling();
-	if (cmd->is_internal)
-		return (execute_internal(shell, cmd));
-	return (ft_execve(shell, cmd));
+	if (command->redirections)
+		status = build_cmd_reds(shell, command);
+	if (status > 0)
+		return (status);
+	if (command->fd[0] != STDIN_FILENO)
+		dup2(command->fd[0], STDIN_FILENO);
+	if (command->fd[1] != STDOUT_FILENO)
+		dup2(command->fd[1], STDOUT_FILENO);
+	if (command->is_internal)
+		return (execute_internal(shell, command));
+	return (ft_execve(shell, command));
 }
 
 // execute internal directly inside parent if unique in pipeline
@@ -68,7 +79,9 @@ static int	execute_spec_internal_cmd(t_shell *shell, t_command *cmd)
 	shell->is_parent = true;
 	cmd->fd[1] = STDOUT_FILENO;
 	if (cmd->redirections)
-		status = build_all_cmd_r(shell, cmd, NULL);
+		status = build_all_heredoc_reds(shell, cmd, NULL);
+	if (status == 0 && cmd->redirections)
+		status = build_cmd_reds(shell, cmd);
 	if (status > 0)
 	{
 		g_shell.status = 1;

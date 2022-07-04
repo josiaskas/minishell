@@ -137,7 +137,7 @@ int	make_pipeline(t_shell *shell, t_command	*cmd)
 		return (1);
 	if (assign_pipes(pipes, cmd, shell->pipes_len) != 0)
 		return (1);
-	if (build_all_cmd_r(shell, cmd, pipes) == 1)
+	if (build_all_heredoc_reds(shell, cmd, pipes) == 1)
 		return (1);
 	i = 0;
 	while (i < shell->pipes_len)

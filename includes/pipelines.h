@@ -19,7 +19,7 @@ int		execute_pipeline(t_shell *shell);
 
 int		make_pipeline(t_shell *shell, t_command *cmd);
 void	wait_all_child_process(t_shell *shell);
-int		execute_cmd(t_shell *shell, t_command *cmd);
+int		execute_cmd(t_shell *shell, t_command *command);
 int		ft_execve(t_shell *shell, t_command *cmd);
 char	*get_correct_full_path_cmd(t_shell *shell, t_command *cmd);
 void	exit_subshell_cmd(t_shell *shell, t_command *curr_command);
@@ -28,11 +28,11 @@ int		get_sub_shell_last_cmd_status(t_command *commands);
 void	set_len_of_piped_command(t_shell *shell);
 void	set_shell_error(t_shell *shell, char *msg, int code);
 void	close_all_pipes(int *pipes[], int len);
-int		build_cmd_reds(t_shell *shell, t_command *command, int *pipes[]);
-bool	m_here_r(t_redirection *red, t_shell *shell, t_command *cmd, int *pi[]);
+int		build_cmd_reds(t_shell *shell, t_command *command);
 void	print_heredoc_lex(char *sentence, int write_pipe);
 void	destroy_redirections(t_array *redirections);
-int		build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[]);
+//int		build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[]);
+int		build_all_heredoc_reds(t_shell *shell, t_command *command, int *pipes[]);
 
 void	destroy_shell_data(t_shell *shell);
 void	print_cmd_error(char *cmd_name, char *error_msg);

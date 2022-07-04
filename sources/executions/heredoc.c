@@ -95,7 +95,32 @@ bool	m_here_r(t_redirection *red, t_shell *shell, t_command *cmd, int *pi[])
 	return (true);
 }
 
-int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
+
+static int build_cmd_h_red(t_shell *shell, t_command *command, int *pipes[])
+{
+	bool			made;
+	size_t			i;
+	t_redirection	*redirection;
+
+	made = true;
+	i = 0;
+	while (i < command->redirections->length)
+	{
+		redirection = (t_redirection *)ft_get_elem(command->redirections, i);
+		if (redirection->type == e_redirection_heredoc)
+			made = m_here_r(redirection, shell, command, pipes);
+		if (made == false)
+			break ;
+		i++;
+	}
+	if (made == false)
+		return (1);
+	return (0);
+}
+/*
+ * Build only heredocs redirections. must be done first
+ */
+int	build_all_heredoc_reds(t_shell *shell, t_command *command, int *pipes[])
 {
 	int	status;
 
@@ -106,9 +131,9 @@ int	build_all_cmd_r(t_shell *shell, t_command *command, int *pipes[])
 	while (command)
 	{
 		if (command->redirections)
-			status = build_cmd_reds(shell, command, pipes);
+			status = build_cmd_h_red(shell, command, pipes);
 		if (status == 1)
-			break ;
+			break;
 		command = command->pipe;
 	}
 	if (status == 1 && pipes)
