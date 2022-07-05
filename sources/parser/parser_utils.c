@@ -122,7 +122,7 @@ size_t	build_pipe_cmd(t_command *cmd, t_array *lexer, size_t cursor)
 		{
 			cmd->pipe = build_parse_cmd(lexer, ++cursor);
 			cursor = cmd->pipe->cursor;
-			if ((cmd->pipe->state == e_cmd_error) || (!cmd->pipe->cmd))
+			if (cmd->pipe->state == e_cmd_error)
 			{
 				cmd->state = e_cmd_error;
 				cmd->error_msg = ft_strdup(cmd->pipe->error_msg);
