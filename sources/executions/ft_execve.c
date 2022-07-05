@@ -49,7 +49,10 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 
 	args = NULL;
 	env = NULL;
-	full_path = get_correct_full_path_cmd(shell, cmd);
+	if (ft_strlen(cmd->cmd))
+		full_path = get_correct_full_path_cmd(shell, cmd);
+	else
+		full_path = ft_strdup(cmd->cmd);
 	if (!full_path)
 		return (shell->status);
 	if (cmd->cmd)

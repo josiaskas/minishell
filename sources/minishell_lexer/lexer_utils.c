@@ -69,6 +69,8 @@ size_t	a_quote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
 		lex_tok->type = e_lex_quote_error;
 	else
 		i++;
+	if (!lex_tok->value)
+		lex_tok->value = ft_strdup("");
 	return (i);
 }
 
@@ -102,6 +104,8 @@ size_t	a_dquote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
 		lex_tok->type = e_lex_quote_error;
 	else
 		i++;
+	if (!lex_tok->value)
+		lex_tok->value = ft_strdup("");
 	return (i);
 }
 
