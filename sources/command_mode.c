@@ -20,7 +20,7 @@ void	command_mode_script(char *file_path)
 	g_shell.status = 127;
 }
 
-static bool	check_flags(char *flags)
+bool	check_flags(char *flags, char flag)
 {
 	int		flag_count;
 	int		count;
@@ -33,7 +33,7 @@ static bool	check_flags(char *flags)
 	{
 		if (flags[i] == '-')
 			flag_count++;
-		else if (flags[i] != 'c')
+		else if (flags[i] != flag)
 		{
 			count++;
 			break ;
@@ -47,7 +47,7 @@ static bool	check_flags(char *flags)
 
 void	get_flag_command_and_exec(char *flags, char *line)
 {
-	if (check_flags(flags))
+	if (check_flags(flags, 'c'))
 	{
 		if (ft_strlen(line) > 0)
 			execute_pipeline(parse_shell_line(line));
