@@ -12,6 +12,27 @@
 
 #include "../../includes/parser.h"
 
+char	*get_variable_value_from_tok(t_token *tok);
+char	*quick_concatenate(t_token *tok, char *old_value);
+
+void	lex_concate_tok_dquote_util(t_lex_token *lex_tok, t_token *tok)
+{
+	char	*tmp;
+	char	*var;
+
+	if (tok->type == e_token_variable)
+	{
+		tmp = NULL;
+		var = get_variable_value_from_tok(tok);
+		tmp = ft_strjoin(lex_tok->value, var);
+		free(lex_tok->value);
+		free(var);
+		lex_tok->value = tmp;
+	}
+	else
+		lex_tok->value = quick_concatenate(tok, lex_tok->value);
+}
+
 size_t	all_lit(t_array *tokens, t_token *tok, size_t i, t_array *lex)
 {
 	t_lex_token	*lex_tok;

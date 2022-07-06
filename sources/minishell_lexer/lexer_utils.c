@@ -13,8 +13,10 @@
 #include "../../includes/minishell.h"
 #include "../../includes/lexer.h"
 
+void	lex_concate_tok_dquote_util(t_lex_token *lex_tok, t_token *tok);
+
 // concatenate by toking the value inside a tok (metas included)
-static char	*quick_concatenate(t_token *tok, char *old_value)
+char	*quick_concatenate(t_token *tok, char *old_value)
 {
 	char	*temp;
 
@@ -31,7 +33,7 @@ static char	*quick_concatenate(t_token *tok, char *old_value)
 	return (old_value);
 }
 
-static char	*get_variable_value_from_tok(t_token *tok)
+char	*get_variable_value_from_tok(t_token *tok)
 {
 	t_dic_node	*dic;
 	char		*value;
@@ -81,23 +83,10 @@ size_t	a_quote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
  */
 size_t	a_dquote_t(t_array *toks, t_token *tok, size_t i, t_lex_token *lex_tok)
 {
-	char	*tmp;
-	char	*var;
-
 	tok = (t_token *)ft_get_elem(toks, ++i);
 	while ((tok->type != e_token_dquote) && (tok->type != e_token_eof))
 	{
-		if (tok->type == e_token_variable)
-		{
-			tmp = NULL;
-			var = get_variable_value_from_tok(tok);
-			tmp = ft_strjoin(lex_tok->value, var);
-			free(lex_tok->value);
-			free(var);
-			lex_tok->value = tmp;
-		}
-		else
-			lex_tok->value = quick_concatenate(tok, lex_tok->value);
+		lex_concate_tok_dquote_util(lex_tok, tok);
 		tok = (t_token *)ft_get_elem(toks, ++i);
 	}
 	if (tok->type == e_token_eof)

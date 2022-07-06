@@ -60,10 +60,8 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 		args = get_args_array(cmd);
 		env = get_env_array(cmd);
 		execve(full_path, args, env);
-		if (args)
-			ft_free_splitted(args);
-		if (env)
-			ft_free_splitted(env);
+		ft_free_splitted(args);
+		ft_free_splitted(env);
 		if (full_path)
 			free(full_path);
 		set_cmd_error(shell, cmd->cmd, "command not found");
