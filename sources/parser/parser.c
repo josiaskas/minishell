@@ -102,6 +102,9 @@ static t_array	*build_lexical_analyser(char *sentence)
 		token = get_next_token(tokenizer);
 	lexer = run_simple_lexer(tokenizer->tokens);
 	destroy_tokinizer(tokenizer);
+	if (sentence)
+		free(sentence);
+	sentence = NULL;
 	return (lexer);
 }
 
