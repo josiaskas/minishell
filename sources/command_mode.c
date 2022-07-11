@@ -50,7 +50,7 @@ void	get_flag_command_and_exec(char *flags, char *line)
 	if (check_flags(flags, 'c'))
 	{
 		if (ft_strlen(line) > 0)
-			execute_pipeline(parse_shell_line(line));
+			execute_pipeline(parse_shell_line(ft_strdup(line)));
 	}
 	else
 	{
