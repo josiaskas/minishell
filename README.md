@@ -1,16 +1,31 @@
-# MINISHELL (In construction)
+# MINISHELL (In construction - mandatory part)
 
 
 L’objectif de ce projet est de créer un shell minimaliste.
 Un projet super interessant pour apprendre plus sur les processus, les descripteurs de fichier, les signaux et certains system call. (***version 6*** 42)
 
+![minishell_term]("./github/minishell_term.png")
+
+***Pour l'instant dans le projet :***
+- redirection '> >> < <<';
+- pipes
+- un quote ' ou double quote " non fermé devient un caractère simple (pas de quote>)
+- / et les autres && & sont des caractères simples
+
  ```sh
   git clone --recurse-submodules git@github.com:josiaskas/minishell
  ```
  
-## 1. Loop (interactive mode)
+## 1. Command mode
 
-#### 1.1 signals
+- seul le flag -c est accepté ensuite la ligne à exécuter.
+  ```shell
+   ./minishell -c "echo hello world"  
+  ```
+- les ficher script ***ne sont pas pris en charge***. Donc pas de ***./minishell script.sh***
+## 2. Loop (interactive mode)
+
+#### 2.1 signals
 ```C
 int	minishell_loop(void)
 {
@@ -44,9 +59,9 @@ Si vous compilez sous linux il faudra changer les flags ***-L*** dans le Makefil
 
  note : readline a des "still reachable" blocks.
 
-## 2. Parsing
+## 3. Parsing
 
-#### 2.1 tokenizer et lexer
+#### 3.1 tokenizer et lexer
 
 Pour le parsing j'ai choisi de le faire en 3 étapes. Deux d'entre elles sont liées, tokenization et l’analyse lexicale. 
 Normalement sur le plan scientifique, c'est sensé designer la meme chose à peu près, [Analyse lexicale](https://fr.wikipedia.org/wiki/Analyse_lexicale). Ce qui est certain, c'est la première partie une partie de mon [Analyseur syntaxique](https://fr.wikipedia.org/wiki/Analyse_syntaxique).
@@ -71,7 +86,7 @@ Normalement sur le plan scientifique, c'est sensé designer la meme chose à peu
 
 Le tokenizer peut simplement être modifié en ajoutant des caractères special.
 
-#### 2.2 Le parser
+#### 3.2 Le parser
 
 Il permet la création des t_command, une structure, qui va par la suite aider à l'exécution. En cas de problème, par exemple un token inattendu une erreur est créé puis remonte tout l'arbre des t_command. Elle devient ensuite une erreur du parseur. 
 - Si le créateur de commande rencontre un token de type pipe. Il commence la creation d'une autre commande, un appel récursif est fait, la commande créer est ensuite mise dans `cmd->pipe`
@@ -81,9 +96,9 @@ Il permet la création des t_command, une structure, qui va par la suite aider �
 
 - Plus de details sur le lexer ici [Parser wiki](https://github.com/josiaskas/minishell/wiki/Parser)
 
-## 3 Execution
+## 4 Execution
 
-#### 3.1 Redirections
+#### 4.1 Redirections
 
 On execute premièrement les redirections (Sauf en cas de pipeline).
 Le parseur permet d'avoir un tableau rempli de la structure t_redirection.
@@ -97,10 +112,25 @@ typedef struct s_redirection {
 ```
 
 On execute à la suite chacune d'entre elles. Ce qui permet de fermer puis ouvrir a souhait. Le tableau  ``` command->fd ``` est constament modifer.
-- note : Il n'y a pas de traitment pour certaines redirection ```shell 2>&1 ``` ou ```shell 2> filename ```. 
+- note : Il n'y a pas de traitement pour certaines redirection ```shell 2>&1 ``` ou ```shell 2> filename ```. 
 
-#### 3.2 Heredoc
+#### 4.2 Heredoc
 
-#### 3.3 Pipeline
+Ce type de redirection est exécutée avant le forking de chaque commande.
+- Ce qui permet en cas de ctrl-c dans un heredoc de ne rien exécuter dans la pipeline.
+- On parcours toute les commande et on execute les heredocs les uns à la suite des autres.
+#### 4.3 Pipeline
+
+***Entrée***
+- Une pipeline est une liste chainée de plusieurs t_command lié par le pointeur pipe.
+- Les pipes sont assignées 
+- Chaque t_command est exécutée et on garde le pid dans la structure pour avoir le status du process. 
+- Seul le dernier status de la liste des t_command peut modifier le status global.
+- On fait un wait pour chaque pid des commandes créer.
+
+***Chaque Process Enfant***
+- chaque process reçoit le t_command qui lui été assigné.
+- Les autres types de redirections autres que heredoc sont exécutées
+- On essaye d'exécuter
 
 by josiaskas
