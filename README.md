@@ -1,4 +1,4 @@
-# MINISHELL (In construction - mandatory part)
+# MINISHELL (In construction, je passerais par ici pour ameliorer avec le temps)
 
 
 L’objectif de ce projet est de créer un shell minimaliste.
