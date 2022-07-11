@@ -4,7 +4,7 @@
 L’objectif de ce projet est de créer un shell minimaliste.
 Un projet super interessant pour apprendre plus sur les processus, les descripteurs de fichier, les signaux et certains system call. (***version 6*** 42)
 
-![minishell_term]("./github/minishell_term.png")
+![minishell_term](./github/screen_term.png)
 
 ***Pour l'instant dans le projet :***
 - redirection '> >> < <<';
@@ -73,10 +73,10 @@ Normalement sur le plan scientifique, c'est sensé designer la meme chose à peu
   </tr>
   <tr>
     <td> 
-        <img src="github/Tokenizer_board.jpeg"  alt="incomplete" width = 500px>
+        <img src="./github/Tokenizer_board.jpeg"  alt="incomplete" width = 500px>
     </td>
     <td> 
-         <img src="github/real_v2_lexer.jpeg"  alt="incomplete" width = 500px>
+         <img src="./github/real_v2_lexer.jpeg"  alt="incomplete" width = 500px>
     </td>
   </tr>
 </table>
