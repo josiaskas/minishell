@@ -39,11 +39,13 @@ static char	*make_prompt_line(void)
 		free(prompt);
 	if (!line)
 		return (NULL);
-	tmp = ft_strtrim(line, "\n\t\v\f\r ");
-	free(line);
-	line = tmp;
-	if (ft_strlen(line))
-		add_history(line);
+	if (ft_strlen(line)){
+		tmp = ft_strtrim(line, "\n\t\v\f\r ");
+		free(line);
+		line = tmp;
+		if (ft_strlen(line))
+			add_history(line);
+	}
 	return (line);
 }
 
