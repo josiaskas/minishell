@@ -57,8 +57,6 @@ static int	shell_loop_logic(char *line)
 	code = 0;
 	if (ft_strlen(line) > 0)
 		code = execute_pipeline(parse_shell_line(line));
-	if (line)
-		free(line);
 	return (code);
 }
 

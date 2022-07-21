@@ -49,7 +49,10 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 
 	args = NULL;
 	env = NULL;
-	full_path = get_correct_full_path_cmd(shell, cmd);
+	if (ft_strlen(cmd->cmd))
+		full_path = get_correct_full_path_cmd(shell, cmd);
+	else
+		full_path = ft_strdup(cmd->cmd);
 	if (!full_path)
 		return (shell->status);
 	if (cmd->cmd)
@@ -57,10 +60,8 @@ int	ft_execve(t_shell *shell, t_command *cmd)
 		args = get_args_array(cmd);
 		env = get_env_array(cmd);
 		execve(full_path, args, env);
-		if (args)
-			ft_free_splitted(args);
-		if (env)
-			ft_free_splitted(env);
+		ft_free_splitted(args);
+		ft_free_splitted(env);
 		if (full_path)
 			free(full_path);
 		set_cmd_error(shell, cmd->cmd, "command not found");

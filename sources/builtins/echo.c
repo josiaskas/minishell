@@ -23,7 +23,7 @@ static int	print_in_tty(char **args, int fd, size_t len)
 	i = 0;
 	if (!args)
 		return (0);
-	if ((ft_strncmp(args[0], "-n", 2) == 0) && (ft_strlen(args[0]) == 2))
+	if (check_flags(args[0], 'n'))
 	{
 		with_end = false;
 		i = 1;
@@ -50,7 +50,7 @@ static int	print_in_file(char **args, int fd, size_t len)
 	i = 0;
 	if (!args)
 		return (0);
-	if ((ft_strncmp(args[0], "-n", 2) == 0) && (ft_strlen(args[0]) == 2))
+	if (check_flags(args[0], 'n'))
 	{
 		with_end = false;
 		i = 1;

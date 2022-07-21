@@ -30,5 +30,5 @@ extern t_mshell	g_shell;
 void	command_mode_script(char *file_path);
 void	get_flag_command_and_exec(char *flags, char *line);
 int		minishell_loop(void);
-
+bool	check_flags(char *flags, char flag);
 #endif
